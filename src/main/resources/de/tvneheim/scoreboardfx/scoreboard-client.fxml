@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import de.tvneheim.scoreboardfx.view.TeamActions?>
+<?import de.tvneheim.scoreboardfx.view.HomeTeamActions?>
+<?import de.tvneheim.scoreboardfx.view.GuestTeamActions?>
+<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.tvneheim.scoreboardfx.controller.ScoreboardClientController">
+    <children>
+        <HBox alignment="TOP_CENTER" maxHeight="256.0" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT"
+              VBox.vgrow="ALWAYS">
+            <children>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                            minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                    <HomeTeamActions fx:id="homeActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                    <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                source="game-actions.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                    <GuestTeamActions fx:id="guestActions" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308"
+                                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+            </children>
+        </HBox>
+        <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                    minWidth="-Infinity" VBox.vgrow="ALWAYS">
+            <right>
+                <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="history.fxml"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                            AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER"/>
+            </right>
+        </BorderPane>
+    </children>
+</VBox>

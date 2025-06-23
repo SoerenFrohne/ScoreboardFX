@@ -1,0 +1,18 @@
+package de.tvneheim.scoreboardfx.model;
+
+import lombok.With;
+
+import java.util.List;
+
+@With
+public record Team(
+        TeamType type,
+        String name,
+        int score,
+        List<Player> players,
+        List<Penalty> penalties
+) {
+    public Team(TeamType type, String name) {
+        this(type, name, 0, List.of(), List.of());
+    }
+}
