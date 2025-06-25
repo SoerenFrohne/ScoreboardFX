@@ -28,12 +28,12 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("de.tvneheim.scoreboardfx")
-    mainClass.set("de.tvneheim.scoreboardfx.HelloApplication")
+    mainClass.set("de.tvneheim.scoreboardfx.MainApplication")
 }
 
 javafx {
     version = "21"
-    modules = listOf("javafx.controls", "javafx.fxml")
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.web")
 }
 
 dependencies {

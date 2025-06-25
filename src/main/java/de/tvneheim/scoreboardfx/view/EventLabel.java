@@ -5,8 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import lombok.extern.java.Log;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -28,7 +26,7 @@ public class EventLabel extends HBox {
   private Button deleteButton;
 
   public EventLabel(Event event) {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/tvneheim/scoreboardfx/event-label.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/tvneheim/scoreboardfx/fxml/event-label.fxml"));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 

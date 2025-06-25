@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import de.tvneheim.scoreboardfx.events.Event;
-import de.tvneheim.scoreboardfx.events.EventStore;
+import de.tvneheim.scoreboardfx.events.GameState;
 import de.tvneheim.scoreboardfx.view.EventLabel;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -10,8 +10,6 @@ import javafx.scene.layout.VBox;
 import lombok.extern.java.Log;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -26,7 +24,7 @@ public class HistoryController implements Initializable {
 
     historyContainer.getChildren().clear();
 
-    EventStore.getProperty().addListener((ListChangeListener<? super Event>) this::updateHistory);
+    GameState.getProperty().addListener((ListChangeListener<? super Event>) this::updateHistory);
   }
 
   private void updateHistory(ListChangeListener.Change<? extends Event> change) {

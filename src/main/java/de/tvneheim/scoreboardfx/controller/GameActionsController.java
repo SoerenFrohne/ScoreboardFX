@@ -1,69 +1,55 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import de.tvneheim.scoreboardfx.GameService;
-import de.tvneheim.scoreboardfx.model.Game;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.view.StopWatch;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.util.Duration;
 import lombok.extern.java.Log;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
+
 @Log
-public class GameActionsController {
+public class GameActionsController implements Initializable {
 
-    @FXML
-    private Label time;
+  @FXML
+  private Label time;
 
-    @FXML
-    private Button startStopButton;
+  @FXML
+  private Button startStopButton;
 
-    private boolean stopped;
-    private int millis, seconds, minutes;
-    private final Timeline timeline;
+  @FXML
+  private Label scoreHome;
 
-    public GameActionsController() {
-        stopped = true;
-        timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> updateTime()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(false);
+  @FXML
+  private Label scoreGuest;
+
+  private final StopWatch stopWatch = GameState.getStopWatch();
+
+  @FXML
+  protected void toggleStartStop() {
+    if (stopWatch.isRunning()) {
+      GameService.stopTime();
+    } else {
+      GameService.startTime();
     }
+  }
 
-    @FXML
-    protected void toggleStartStop() {
-        stopped = !stopped;
-        toggleStartStopText();
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    time.textProperty().bind(GameState.getStopWatch().getTime());
 
-        if (stopped) {
-            GameService.stopTime(minutes, seconds, millis);
-            timeline.stop();
-        } else {
-            GameService.startGame();
-            timeline.play();
-        }
-    }
+    GameState.getGame().addListener((observable, oldValue, game) -> {
+      scoreHome.setText(doubleDigits(game.home().score()));
+      scoreGuest.setText(doubleDigits(game.guest().score()));
+    });
 
-    private void updateTime() {
-
-        millis++;
-
-        if (millis == 1000) {
-            seconds++;
-            millis = 0;
-        }
-
-        if (seconds == 60) {
-            minutes++;
-            seconds = 0;
-        }
-
-        var text = String.format("%02d:%02d", minutes, seconds);
-        //log.info(text);
-        time.setText(text);
-    }
-
-    private void toggleStartStopText() {
-        startStopButton.setText(stopped ? "Start" : "Pause");
-    }
+    GameState.getStopWatch().getStopped()
+        .addListener((observable, oldValue, newValue) -> startStopButton.setText(newValue ? "Start" : "Pause"));
+  }
 }

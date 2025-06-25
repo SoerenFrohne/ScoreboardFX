@@ -24,7 +24,7 @@ public abstract class TeamActions extends VBox implements Initializable {
   private Button penaltyButton;
 
   public TeamActions() {
-    FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/team-actions.fxml");
+    FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/fxml/team-actions.fxml");
     goalButton.setOnAction(this::onScore);
     timeOutButton.setOnAction(this::onTeamTimeOut);
     penaltyButton.setOnAction(this::onPenalty);

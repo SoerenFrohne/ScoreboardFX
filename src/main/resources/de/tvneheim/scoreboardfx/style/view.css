@@ -1,0 +1,48 @@
+@font-face {
+    src: url("../fonts/NewAmsterdam-Regular.ttf"),
+}
+
+@font-face {
+    src: url("../fonts/Orbitron-Bold.ttf"),
+}
+
+@font-face {
+    src: url("../fonts/Compagnon-Medium.otf"),
+}
+
+@font-face {
+    src: url("../fonts/Goldman-Regular.ttf"),
+}
+
+
+Label {
+    -fx-font-family: "Goldman";
+    -fx-font-size: 64px;
+    -fx-text-fill: #FFF;
+}
+
+#period {
+    -fx-font-size: 64px;
+}
+
+#time {
+    -fx-font-family: "Compagnon Medium";
+    -fx-font-size: 164px;
+    -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
+}
+
+#scoreHome, #scoreGuest {
+    -fx-font-family: "New Amsterdam";
+    -fx-font-size: 256px;
+    -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
+}
+
+#homeLogo, #guestLogo {
+    -fx-opacity: 0.25;
+    -fx-blend-mode: multiply
+}
+
+.hiddenPenalty {
+    -fx-text-fill: rgba(255, 255, 255, .25); // transparent white
+}
+

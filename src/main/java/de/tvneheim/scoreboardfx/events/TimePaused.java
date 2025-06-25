@@ -2,6 +2,7 @@ package de.tvneheim.scoreboardfx.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.utils.FormatterUtils;
+import de.tvneheim.scoreboardfx.view.TimeStamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,11 +10,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TimePaused extends Event {
 
-  private final int millis, seconds, minutes;
+  private final TimeStamp timeStamp;
 
   @Override
   public String description() {
-    return "Zeit angehalten: " + FormatterUtils.time(minutes, seconds);
+    return "Zeit angehalten: " + FormatterUtils.time(timeStamp.minutes(), timeStamp.seconds());
   }
 
   @Override
@@ -21,9 +22,9 @@ public class TimePaused extends Event {
     var time = current.time();
     var newTime = time
         .withPaused(true)
-        .withMillis(millis)
-        .withSeconds(seconds)
-        .withMinutes(minutes);
+        .withMillis(timeStamp.millis())
+        .withSeconds(timeStamp.seconds())
+        .withMinutes(timeStamp.minutes());
     return current.withTime(newTime);
   }
 }
