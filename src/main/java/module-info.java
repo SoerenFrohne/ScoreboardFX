@@ -8,6 +8,7 @@ module de.tvneheim.scoreboardfx {
     requires com.dlsc.formsfx;
     requires org.kordamp.ikonli.javafx;
     requires static lombok;
+    requires javafx.media;
 
     opens de.tvneheim.scoreboardfx to javafx.fxml;
     opens de.tvneheim.scoreboardfx.controller to javafx.fxml;

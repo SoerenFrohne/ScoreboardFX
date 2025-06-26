@@ -20,6 +20,7 @@ public final class GameState {
 
   private static final Settings SETTINGS = new Settings(
       30,
+      3,
       "D:\\TV Neheim 1884\\Scoreboard\\Logos",
       "D:\\TV Neheim 1884\\Scoreboard\\Werbung\\Bilder",
       ""

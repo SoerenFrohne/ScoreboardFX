@@ -2,11 +2,13 @@ package de.tvneheim.scoreboardfx.controller;
 
 import de.tvneheim.scoreboardfx.GameService;
 import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
 import de.tvneheim.scoreboardfx.view.StopWatch;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
 import java.net.URL;
@@ -38,6 +40,12 @@ public class GameActionsController implements Initializable {
     } else {
       GameService.startTime();
     }
+  }
+
+  @FXML
+  @SneakyThrows
+  protected void honk() {
+    SoundBoard.honkShort();
   }
 
   @Override

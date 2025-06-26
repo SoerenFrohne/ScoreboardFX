@@ -2,7 +2,11 @@ package de.tvneheim.scoreboardfx.controller;
 
 import de.tvneheim.scoreboardfx.events.GameState;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -10,12 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
+import javafx.util.Duration;
 import lombok.extern.java.Log;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Log
 public class ScoreboardViewController implements Initializable {
@@ -32,14 +38,41 @@ public class ScoreboardViewController implements Initializable {
   @FXML
   private Label time, scoreHome, scoreGuest, nameHome, nameGuest;
 
+  private final IntegerProperty adIndex = new SimpleIntegerProperty(0);
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     bindModel();
     initBackground();
-    initAds();
+    initAdLoop();
     initLogos();
   }
+
+  private void initAdLoop() {
+    //TODO: Ensure same size
+    centerPane.widthProperty().addListener(observable -> adDisplay.setFitWidth(.66 * centerPane.getWidth()));
+
+    var directory = new File(GameState.getSettings().pathToAdImages());
+    var files = Arrays.stream(directory.listFiles()).toList();
+    log.info("Found following ads: " + files);
+    var file = files.getFirst();
+    var img = new Image(file.toURI().toString());
+    adDisplay.setImage(img);
+
+    AtomicInteger index = new AtomicInteger();
+    var timeline = new Timeline(new KeyFrame(Duration.seconds(GameState.getSettings().secondsBetweenAds()), event -> {
+      log.info("Fire " + index);
+      index.getAndIncrement();
+      var currentFile = files.get(index.get() % files.size());
+      var currentImg = new Image(currentFile.toURI().toString());
+      adDisplay.setImage(currentImg);
+    }));
+
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.setAutoReverse(false);
+    timeline.playFromStart();
+  }
+
 
   private void bindModel() {
     time.textProperty().bind(GameState.getStopWatch().getTime());
@@ -68,17 +101,6 @@ public class ScoreboardViewController implements Initializable {
     AnchorPane.setRightAnchor(webView, 0d);
     AnchorPane.setLeftAnchor(webView, 0d);
     rootPane.getChildren().addFirst(webView);
-  }
-
-  private void initAds() {
-    centerPane.widthProperty().addListener(observable -> adDisplay.setFitWidth(.66 * centerPane.getWidth()));
-
-    var directory = new File(GameState.getSettings().pathToAdImages());
-    var files = Arrays.stream(directory.listFiles()).toList();
-    log.info("Found following ads: " + files);
-
-    var image = new Image(files.stream().findFirst().orElseThrow().toURI().toString());
-    adDisplay.setImage(image);
   }
 
   private void initLogos() {

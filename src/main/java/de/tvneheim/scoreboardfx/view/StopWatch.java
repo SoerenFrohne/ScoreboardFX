@@ -1,12 +1,11 @@
 package de.tvneheim.scoreboardfx.view;
 
 import de.tvneheim.scoreboardfx.GameService;
+import de.tvneheim.scoreboardfx.events.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.Observable;
+import javafx.beans.property.*;
 import javafx.util.Duration;
 import lombok.Getter;
 
@@ -55,7 +54,6 @@ public class StopWatch {
     }
 
     var text = String.format("%02d:%02d", minutes, seconds);
-    //log.info(text);
     time.setValue(text);
   }
 
