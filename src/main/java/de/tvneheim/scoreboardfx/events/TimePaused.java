@@ -2,7 +2,7 @@ package de.tvneheim.scoreboardfx.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.utils.FormatterUtils;
-import de.tvneheim.scoreboardfx.view.TimeStamp;
+import de.tvneheim.scoreboardfx.model.TimeStamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

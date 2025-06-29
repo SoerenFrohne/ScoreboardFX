@@ -1,5 +1,6 @@
 package de.tvneheim.scoreboardfx.model;
 
+import de.tvneheim.scoreboardfx.utils.ListUtils;
 import lombok.With;
 
 import java.util.List;
@@ -14,5 +15,10 @@ public record Team(
 ) {
     public Team(TeamType type, String name) {
         this(type, name, 0, List.of(), List.of());
+    }
+
+    public Team addPenalty(Penalty penalty) {
+        var list = ListUtils.appendElements(penalties, penalty);
+        return this.withPenalties(list);
     }
 }

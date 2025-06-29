@@ -14,6 +14,10 @@
     src: url("../fonts/Goldman-Regular.ttf"),
 }
 
+@font-face {
+    src: url("../fonts/monoMMM_5.ttf"),
+}
+
 
 Label {
     -fx-font-family: "Goldman";
@@ -42,7 +46,13 @@ Label {
     -fx-blend-mode: multiply
 }
 
+.penalty {
+    -fx-font-family: "monoMMM_5";
+    -fx-font-size: 64px;
+    -fx-text-fill: #FFF;
+}
+
 .hiddenPenalty {
-    -fx-text-fill: rgba(255, 255, 255, .25); // transparent white
+    -fx-text-fill: rgba(255, 255, 255, .15); // transparent white
 }
 

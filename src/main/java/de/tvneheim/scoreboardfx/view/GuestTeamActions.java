@@ -18,7 +18,7 @@ public class GuestTeamActions extends TeamActions {
 
   @Override
   public void onPenalty(ActionEvent event) {
-    //TODO
+    GameService.twoMinutesForGuest(4);
   }
 
 

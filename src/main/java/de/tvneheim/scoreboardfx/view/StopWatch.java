@@ -1,10 +1,8 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.GameService;
-import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.model.TimeStamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -18,6 +16,9 @@ public class StopWatch {
   private final StringProperty time = new SimpleStringProperty("00:00");
   @Getter
   private final BooleanProperty stopped = new SimpleBooleanProperty(true);
+  @Getter
+  private final ObjectProperty<TimeStamp> timestamp = new SimpleObjectProperty<>(new TimeStamp(millis, seconds, minutes));
+
 
   public StopWatch() {
     timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> updateTime()));
@@ -26,14 +27,14 @@ public class StopWatch {
   }
 
   public void start() {
-    if(isPaused()) {
+    if (isPaused()) {
       stopped.setValue(false);
       timeline.play();
     }
   }
 
   public void pause() {
-    if(isRunning()) {
+    if (isRunning()) {
       stopped.setValue(true);
       timeline.stop();
     }
@@ -55,6 +56,7 @@ public class StopWatch {
 
     var text = String.format("%02d:%02d", minutes, seconds);
     time.setValue(text);
+    timestamp.setValue(new TimeStamp(millis, seconds, minutes));
   }
 
   public boolean isRunning() {
@@ -66,6 +68,6 @@ public class StopWatch {
   }
 
   public TimeStamp getCurrentTime() {
-    return new TimeStamp(millis, seconds, minutes);
+    return timestamp.getValue();
   }
 }

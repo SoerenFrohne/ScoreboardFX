@@ -1,6 +1,9 @@
 package de.tvneheim.scoreboardfx.utils;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 import java.io.IOException;
 
@@ -15,6 +18,12 @@ public final class FXMLUtils {
       fxmlLoader.load();
     } catch (IOException exception) {
       throw new RuntimeException(exception);
+    }
+  }
+
+  public static void removeFromParent(Node nodeToRemove) {
+    if (nodeToRemove.getParent() != null) {
+      ((Pane) nodeToRemove.getParent()).getChildren().remove(nodeToRemove);
     }
   }
 

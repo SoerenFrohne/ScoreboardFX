@@ -10,9 +10,12 @@ public record Time(
     int seconds,
     int millis
 ) {
+
   public Time() {
     this(true, 1, 0, 0, 0);
   }
+
+
 
   public String asFormattedTime() {
     return String.format("%02d:%02d", minutes, seconds);

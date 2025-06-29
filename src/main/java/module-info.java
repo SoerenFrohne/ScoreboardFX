@@ -18,4 +18,5 @@ module de.tvneheim.scoreboardfx {
     exports de.tvneheim.scoreboardfx.controller;
     exports de.tvneheim.scoreboardfx.model;
     exports de.tvneheim.scoreboardfx.view;
+    opens de.tvneheim.scoreboardfx.model to javafx.fxml;
 }

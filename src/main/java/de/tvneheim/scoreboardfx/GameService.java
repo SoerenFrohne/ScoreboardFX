@@ -1,7 +1,10 @@
 package de.tvneheim.scoreboardfx;
 
 import de.tvneheim.scoreboardfx.events.*;
+import de.tvneheim.scoreboardfx.model.PenaltyType;
+import de.tvneheim.scoreboardfx.model.Player;
 import de.tvneheim.scoreboardfx.model.TeamType;
+import de.tvneheim.scoreboardfx.model.TimeStamp;
 import de.tvneheim.scoreboardfx.view.StopWatch;
 
 public final class GameService {
@@ -36,6 +39,18 @@ public final class GameService {
 
   public static void stopPeriod() {
     GameState.addEvent(new PeriodFinished());
+  }
+
+  public static void twoMinutesForHome(int number) {
+    GameState.addEvent(new PenaltyHomeAdded(PenaltyType.TWO_MINUTES, new Player(number), getCurrentTimestamp()));
+  }
+
+  public static void twoMinutesForGuest(int number) {
+    GameState.addEvent(new PenaltyGuestAdded(PenaltyType.TWO_MINUTES, new Player(number), getCurrentTimestamp()));
+  }
+
+  public static TimeStamp getCurrentTimestamp() {
+    return GameState.getStopWatch().getCurrentTime();
   }
 
 }

@@ -29,7 +29,7 @@ public class HomeTeamActions extends TeamActions {
 
   @Override
   public void onPenalty(ActionEvent event) {
-    //TODO
+    GameService.twoMinutesForHome(4);
   }
 
 }

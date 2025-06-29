@@ -1,12 +1,12 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
+import de.tvneheim.scoreboardfx.view.PenaltyLabel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,6 +20,7 @@ import lombok.extern.java.Log;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,7 +31,7 @@ public class ScoreboardViewController implements Initializable {
   private AnchorPane rootPane, scoreHomeContainer, scoreGuestContainer;
 
   @FXML
-  private VBox centerPane;
+  private VBox centerPane, penaltiesHome, penaltiesGuest;
 
   @FXML
   private ImageView adDisplay, homeLogo, guestLogo;
@@ -38,14 +39,16 @@ public class ScoreboardViewController implements Initializable {
   @FXML
   private Label time, scoreHome, scoreGuest, nameHome, nameGuest;
 
-  private final IntegerProperty adIndex = new SimpleIntegerProperty(0);
-
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     bindModel();
     initBackground();
     initAdLoop();
     initLogos();
+
+    // TODO: Ersetzen durch GameInitEvent
+    updatePenalties(penaltiesHome, GameState.getGame().get().home().penalties());
+    updatePenalties(penaltiesGuest, GameState.getGame().get().guest().penalties());
   }
 
   private void initAdLoop() {
@@ -61,7 +64,6 @@ public class ScoreboardViewController implements Initializable {
 
     AtomicInteger index = new AtomicInteger();
     var timeline = new Timeline(new KeyFrame(Duration.seconds(GameState.getSettings().secondsBetweenAds()), event -> {
-      log.info("Fire " + index);
       index.getAndIncrement();
       var currentFile = files.get(index.get() % files.size());
       var currentImg = new Image(currentFile.toURI().toString());
@@ -82,12 +84,31 @@ public class ScoreboardViewController implements Initializable {
       scoreGuest.setText(String.valueOf(game.guest().score()));
       nameHome.setText(game.home().name());
       nameGuest.setText(game.guest().name());
+      updatePenalties(penaltiesHome, game.home().penalties());
+      updatePenalties(penaltiesGuest, game.guest().penalties());
     });
 
     rootPane.widthProperty().addListener(observable -> {
       nameHome.setPrefWidth(rootPane.getWidth() * 0.3d);
       nameGuest.setPrefWidth(rootPane.getWidth() * 0.3d);
     });
+  }
+
+  private void updatePenalties(Pane root, List<Penalty> penalties) {
+    root.getChildren().clear();
+
+    // fill current penalties
+    penalties.forEach(penalty -> {
+      var penaltyLabel = new PenaltyLabel(penalty);
+      root.getChildren().add(penaltyLabel);
+    });
+
+    // fill empty slots
+    var remainingSlots = 4 - penalties.size();
+    for (int i = 0; i < remainingSlots; i++) {
+      var emptyLabel = new PenaltyLabel(null);
+      root.getChildren().add(emptyLabel);
+    }
   }
 
   private void initBackground() {
