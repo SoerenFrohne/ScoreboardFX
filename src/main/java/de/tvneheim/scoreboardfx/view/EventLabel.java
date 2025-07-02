@@ -1,46 +1,28 @@
 package de.tvneheim.scoreboardfx.view;
 
+import atlantafx.base.controls.Tile;
+import atlantafx.base.theme.Styles;
 import de.tvneheim.scoreboardfx.events.Event;
-import de.tvneheim.scoreboardfx.utils.FXMLUtils;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import lombok.extern.java.Log;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
+import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.time.format.DateTimeFormatter;
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.dateTime;
 
 @Log
-public class EventLabel extends HBox {
+public class EventLabel extends Tile {
 
-  private static int COUNT = 0;
+  public EventLabel(Event event, int index) {
 
-  @FXML
-  private Label dateLabel;
-  @FXML
-  private Label textLabel;
-  @FXML
-  private Button deleteButton;
+    this.setTitle(event.description());
+    this.setDescription(dateTime(event.getCreated()));
+    var btn = new Button(null, new FontIcon("fas-times"));
+    btn.getStyleClass().addAll(Styles.BUTTON_CIRCLE, Styles.FLAT);
+    this.setAction(btn);
 
-  public EventLabel(Event event) {
-    FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/fxml/event-label.fxml");
-    initializeView(event);
-  }
-
-
-  private void initializeView(Event event) {
-    COUNT++;
-
-    if (COUNT % 2 == 0) {
-      this.setStyle("-fx-background-color: #FFF;");
+    log.info("Count: " + index);
+    if (index % 2 == 0) {
+      this.setStyle("-fx-background-color: -color-bg-subtle;");
     }
-
-    dateLabel.setText(event.getCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss")) + " Uhr");
-    textLabel.setText(event.description());
-    deleteButton.setText("");
-    deleteButton.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE));
   }
-
 }

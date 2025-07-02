@@ -29,7 +29,7 @@ public class MainApplication extends Application {
         var viewScene = new Scene(viewLoader.load());
         viewScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/view.css").toExternalForm());
         var viewStage = new Stage();
-        viewStage.setTitle("Scoreboard Client");
+        viewStage.setTitle("Scoreboard View");
         viewStage.setScene(viewScene);
         viewStage.show();
     }

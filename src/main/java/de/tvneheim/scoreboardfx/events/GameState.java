@@ -18,17 +18,9 @@ public final class GameState {
 
   private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
 
-  private static final Settings SETTINGS = new Settings(
-      30,
-      3,
-      "D:\\TV Neheim 1884\\Scoreboard\\Logos",
-      "D:\\TV Neheim 1884\\Scoreboard\\Werbung\\Bilder",
-      ""
-  );
-
   private static final StopWatch STOP_WATCH = new StopWatch();
 
-  private static final Game INITIAL_GAME = new Game("HEIM", "GAST", SETTINGS);
+  private static Game INITIAL_GAME = new Game("HEIM", "GAST", new Settings());
 
   private static final ObjectProperty<Game> GAME = new SimpleObjectProperty<>(
       INITIAL_GAME
@@ -57,7 +49,7 @@ public final class GameState {
     return EVENTS.stream().toList();
   }
 
-  public static ObservableList<Event> getProperty() {
+  public static ObservableList<Event> getEventsProperty() {
     return EVENTS;
   }
 
@@ -70,7 +62,7 @@ public final class GameState {
   }
 
   public static Settings getSettings() {
-    return SETTINGS;
+    return GAME.get().settings();
   }
 
   public static boolean isRunning() {
@@ -79,5 +71,12 @@ public final class GameState {
 
   public static boolean isPaused() {
     return STOP_WATCH.isPaused();
+  }
+
+  public static void restart() {
+    EVENTS.clear();
+    INITIAL_GAME = GAME.get().reset();
+    STOP_WATCH.reset();
+    updateGameState();
   }
 }

@@ -16,10 +16,10 @@ public abstract class PenaltyAdded extends Event {
   @Override
   public String description() {
     return switch (penaltyType) {
-      case YELLOW -> "Verwarnung für Spieler/-in Nr. " + player.number() + "!";
-      case TWO_MINUTES -> "Zeitstrafe für Spieler/-in Nr. " + player.number() + "!";
-      case RED -> "Rote Karte gegen Spieler/-in Nr." + player.number() + "!";
-      case BLUE -> "Rote Karte mit Bericht gegen Spieler/-in Nr. " + player.number();
+      case YELLOW -> "Verwarnung für Spieler/-in Nr. " + player.number().get() + "!";
+      case TWO_MINUTES -> "Zeitstrafe für Spieler/-in Nr. " + player.number().get() + "!";
+      case RED -> "Rote Karte gegen Spieler/-in Nr." + player.number().get() + "!";
+      case BLUE -> "Rote Karte mit Bericht gegen Spieler/-in Nr. " + player.number().get();
     };
   }
 

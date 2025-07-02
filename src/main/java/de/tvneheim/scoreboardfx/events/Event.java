@@ -10,6 +10,7 @@ import java.util.UUID;
 public abstract class Event {
 
   private UUID id = UUID.randomUUID();
+  
   private LocalDateTime created = LocalDateTime.now();
 
   public abstract String description();

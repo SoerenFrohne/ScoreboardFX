@@ -21,4 +21,8 @@ public record Team(
         var list = ListUtils.appendElements(penalties, penalty);
         return this.withPenalties(list);
     }
+
+  public Team reset() {
+    return new Team(type, name);
+  }
 }

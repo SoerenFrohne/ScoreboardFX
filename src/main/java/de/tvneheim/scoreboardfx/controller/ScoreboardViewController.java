@@ -55,7 +55,7 @@ public class ScoreboardViewController implements Initializable {
     //TODO: Ensure same size
     centerPane.widthProperty().addListener(observable -> adDisplay.setFitWidth(.66 * centerPane.getWidth()));
 
-    var directory = new File(GameState.getSettings().pathToAdImages());
+    var directory = new File(GameState.getSettings().pathToAdImages().get());
     var files = Arrays.stream(directory.listFiles()).toList();
     log.info("Found following ads: " + files);
     var file = files.getFirst();
@@ -63,7 +63,7 @@ public class ScoreboardViewController implements Initializable {
     adDisplay.setImage(img);
 
     AtomicInteger index = new AtomicInteger();
-    var timeline = new Timeline(new KeyFrame(Duration.seconds(GameState.getSettings().secondsBetweenAds()), event -> {
+    var timeline = new Timeline(new KeyFrame(Duration.seconds(GameState.getSettings().secondsBetweenAds().get()), event -> {
       index.getAndIncrement();
       var currentFile = files.get(index.get() % files.size());
       var currentImg = new Image(currentFile.toURI().toString());
@@ -125,7 +125,7 @@ public class ScoreboardViewController implements Initializable {
   }
 
   private void initLogos() {
-    var directory = new File(GameState.getSettings().pathToAdLogos());
+    var directory = new File(GameState.getSettings().pathToLogos().get());
     var files = Arrays.stream(directory.listFiles()).toList();
     log.info("Found following logos: " + files);
 

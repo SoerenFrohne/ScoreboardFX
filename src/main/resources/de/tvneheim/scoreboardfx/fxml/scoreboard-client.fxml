@@ -1,31 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.tvneheim.scoreboardfx.view.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.tvneheim.scoreboardfx.controller.ScoreboardClientController">
-    <left>
-        <VBox fx:id="penaltiesHome" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT" />
-    </left>
-    <center>
-        <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="history.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
-    </center>
-    <right>
-        <VBox fx:id="penaltiesGuest" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
-    </right>
-    <top>
-        <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER">
-            <children>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
-                    <HomeTeamActions fx:id="homeActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                </AnchorPane>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                    <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="game-actions.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                </AnchorPane>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                    <GuestTeamActions fx:id="guestActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                </AnchorPane>
-            </children>
-        </HBox>
-    </top>
-</BorderPane>
+<StackPane fx:id="stack" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.tvneheim.scoreboardfx.controller.ScoreboardClientController">
+   <children>
+      <BorderPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+          <left>
+              <VBox fx:id="penaltiesHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT">
+                  <BorderPane.margin>
+                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                  </BorderPane.margin>
+              </VBox>
+          </left>
+          <right>
+              <VBox fx:id="penaltiesGuest" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                  </BorderPane.margin>
+              </VBox>
+          </right>
+          <top>
+              <VBox maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                      <Insets />
+                  </BorderPane.margin>
+                  <children>
+                      <MenuBar>
+                          <menus>
+                              <Menu mnemonicParsing="false" text="Spiel">
+                                  <items>
+                                      <MenuItem mnemonicParsing="false" onAction="#openGameSettings" text="Neu" />
+                                      <MenuItem mnemonicParsing="false" text="Schließen" />
+                                  </items>
+                              </Menu>
+                          </menus>
+                      </MenuBar>
+                      <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+                          <children>
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                  <HomeTeamActions fx:id="homeActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                  <HBox.margin>
+                                      <Insets right="16.0" />
+                                  </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                  <fx:include fx:id="gameActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="game-actions.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              </AnchorPane>
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                  <GuestTeamActions fx:id="guestActions" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                  <HBox.margin>
+                                      <Insets left="16.0" />
+                                  </HBox.margin>
+                              </AnchorPane>
+                          </children>
+                          <VBox.margin>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                          </VBox.margin>
+                      </HBox>
+                  </children>
+              </VBox>
+          </top>
+          <center>
+              <ScrollPane fx:id="events" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefViewportHeight="256.0" BorderPane.alignment="TOP_CENTER">
+                  <content>
+                      <VBox fx:id="history" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                  </content>
+              </ScrollPane>
+          </center>
+      </BorderPane>
+   </children>
+</StackPane>

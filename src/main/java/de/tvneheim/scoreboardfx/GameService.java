@@ -1,13 +1,14 @@
 package de.tvneheim.scoreboardfx;
 
 import de.tvneheim.scoreboardfx.events.*;
-import de.tvneheim.scoreboardfx.model.PenaltyType;
-import de.tvneheim.scoreboardfx.model.Player;
-import de.tvneheim.scoreboardfx.model.TeamType;
-import de.tvneheim.scoreboardfx.model.TimeStamp;
+import de.tvneheim.scoreboardfx.model.*;
 import de.tvneheim.scoreboardfx.view.StopWatch;
 
 public final class GameService {
+
+  public static void initializeGame() {
+    GameState.restart();
+  }
 
   public static void startGame() {
     GameState.addEvent(new GameStarted());

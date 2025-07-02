@@ -7,3 +7,6 @@
     -fx-font-size: 48px;
 }
 
+.formTextField {
+    -fx-font-color: "white"
+}

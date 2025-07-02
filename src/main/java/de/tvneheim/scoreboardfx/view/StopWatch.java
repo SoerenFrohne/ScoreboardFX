@@ -70,4 +70,13 @@ public class StopWatch {
   public TimeStamp getCurrentTime() {
     return timestamp.getValue();
   }
+
+  public void reset() {
+    timeline.stop();
+    millis = 0;
+    seconds = 0;
+    minutes = 0;
+    time.setValue(String.format("%02d:%02d", minutes, seconds));
+    stopped.setValue(true);
+  }
 }

@@ -12,7 +12,7 @@ public class PeriodFinished extends Event {
 
   @Override
   public Game apply(Game current) {
-    var timePerPeriod = current.settings().timePerPeriod();
+    var timePerPeriod = current.settings().timePerPeriod().get();
     var currentPeriod = current.time().period();
     var time = current.time()
         .withPaused(true)

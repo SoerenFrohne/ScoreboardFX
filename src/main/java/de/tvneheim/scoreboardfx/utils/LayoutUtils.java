@@ -1,8 +1,15 @@
 package de.tvneheim.scoreboardfx.utils;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 
 public final class LayoutUtils {
+
+  public static void setExactWidth(Region node, double width) {
+    node.setMinWidth(width);
+    node.setMaxWidth(width);
+    node.setPrefWidth(width);
+  }
 
   public static void centerImage(ImageView imageView) {
     var img = imageView.getImage();

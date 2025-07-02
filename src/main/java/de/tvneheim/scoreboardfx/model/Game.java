@@ -19,6 +19,9 @@ public record Game(
         new Time(),
         settings
     );
+  }
 
+  public Game reset() {
+    return new Game(Status.INITIAL, home.reset(), guest.reset(), new Time(), settings);
   }
 }
