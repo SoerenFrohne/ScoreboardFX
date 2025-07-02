@@ -6,7 +6,7 @@
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="deleteButton" mnemonicParsing="false" text="Löschen" />
+      <Button fx:id="deleteButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Löschen" HBox.hgrow="ALWAYS" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Nr.:" HBox.hgrow="ALWAYS" />
       <TextField fx:id="number" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="#" HBox.hgrow="ALWAYS" />
       <Separator orientation="VERTICAL" HBox.hgrow="ALWAYS">
@@ -14,7 +14,7 @@
             <Insets left="8.0" right="8.0" />
          </padding>
       </Separator>
-      <Label layoutX="70.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Restliche Zeit:" />
+      <Label layoutX="70.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Restliche Zeit:" HBox.hgrow="ALWAYS" />
       <TextField fx:id="minutes" alignment="CENTER" layoutX="89.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="02" HBox.hgrow="ALWAYS" />
       <TextField fx:id="seconds" alignment="CENTER" layoutX="238.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="#" text="00" HBox.hgrow="ALWAYS" />
    </children>

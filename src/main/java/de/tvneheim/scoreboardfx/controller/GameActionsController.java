@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import org.controlsfx.glyphfont.Glyph;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +22,7 @@ import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
 public class GameActionsController implements Initializable {
 
   @FXML
-  private Label time;
+  private Label clientTime;
 
   @FXML
   private Button startStopButton;
@@ -50,14 +52,17 @@ public class GameActionsController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    time.textProperty().bind(GameState.getStopWatch().getTime());
+    clientTime.textProperty().bind(GameState.getStopWatch().getTime());
 
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(doubleDigits(game.home().score()));
       scoreGuest.setText(doubleDigits(game.guest().score()));
     });
 
-    GameState.getStopWatch().getStopped()
-        .addListener((observable, oldValue, newValue) -> startStopButton.setText(newValue ? "Start" : "Pause"));
+    GameState.getStopWatch().getStopped().addListener((observable, oldValue, stopped) -> {
+      startStopButton.setText(stopped ? "Start" : "Pause");
+      var icon = stopped ? new FontIcon("fas-play") : new FontIcon("fas-pause");
+      startStopButton.setGraphic(icon);
+    });
   }
 }

@@ -5,13 +5,13 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.tvneheim.scoreboardfx.controller.ScoreboardClientController">
     <left>
-        <VBox fx:id="penaltiesHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+        <VBox fx:id="penaltiesHome" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT" />
     </left>
     <center>
         <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="history.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
     </center>
     <right>
-        <VBox fx:id="penaltiesGuest" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+        <VBox fx:id="penaltiesGuest" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
     </right>
     <top>
         <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER">

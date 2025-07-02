@@ -18,6 +18,10 @@
     src: url("../fonts/monoMMM_5.ttf"),
 }
 
+@font-face {
+    src: url("../fonts/LCDM2B__.TTF"),
+}
+
 
 Label {
     -fx-font-family: "Goldman";

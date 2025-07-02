@@ -1,12 +1,11 @@
 package de.tvneheim.scoreboardfx;
 
+import atlantafx.base.theme.CupertinoDark;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -15,10 +14,13 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage clientStage) throws IOException {
 
+        Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
+
         var primaryScreen = Screen.getPrimary();
 
         var clientLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml"));
         var clientScene = new Scene(clientLoader.load());
+        clientScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/client.css").toExternalForm());
         clientStage.setTitle("Scoreboard Client");
         clientStage.setScene(clientScene);
         clientStage.show();

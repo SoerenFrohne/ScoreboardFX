@@ -4,40 +4,43 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<fx:root type="javafx.scene.layout.VBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-         spacing="8.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="128.0" VBox.vgrow="ALWAYS">
             <children>
-                <TextField fx:id="teamName" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                           maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" promptText="Heim"
-                           HBox.hgrow="ALWAYS">
+                <TextField fx:id="teamName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" promptText="Heim" HBox.hgrow="ALWAYS">
                     <font>
-                        <Font name="System Bold" size="36.0"/>
+                        <Font name="System Bold" size="36.0" />
                     </font>
                 </TextField>
             </children>
         </HBox>
-        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="128.0"
-              spacing="8.0" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="128.0" spacing="8.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="goalButton" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false"
-                        text="Tor" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="timeOutButton" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false"
-                        text="Time-Out" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="penaltyButton" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false"
-                        text="Zeitstrafe" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="goalButton" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false" text="Tor" HBox.hgrow="ALWAYS">
+                    <graphic>
+                        <FontIcon iconLiteral="far-futbol" />
+                    </graphic>
+                </Button>
+                <Button fx:id="timeOutButton" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false" styleClass="success" text="Time-Out" HBox.hgrow="ALWAYS">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-stopwatch" />
+                    </graphic>
+                </Button>
+                <Button fx:id="penaltyButton" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="64.0" mnemonicParsing="false" styleClass="danger" text="Zeitstrafe" HBox.hgrow="ALWAYS">
+                    <graphic>
+                        <FontIcon iconLiteral="far-hand-peace" />
+                    </graphic>
+                </Button>
             </children>
         </HBox>
     </children>
     <opaqueInsets>
-        <Insets/>
+        <Insets />
     </opaqueInsets>
     <padding>
-        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
     </padding>
 </fx:root>

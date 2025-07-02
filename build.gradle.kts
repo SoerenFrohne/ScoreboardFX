@@ -41,9 +41,13 @@ dependencies {
     implementation("com.dlsc.formsfx:formsfx-core:11.6.0") {
         exclude(group = "org.openjfx")
     }
-    implementation("org.kordamp.ikonli:ikonli-javafx:12.3.1")
+    implementation("org.kordamp.ikonli:ikonli-javafx:12.4.0")
+    implementation("org.kordamp.ikonli:ikonli-fontawesome6-pack:12.4.0")
+    implementation("io.github.mkpaz:atlantafx-base:2.0.1")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testImplementation("org.assertj:assertj-core:3.27.3")
+
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 

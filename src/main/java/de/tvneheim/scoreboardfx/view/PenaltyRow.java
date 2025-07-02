@@ -1,7 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
 import de.tvneheim.scoreboardfx.events.GameState;
-import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.model.TimeStamp;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
@@ -10,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
-
-import java.text.Format;
 
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
 

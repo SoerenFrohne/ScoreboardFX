@@ -6,9 +6,12 @@ module de.tvneheim.scoreboardfx {
     requires java.logging;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome6;
     requires static lombok;
     requires javafx.media;
+    requires atlantafx.base;
 
     opens de.tvneheim.scoreboardfx to javafx.fxml;
     opens de.tvneheim.scoreboardfx.controller to javafx.fxml;

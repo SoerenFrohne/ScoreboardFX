@@ -1,0 +1,9 @@
+@font-face {
+    src: url("../fonts/LCDM2B__.TTF"),
+}
+
+#clientTime, #scoreGuest, #scoreHome {
+    -fx-font-family: "LCDMono2";
+    -fx-font-size: 48px;
+}
+
