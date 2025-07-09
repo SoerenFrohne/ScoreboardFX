@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.GameService;
+import de.tvneheim.scoreboardfx.game.GameService;
 import de.tvneheim.scoreboardfx.model.TeamType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

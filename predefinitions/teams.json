@@ -1,0 +1,32 @@
+[
+  {
+    "name": "TV Neheim 1884",
+    "logo": "TVN.png",
+    "shortName": "TVN"
+  },
+  {
+    "name": "HV Sundern",
+    "logo": "HVS.png",
+    "shortName": "HVS"
+  },
+  {
+    "name": "TV Arnsberg",
+    "logo": "TVA.png",
+    "shortName": "TVA"
+  },
+  {
+    "name": "HVE Villigst-Ergste",
+    "logo": "HVE.png",
+    "shortName": "HVE"
+  },
+  {
+    "name": "SSV Meschede",
+    "logo": "MESCHEDE.png",
+    "shortName": "SSV"
+  },
+  {
+    "name": "SG Menden Sauerland Wölfe",
+    "logo": "SGMENDEN.png",
+    "shortName": "SGM"
+  }
+]

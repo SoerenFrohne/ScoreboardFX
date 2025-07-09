@@ -1,9 +1,9 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.controls.ModalPane;
-import de.tvneheim.scoreboardfx.GameService;
-import de.tvneheim.scoreboardfx.events.Event;
-import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.game.GameService;
+import de.tvneheim.scoreboardfx.game.events.Event;
+import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.view.EventLabel;
 import de.tvneheim.scoreboardfx.view.PenaltyRow;
@@ -13,9 +13,6 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;

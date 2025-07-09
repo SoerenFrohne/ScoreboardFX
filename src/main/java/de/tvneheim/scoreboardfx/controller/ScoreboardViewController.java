@@ -1,12 +1,14 @@
 package de.tvneheim.scoreboardfx.controller;
 
-import de.tvneheim.scoreboardfx.events.GameState;
+import atlantafx.base.util.Animations;
+import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
 import de.tvneheim.scoreboardfx.view.PenaltyLabel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -37,7 +39,7 @@ public class ScoreboardViewController implements Initializable {
   private ImageView adDisplay, homeLogo, guestLogo;
 
   @FXML
-  private Label time, scoreHome, scoreGuest, nameHome, nameGuest;
+  private Label time, scoreHome, scoreGuest, nameHome, nameGuest, period;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +47,7 @@ public class ScoreboardViewController implements Initializable {
     initBackground();
     initAdLoop();
     initLogos();
+    initAnimations();
 
     // TODO: Ersetzen durch GameInitEvent
     updatePenalties(penaltiesHome, GameState.getGame().get().home().penalties());
@@ -79,6 +82,9 @@ public class ScoreboardViewController implements Initializable {
   private void bindModel() {
     time.textProperty().bind(GameState.getStopWatch().getTime());
 
+    GameState.getStopWatch().getPeriod()
+        .addListener((observable, oldValue, period) -> this.period.setText(period.getDescription()));
+
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(String.valueOf(game.home().score()));
       scoreGuest.setText(String.valueOf(game.guest().score()));
@@ -106,7 +112,7 @@ public class ScoreboardViewController implements Initializable {
     // fill empty slots
     var remainingSlots = 4 - penalties.size();
     for (int i = 0; i < remainingSlots; i++) {
-      var emptyLabel = new PenaltyLabel(null);
+      var emptyLabel = new PenaltyLabel();
       root.getChildren().add(emptyLabel);
     }
   }
@@ -153,5 +159,16 @@ public class ScoreboardViewController implements Initializable {
 
     var guestTeamLogo = new Image(files.getFirst().toURI().toString());
     guestLogo.setImage(guestTeamLogo);
+  }
+
+  private void initAnimations() {
+    scoreHome.textProperty().addListener(observable -> {
+      var animations = Animations.pulse(scoreHome);
+      animations.playFromStart();
+    });
+    scoreGuest.textProperty().addListener(observable -> {
+      var animations = Animations.pulse(scoreGuest);
+      animations.playFromStart();
+    });
   }
 }

@@ -1,9 +1,6 @@
 package de.tvneheim.scoreboardfx;
 
-import de.tvneheim.scoreboardfx.model.*;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
+import de.tvneheim.scoreboardfx.game.GameService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

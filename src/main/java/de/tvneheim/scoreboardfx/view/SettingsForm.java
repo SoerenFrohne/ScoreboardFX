@@ -6,15 +6,17 @@ import com.dlsc.formsfx.model.structure.Form;
 import com.dlsc.formsfx.model.structure.Section;
 import com.dlsc.formsfx.view.renderer.FormRenderer;
 import com.dlsc.formsfx.view.util.ColSpan;
-import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.game.GameState;
+import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinedTeam;
+import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinitionsLoader;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 public class SettingsForm extends VBox {
 
@@ -25,31 +27,39 @@ public class SettingsForm extends VBox {
     setMaxSize(-1, -1);
     setStyle("-fx-background-color: -color-bg-default;");
 
+    var teams = new SimpleListProperty<>(FXCollections.observableArrayList(PredefinitionsLoader.loadTeams()));
+
     var form = Form.of(
-            Section.of(
-                Field.ofSingleSelectionType(List.of("TV Neheim 1884", "HV Sundern", "TS Evingsen", "SG Menden Sauerland Wölfe"))
-                    .label("Heimteam"),
-                Field.ofIntegerType(GameState.getSettings().timePerPeriod())
-                    .label("Dauer pro Halbzeit")
-                    .span(ColSpan.HALF)
-                    .required(true),
-                Field.ofIntegerType(GameState.getSettings().pauseBetweenPeriods())
-                    .label("Dauer der Pause")
-                    .span(ColSpan.HALF)
-                    .required(true)
-            ).title("Zeiteinstellungen"),
-            Section.of(
-                Field.ofIntegerType(GameState.getSettings().timePerPeriod())
-                    .label("Werbeanzeigen-Intervall (Sekunden)")
-                    .required(true),
-                Field.ofStringType(GameState.getSettings().pathToAdImages())
-                    .styleClass("formTextField")
-                    .label("Werbeanzeigen-Verzeichnis"),
-                Field.ofStringType(GameState.getSettings().pathToLogos())
-                    .styleClass("formTextField")
-                    .label("Vereinswappen-Verzeichnis")
-            ).title("Ressourcen")
-        ).title("Spieleinstellungen");
+        Section.of(
+            Field.ofSingleSelectionType(teams, GameState.getSettings().homeTeam())
+                .select(0)
+                .label("Heimteam")
+                .span(ColSpan.HALF),
+            Field.ofSingleSelectionType(teams.stream().map(PredefinedTeam::name).toList(), 0)
+                .select(0)
+                .label("Gastteam")
+                .span(ColSpan.HALF),
+            Field.ofIntegerType(GameState.getSettings().minutesPerPeriod())
+                .label("Dauer pro Halbzeit")
+                .span(ColSpan.HALF)
+                .required(true),
+            Field.ofIntegerType(GameState.getSettings().minutesBetweenPeriods())
+                .label("Dauer der Pause")
+                .span(ColSpan.HALF)
+                .required(true)
+        ).title("Zeiteinstellungen"),
+        Section.of(
+            Field.ofIntegerType(GameState.getSettings().minutesPerPeriod())
+                .label("Werbeanzeigen-Intervall (Sekunden)")
+                .required(true),
+            Field.ofStringType(GameState.getSettings().pathToAdImages())
+                .styleClass("formTextField")
+                .label("Werbeanzeigen-Verzeichnis"),
+            Field.ofStringType(GameState.getSettings().pathToLogos())
+                .styleClass("formTextField")
+                .label("Vereinswappen-Verzeichnis")
+        ).title("Ressourcen")
+    ).title("Spieleinstellungen");
 
 
     var cancelButton = new Button("Abbrechen");

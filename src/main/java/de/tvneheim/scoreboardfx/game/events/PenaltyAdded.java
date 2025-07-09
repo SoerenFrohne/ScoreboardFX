@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.events;
+package de.tvneheim.scoreboardfx.game.events;
 
 import de.tvneheim.scoreboardfx.model.*;
 import lombok.Data;
@@ -27,7 +27,7 @@ public abstract class PenaltyAdded extends Event {
   public Game apply(Game current) {
     return switch (penaltyType) {
       case YELLOW -> applyPenalty(teamType, current, Penalty.yellow(player, time));
-      case TWO_MINUTES -> applyPenalty(teamType, current, Penalty.twoMinutes(player, time));
+      case TWO_MINUTES -> applyPenalty(teamType, current, Penalty.test(player, time)); //TODO: revert to two minutes
       case RED -> applyPenalty(teamType, current, Penalty.red(player, time));
       case BLUE -> applyPenalty(teamType, current, Penalty.blue(player, time));
     };

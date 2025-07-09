@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.events;
+package de.tvneheim.scoreboardfx.game.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.model.Status;
@@ -12,7 +12,7 @@ public class PeriodFinished extends Event {
 
   @Override
   public Game apply(Game current) {
-    var timePerPeriod = current.settings().timePerPeriod().get();
+    var timePerPeriod = current.settings().minutesPerPeriod().get();
     var currentPeriod = current.time().period();
     var time = current.time()
         .withPaused(true)

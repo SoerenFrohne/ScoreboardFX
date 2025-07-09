@@ -1,30 +1,29 @@
-package de.tvneheim.scoreboardfx.events;
+package de.tvneheim.scoreboardfx.game;
 
 
 import de.tvneheim.scoreboardfx.model.Game;
-import de.tvneheim.scoreboardfx.model.Settings;
-import de.tvneheim.scoreboardfx.view.StopWatch;
+import de.tvneheim.scoreboardfx.game.events.Event;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.extern.java.Log;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
 @Log
 public final class GameState {
 
-  private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
-
-  private static final StopWatch STOP_WATCH = new StopWatch();
-
   private static Game INITIAL_GAME = new Game("HEIM", "GAST", new Settings());
 
-  private static final ObjectProperty<Game> GAME = new SimpleObjectProperty<>(
-      INITIAL_GAME
-  );
+  private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
+
+  private static final StopWatch STOP_WATCH = new StopWatch(Periods.standardGame(Duration.ofSeconds(15), Duration.ofSeconds(10)));
+
+  private static final ObjectProperty<Game> GAME = new SimpleObjectProperty<>(INITIAL_GAME);
+
 
   private static void updateGameState() {
     var current = INITIAL_GAME;

@@ -1,19 +1,26 @@
 package de.tvneheim.scoreboardfx;
 
 import atlantafx.base.theme.CupertinoDark;
+import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinedTeam;
+import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinitionsLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import lombok.extern.java.Log;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+@Log
 public class MainApplication extends Application {
 
     @Override
     public void start(Stage clientStage) throws IOException {
 
+        log.info("Path: " + new File(".").getAbsolutePath());
         Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
 
         var primaryScreen = Screen.getPrimary();

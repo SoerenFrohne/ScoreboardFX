@@ -1,7 +1,6 @@
-package de.tvneheim.scoreboardfx.events;
+package de.tvneheim.scoreboardfx.game.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
-import de.tvneheim.scoreboardfx.model.Time;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

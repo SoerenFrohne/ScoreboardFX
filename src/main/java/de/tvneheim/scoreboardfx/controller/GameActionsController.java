@@ -1,16 +1,15 @@
 package de.tvneheim.scoreboardfx.controller;
 
-import de.tvneheim.scoreboardfx.GameService;
-import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.game.GameService;
+import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
-import de.tvneheim.scoreboardfx.view.StopWatch;
+import de.tvneheim.scoreboardfx.game.StopWatch;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-import org.controlsfx.glyphfont.Glyph;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;

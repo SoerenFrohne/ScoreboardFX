@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.events.GameState;
+import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.model.TimeStamp;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;

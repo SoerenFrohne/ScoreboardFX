@@ -1,5 +1,8 @@
 package de.tvneheim.scoreboardfx.utils;
 
+import de.tvneheim.scoreboardfx.model.Penalty;
+import de.tvneheim.scoreboardfx.model.PenaltyType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +18,13 @@ public final class ListUtils {
   public static <T> List<T> appendElements(List<T> immutableList, T... elements) {
     List<T> tmpList = new ArrayList<>(immutableList);
     tmpList.addAll(Arrays.asList(elements));
+    return Collections.unmodifiableList(tmpList);
+  }
+
+  @SafeVarargs
+  public static <T> List<T> removeElements(List<T> immutableList, T... elements) {
+    List<T> tmpList = new ArrayList<>(immutableList);
+    tmpList.removeAll(Arrays.asList(elements));
     return Collections.unmodifiableList(tmpList);
   }
 }

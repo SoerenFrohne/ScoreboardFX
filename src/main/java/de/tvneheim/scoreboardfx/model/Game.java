@@ -1,5 +1,6 @@
 package de.tvneheim.scoreboardfx.model;
 
+import de.tvneheim.scoreboardfx.game.Settings;
 import lombok.With;
 
 @With

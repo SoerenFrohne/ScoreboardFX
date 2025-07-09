@@ -29,6 +29,14 @@ public record Penalty(
     return new Penalty(PenaltyType.BLUE, player, start, Duration.ofMinutes(2));
   }
 
+  public static Penalty custom(Player player, TimeStamp start, Duration duration) {
+    return new Penalty(PenaltyType.BLUE, player, start, duration);
+  }
+
+  public static Penalty test(Player player, TimeStamp start) {
+    return new Penalty(PenaltyType.BLUE, player, start, Duration.ofSeconds(10));
+  }
+
   public Duration calculateRemainingTime(TimeStamp current) {
     var passed = TimeStamp.difference(this.start, current);
     if (passed.isNegative()) {

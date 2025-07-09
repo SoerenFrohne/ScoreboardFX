@@ -1,8 +1,7 @@
-package de.tvneheim.scoreboardfx;
+package de.tvneheim.scoreboardfx.game;
 
-import de.tvneheim.scoreboardfx.events.*;
 import de.tvneheim.scoreboardfx.model.*;
-import de.tvneheim.scoreboardfx.view.StopWatch;
+import de.tvneheim.scoreboardfx.game.events.*;
 
 public final class GameService {
 

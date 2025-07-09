@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.GameService;
+import de.tvneheim.scoreboardfx.game.GameService;
 import javafx.event.ActionEvent;
 import lombok.extern.java.Log;
 
