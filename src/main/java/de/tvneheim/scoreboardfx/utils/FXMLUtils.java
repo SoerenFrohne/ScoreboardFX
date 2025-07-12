@@ -3,7 +3,6 @@ package de.tvneheim.scoreboardfx.utils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 
 import java.io.IOException;
 

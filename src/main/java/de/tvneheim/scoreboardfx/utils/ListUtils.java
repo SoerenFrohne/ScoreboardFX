@@ -1,8 +1,5 @@
 package de.tvneheim.scoreboardfx.utils;
 
-import de.tvneheim.scoreboardfx.model.Penalty;
-import de.tvneheim.scoreboardfx.model.PenaltyType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

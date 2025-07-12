@@ -2,13 +2,12 @@ package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.util.Animations;
 import de.tvneheim.scoreboardfx.game.GameState;
-import de.tvneheim.scoreboardfx.model.Penalty;
+import de.tvneheim.scoreboardfx.game.SuspensionSlots;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
-import de.tvneheim.scoreboardfx.view.PenaltyLabel;
+import de.tvneheim.scoreboardfx.view.SuspensionLabel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -22,7 +21,6 @@ import lombok.extern.java.Log;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -48,10 +46,6 @@ public class ScoreboardViewController implements Initializable {
     initAdLoop();
     initLogos();
     initAnimations();
-
-    // TODO: Ersetzen durch GameInitEvent
-    updatePenalties(penaltiesHome, GameState.getGame().get().home().penalties());
-    updatePenalties(penaltiesGuest, GameState.getGame().get().guest().penalties());
   }
 
   private void initAdLoop() {
@@ -90,9 +84,13 @@ public class ScoreboardViewController implements Initializable {
       scoreGuest.setText(String.valueOf(game.guest().score()));
       nameHome.setText(game.home().name());
       nameGuest.setText(game.guest().name());
-      updatePenalties(penaltiesHome, game.home().penalties());
-      updatePenalties(penaltiesGuest, game.guest().penalties());
     });
+
+    updateSuspensions(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
+    GameState.getStopWatch().getSuspensionsHome().addListener(change -> updateSuspensions(penaltiesHome, GameState.getStopWatch().getSuspensionsHome()));
+
+    updateSuspensions(penaltiesGuest, GameState.getStopWatch().getSuspensionsGuest());
+    GameState.getStopWatch().getSuspensionsGuest().addListener(change -> updateSuspensions(penaltiesGuest, GameState.getStopWatch().getSuspensionsGuest()));
 
     rootPane.widthProperty().addListener(observable -> {
       nameHome.setPrefWidth(rootPane.getWidth() * 0.3d);
@@ -100,21 +98,19 @@ public class ScoreboardViewController implements Initializable {
     });
   }
 
-  private void updatePenalties(Pane root, List<Penalty> penalties) {
+  private void updateSuspensions(Pane root, SuspensionSlots suspensions) {
     root.getChildren().clear();
 
     // fill current penalties
-    penalties.forEach(penalty -> {
-      var penaltyLabel = new PenaltyLabel(penalty);
-      root.getChildren().add(penaltyLabel);
+    suspensions.forEach(suspension -> {
+      if (suspension == null) {
+        var emptyLabel = new SuspensionLabel();
+        root.getChildren().add(emptyLabel);
+      } else {
+        var penaltyLabel = new SuspensionLabel(suspension);
+        root.getChildren().add(penaltyLabel);
+      }
     });
-
-    // fill empty slots
-    var remainingSlots = 4 - penalties.size();
-    for (int i = 0; i < remainingSlots; i++) {
-      var emptyLabel = new PenaltyLabel();
-      root.getChildren().add(emptyLabel);
-    }
   }
 
   private void initBackground() {

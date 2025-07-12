@@ -1,8 +1,6 @@
 package de.tvneheim.scoreboardfx;
 
 import atlantafx.base.theme.CupertinoDark;
-import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinedTeam;
-import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinitionsLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,7 +10,6 @@ import lombok.extern.java.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Log
 public class MainApplication extends Application {

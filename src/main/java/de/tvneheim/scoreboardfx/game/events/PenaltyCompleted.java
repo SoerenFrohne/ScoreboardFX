@@ -17,12 +17,11 @@ public class PenaltyCompleted extends Event {
 
   @Override
   public Game apply(Game current) {
+    var completed = penalty.withSuspensionCompleted(true);
     if (current.home().penalties().contains(penalty)) {
-      var home = current.home().removePenalty(penalty);
-      return current.withHome(home);
+      return current.withHome(current.home().updatePenalty(penalty, completed));
     } else if (current.guest().penalties().contains(penalty)) {
-      var home = current.guest().removePenalty(penalty);
-      return current.withGuest(home);
+      return current.withGuest(current.guest().updatePenalty(penalty, completed));
     } else {
       return current;
     }

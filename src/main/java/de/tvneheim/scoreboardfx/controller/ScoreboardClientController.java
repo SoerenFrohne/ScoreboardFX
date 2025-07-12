@@ -2,11 +2,11 @@ package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.controls.ModalPane;
 import de.tvneheim.scoreboardfx.game.GameService;
+import de.tvneheim.scoreboardfx.game.SuspensionSlots;
 import de.tvneheim.scoreboardfx.game.events.Event;
 import de.tvneheim.scoreboardfx.game.GameState;
-import de.tvneheim.scoreboardfx.model.Penalty;
 import de.tvneheim.scoreboardfx.view.EventLabel;
-import de.tvneheim.scoreboardfx.view.PenaltyRow;
+import de.tvneheim.scoreboardfx.view.SuspensionRow;
 import de.tvneheim.scoreboardfx.view.SettingsForm;
 import de.tvneheim.scoreboardfx.view.TeamActions;
 import javafx.application.Platform;
@@ -21,12 +21,12 @@ import lombok.extern.java.Log;
 
 import java.net.URL;
 import java.util.Comparator;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 import static de.tvneheim.scoreboardfx.utils.LayoutUtils.setExactWidth;
 
+@SuppressWarnings("CodeBlock2Expr")
 @Log
 public class ScoreboardClientController implements Initializable {
 
@@ -66,9 +66,11 @@ public class ScoreboardClientController implements Initializable {
 
     initSizes();
 
-    GameState.getGame().addListener((observable, oldValue, game) -> {
-      updatePenaltyRows(penaltiesHome, game.home().penalties());
-      updatePenaltyRows(penaltiesGuest, game.guest().penalties());
+    GameState.getStopWatch().getSuspensionsHome().addListener(change -> {
+      updatePenaltyRows(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
+    });
+    GameState.getStopWatch().getSuspensionsHome().addListener(change -> {
+      updatePenaltyRows(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
     });
 
     GameState.getEventsProperty().addListener((ListChangeListener<? super Event>) this::updateHistory);
@@ -93,11 +95,13 @@ public class ScoreboardClientController implements Initializable {
     });
   }
 
-  private void updatePenaltyRows(VBox root, List<Penalty> penalties) {
+  private void updatePenaltyRows(VBox root, SuspensionSlots suspensions) {
     root.getChildren().clear();
-    penalties.forEach(penalty -> {
-      var row = new PenaltyRow(penalty);
-      root.getChildren().add(row);
+    suspensions.forEach(suspension -> {
+      if (suspension != null) {
+        var row = new SuspensionRow(suspension);
+        root.getChildren().add(row);
+      }
     });
   }
 

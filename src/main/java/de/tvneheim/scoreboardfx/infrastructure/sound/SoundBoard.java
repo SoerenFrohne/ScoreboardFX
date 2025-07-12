@@ -1,8 +1,6 @@
 package de.tvneheim.scoreboardfx.infrastructure.sound;
 
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public final class SoundBoard {
 

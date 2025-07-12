@@ -2,8 +2,6 @@ package de.tvneheim.scoreboardfx;
 
 import de.tvneheim.scoreboardfx.game.GameService;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class GameServiceTest {
 
   private final GameService gameService = new GameService();

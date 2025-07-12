@@ -20,7 +20,6 @@ public class EventLabel extends Tile {
     btn.getStyleClass().addAll(Styles.BUTTON_CIRCLE, Styles.FLAT);
     this.setAction(btn);
 
-    log.info("Count: " + index);
     if (index % 2 == 0) {
       this.setStyle("-fx-background-color: -color-bg-subtle;");
     }

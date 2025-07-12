@@ -31,4 +31,16 @@ public record Team(
     var list = ListUtils.removeElements(penalties, penalty);
     return this.withPenalties(list);
   }
+
+  public List<Penalty> currentPenalties() {
+    return penalties.stream().filter(Penalty::isRunning).toList();
+  }
+
+  public Team updatePenalty(Penalty penalty, Penalty updated) {
+    if (penalties.contains(penalty)) {
+      return this.removePenalty(penalty).addPenalty(updated);
+    } else {
+      return this;
+    }
+  }
 }
