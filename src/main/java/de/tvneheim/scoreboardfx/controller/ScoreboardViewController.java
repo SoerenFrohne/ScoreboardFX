@@ -3,6 +3,7 @@ package de.tvneheim.scoreboardfx.controller;
 import atlantafx.base.util.Animations;
 import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.game.SuspensionSlots;
+import de.tvneheim.scoreboardfx.utils.FXUtils;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
 import de.tvneheim.scoreboardfx.view.SuspensionLabel;
 import javafx.animation.KeyFrame;
@@ -23,6 +24,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static de.tvneheim.scoreboardfx.utils.FXUtils.convertToFxDuration;
 
 @Log
 public class ScoreboardViewController implements Initializable {
@@ -60,7 +63,7 @@ public class ScoreboardViewController implements Initializable {
     adDisplay.setImage(img);
 
     AtomicInteger index = new AtomicInteger();
-    var timeline = new Timeline(new KeyFrame(Duration.seconds(GameState.getSettings().secondsBetweenAds().get()), event -> {
+    var timeline = new Timeline(new KeyFrame(convertToFxDuration(GameState.getSettings().showTimeOfAds().get()), event -> {
       index.getAndIncrement();
       var currentFile = files.get(index.get() % files.size());
       var currentImg = new Image(currentFile.toURI().toString());

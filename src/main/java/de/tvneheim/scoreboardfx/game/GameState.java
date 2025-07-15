@@ -1,12 +1,16 @@
 package de.tvneheim.scoreboardfx.game;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import de.tvneheim.scoreboardfx.infrastructure.persistence.json.JsonDatabase;
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.game.events.Event;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
 import java.time.Duration;
@@ -16,14 +20,20 @@ import java.util.UUID;
 @Log
 public final class GameState {
 
-  private static Game INITIAL_GAME = new Game("HEIM", "GAST", new Settings());
+  private static Game INITIAL_GAME = new Game("HEIM", "GAST");
+
+  private static final Settings SETTINGS = Settings.defaultSettings().build();
 
   private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
 
-  private static final StopWatch STOP_WATCH = new StopWatch(Periods.standardGame(Duration.ofSeconds(15), Duration.ofSeconds(10)));
+  private static final StopWatch STOP_WATCH = new StopWatch(
+      Periods.standardGame(Duration.ofSeconds(15), Duration.ofSeconds(10)),
+      3
+  );
 
   private static final ObjectProperty<Game> GAME = new SimpleObjectProperty<>(INITIAL_GAME);
 
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
 
   private static void updateGameState() {
     var current = INITIAL_GAME;
@@ -33,10 +43,15 @@ public final class GameState {
     GAME.setValue(current);
   }
 
-  public static void addEvent(Event event) {
+  @SneakyThrows
+  public static <E extends Event> void addEvent(E event) {
     log.info("Event added: " + event.description());
     EVENTS.add(event);
     updateGameState();
+
+    var json = OBJECT_MAPPER.writeValueAsString(event);
+    JsonDatabase.INSTANCE.enqueue(json);
+
   }
 
   public static void removeEvent(UUID eventId) {
@@ -61,7 +76,11 @@ public final class GameState {
   }
 
   public static Settings getSettings() {
-    return GAME.get().settings();
+    return SETTINGS;
+  }
+
+  public static Game getCurrentGame() {
+    return GAME.getValue();
   }
 
   public static boolean isRunning() {

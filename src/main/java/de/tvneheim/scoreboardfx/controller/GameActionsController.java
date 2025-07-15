@@ -27,10 +27,7 @@ public class GameActionsController implements Initializable {
   private Button startStopButton;
 
   @FXML
-  private Label scoreHome;
-
-  @FXML
-  private Label scoreGuest;
+  private Label scoreHome, scoreGuest, periodInfo;
 
   private final StopWatch stopWatch = GameState.getStopWatch();
 
@@ -52,6 +49,11 @@ public class GameActionsController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     clientTime.textProperty().bind(GameState.getStopWatch().getTime());
+
+    periodInfo.setText(GameState.getStopWatch().getPeriod().getValue().getDescription());
+    GameState.getStopWatch().getPeriod().addListener((observable, oldValue, period) -> {
+      periodInfo.setText(period.getDescription());
+    });
 
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(doubleDigits(game.home().score()));

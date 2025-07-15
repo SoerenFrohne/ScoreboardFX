@@ -1,5 +1,6 @@
 package de.tvneheim.scoreboardfx.game;
 
+import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
 import de.tvneheim.scoreboardfx.model.*;
 import de.tvneheim.scoreboardfx.game.events.*;
 import lombok.extern.java.Log;
@@ -40,7 +41,7 @@ public final class GameService {
   }
 
   public static void stopPeriod() {
-    GameState.addEvent(new PeriodFinished());
+    GameState.addEvent(new PeriodFinished(GameState.getStopWatch().getPeriod().get()));
   }
 
   public static void twoMinutesForHome(int number) {
@@ -72,8 +73,39 @@ public final class GameService {
         GameState.getStopWatch().getSuspensionsGuest().remove(suspension);
       }
     });
-
   }
+
+  public static void requestTimeOut(TeamType teamType) {
+    if (GameState.getCurrentGame().home().timeOuts().size() <= GameState.getSettings().maxTimeOutsPerPeriod().get()) {
+
+      var timeOut = new TimeOut(
+          GameState.getStopWatch().getDuration(),
+          GameState.getSettings().timePerTeamTimeOut().getValue(),
+          GameState.getSettings().timeOutWarningTime().getValue()
+      );
+
+      GameState.getStopWatch().pause();
+      SoundBoard.honkShort();
+      GameState.addEvent(new TeamTimeOutAdded(teamType, timeOut));
+
+      var teamTimeOut = new TeamTimeOut(timeOut);
+      GameState.getStopWatch().getTimeOutsHome().add(teamTimeOut);
+
+      teamTimeOut.remainingTime().addListener((observable, oldValue, newValue) -> {
+        if (newValue.compareTo(teamTimeOut.warningTime().getValue()) <= 0) {
+          SoundBoard.honkShort();
+        }
+      });
+
+      teamTimeOut.completed().addListener((observable, oldValue, completed) -> {
+        if (completed) {
+          SoundBoard.honkLong();
+        }
+      });
+
+    }
+  }
+
 
   public static TimeStamp getCurrentTimestamp() {
     return GameState.getStopWatch().getCurrentTime();

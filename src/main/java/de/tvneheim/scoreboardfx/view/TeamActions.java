@@ -1,5 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
+import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,8 @@ public abstract class TeamActions extends VBox implements Initializable {
     goalButton.setOnAction(this::onScore);
     timeOutButton.setOnAction(this::onTeamTimeOut);
     penaltyButton.setOnAction(this::onPenalty);
+
+    penaltyButton.disableProperty().bind(GameState.getStopWatch().getStopped().not());
   }
 
   public abstract void onScore(ActionEvent event);

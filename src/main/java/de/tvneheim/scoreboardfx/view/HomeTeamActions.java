@@ -24,7 +24,7 @@ public class HomeTeamActions extends TeamActions {
 
   @Override
   public void onTeamTimeOut(ActionEvent event) {
-    //TODO
+    GameService.requestTimeOut(TeamType.HOME);
   }
 
   @Override

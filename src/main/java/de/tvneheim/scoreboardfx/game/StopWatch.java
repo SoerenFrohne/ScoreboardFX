@@ -29,13 +29,18 @@ public class StopWatch {
   private final BooleanProperty stopped;
   @Getter
   private final ObjectProperty<TimeStamp> timestamp;
+
   @Getter
   private final SuspensionSlots suspensionsHome;
   @Getter
   private final SuspensionSlots suspensionsGuest;
+  @Getter
+  private final TimeOutSlots timeOutsHome;
+  @Getter
+  private final TimeOutSlots timeOutsGuest;
 
 
-  public StopWatch(List<Period> periods) {
+  public StopWatch(List<Period> periods, int maxNumberOfTimeouts) {
     this.periodIterator = periods.iterator();
     this.period = new SimpleObjectProperty<>(periodIterator.next());
     log.info("Initialized with period: " + period);
@@ -50,6 +55,8 @@ public class StopWatch {
 
     this.suspensionsHome = new SuspensionSlots();
     this.suspensionsGuest = new SuspensionSlots();
+    this.timeOutsHome = new TimeOutSlots(maxNumberOfTimeouts);
+    this.timeOutsGuest = new TimeOutSlots(maxNumberOfTimeouts);
   }
 
   public void start() {
@@ -98,6 +105,10 @@ public class StopWatch {
       suspensionsHome.getSuspensions().forEach(penalty -> penalty.updateTime(getCurrentTime()));
       suspensionsGuest.getSuspensions().forEach(penalty -> penalty.updateTime(getCurrentTime()));
     }
+
+    timeOutsHome.getSuspensions()
+        .filtered(timeOut -> !timeOut.completed().getValue())
+        .forEach(timeOut -> timeOut.updateTime(getCurrentTime()));
   }
 
   public boolean isRunning() {
@@ -121,7 +132,7 @@ public class StopWatch {
     stopped.setValue(true);
   }
 
-  private Duration getDuration() {
+  public Duration getDuration() {
     return Duration.ofMinutes(minutes).plusSeconds(seconds).plusMillis(millis);
   }
 

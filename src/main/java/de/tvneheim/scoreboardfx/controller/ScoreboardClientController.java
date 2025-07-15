@@ -7,7 +7,6 @@ import de.tvneheim.scoreboardfx.game.events.Event;
 import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.view.EventLabel;
 import de.tvneheim.scoreboardfx.view.SuspensionRow;
-import de.tvneheim.scoreboardfx.view.SettingsForm;
 import de.tvneheim.scoreboardfx.view.TeamActions;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -49,14 +48,7 @@ public class ScoreboardClientController implements Initializable {
 
   @FXML
   public void openGameSettings() {
-    var settings = new SettingsForm(
-        event -> modal.hide(true),
-        event -> {
-          modal.hide(true);
-          GameService.initializeGame();
-        }
-    );
-    modal.show(settings);
+
   }
 
   @Override

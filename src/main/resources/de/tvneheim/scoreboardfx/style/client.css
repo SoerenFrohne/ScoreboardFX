@@ -2,9 +2,14 @@
     src: url("../fonts/LCDM2B__.TTF"),
 }
 
-#clientTime, #scoreGuest, #scoreHome {
+#clientTime, #scoreGuest, #scoreHome, #periodInfo {
     -fx-font-family: "LCDMono2";
     -fx-font-size: 48px;
+    -fx-background-color: black;
+}
+
+#periodInfo {
+    -fx-font-size: 16px;
 }
 
 .formTextField {

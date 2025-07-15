@@ -44,6 +44,7 @@ dependencies {
     implementation("org.kordamp.ikonli:ikonli-javafx:12.4.0")
     implementation("org.kordamp.ikonli:ikonli-fontawesome6-pack:12.4.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.1")
     implementation("io.github.mkpaz:atlantafx-base:2.0.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

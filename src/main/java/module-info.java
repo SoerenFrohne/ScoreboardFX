@@ -13,6 +13,8 @@ module de.tvneheim.scoreboardfx {
   requires javafx.media;
   requires atlantafx.base;
   requires com.fasterxml.jackson.databind;
+  requires com.fasterxml.jackson.datatype.jsr310;
+  requires java.sql;
 
   opens de.tvneheim.scoreboardfx to javafx.fxml;
   opens de.tvneheim.scoreboardfx.controller to javafx.fxml;
