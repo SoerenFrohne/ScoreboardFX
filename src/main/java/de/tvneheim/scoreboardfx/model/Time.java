@@ -2,22 +2,16 @@ package de.tvneheim.scoreboardfx.model;
 
 import lombok.With;
 
+import java.time.Duration;
+
 @With
 public record Time(
     boolean paused,
-    int period,
-    int minutes,
-    int seconds,
-    int millis
+    Duration elapsedTime
 ) {
 
   public Time() {
-    this(true, 1, 0, 0, 0);
+    this(true, Duration.ZERO);
   }
 
-
-
-  public String asFormattedTime() {
-    return String.format("%02d:%02d", minutes, seconds);
-  }
 }

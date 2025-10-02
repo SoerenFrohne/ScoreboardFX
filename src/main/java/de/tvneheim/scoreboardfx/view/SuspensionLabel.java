@@ -7,11 +7,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.time;
 
 @SuppressWarnings("CodeBlock2Expr")
-@Log
+@Slf4j
 public class SuspensionLabel extends Label {
 
   private final Suspension suspension;

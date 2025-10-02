@@ -6,24 +6,26 @@ import lombok.Getter;
 
 public class TimeOutSlots {
 
-  private final int maxNumberOfTimeOuts;
+  private final int maxNumberOfTimeOutsPerPeriod;
+  private final int maxNumberOfTimeOutsPerGame;
 
   @Getter
-  private final ObservableList<TeamTimeOut> suspensions;
+  private final ObservableList<TeamTimeOut> timeOuts;
 
-  public TimeOutSlots(int maxNumberOfTimeOuts) {
-    this.maxNumberOfTimeOuts = maxNumberOfTimeOuts;
-    this.suspensions = FXCollections.observableArrayList();
+  public TimeOutSlots(int maxNumberOfTimeOutsPerPeriod, int maxNumberOfTimeOutsPerGame) {
+    this.maxNumberOfTimeOutsPerPeriod = maxNumberOfTimeOutsPerPeriod;
+    this.maxNumberOfTimeOutsPerGame = maxNumberOfTimeOutsPerGame;
+    this.timeOuts = FXCollections.observableArrayList();
   }
 
   public void add(TeamTimeOut timeOut) {
-    if (suspensions.size() <= maxNumberOfTimeOuts) {
-      suspensions.add(timeOut);
+    if (timeOuts.size() <= maxNumberOfTimeOutsPerGame) {
+      timeOuts.add(timeOut);
     }
   }
 
   public void remove(TeamTimeOut timeOut) {
-    suspensions.remove(timeOut);
+    timeOuts.remove(timeOut);
   }
 
 

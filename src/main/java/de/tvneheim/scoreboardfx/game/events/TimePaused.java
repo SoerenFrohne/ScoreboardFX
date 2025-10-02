@@ -2,19 +2,20 @@ package de.tvneheim.scoreboardfx.game.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.utils.FormatterUtils;
-import de.tvneheim.scoreboardfx.model.TimeStamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.Duration;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TimePaused extends Event {
 
-  private final TimeStamp timeStamp;
+  private final Duration timeStamp;
 
   @Override
   public String description() {
-    return "Zeit angehalten: " + FormatterUtils.time(timeStamp.minutes(), timeStamp.seconds());
+    return "Zeit angehalten: " + FormatterUtils.time(timeStamp);
   }
 
   @Override
@@ -22,9 +23,7 @@ public class TimePaused extends Event {
     var time = current.time();
     var newTime = time
         .withPaused(true)
-        .withMillis(timeStamp.millis())
-        .withSeconds(timeStamp.seconds())
-        .withMinutes(timeStamp.minutes());
+        .withElapsedTime(timeStamp);
     return current.withTime(newTime);
   }
 }

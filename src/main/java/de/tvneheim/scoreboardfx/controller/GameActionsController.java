@@ -15,6 +15,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
 
 @Log
@@ -33,7 +34,7 @@ public class GameActionsController implements Initializable {
 
   @FXML
   protected void toggleStartStop() {
-    if (stopWatch.isRunning()) {
+    if (stopWatch.getPeriodTime().isRunning()) {
       GameService.stopTime();
     } else {
       GameService.startTime();
@@ -48,19 +49,16 @@ public class GameActionsController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    clientTime.textProperty().bind(GameState.getStopWatch().getTime());
+    clientTime.textProperty().bind(bindFormattedTime(GameState.getStopWatch().getPeriodTime().gameTime()));
 
-    periodInfo.setText(GameState.getStopWatch().getPeriod().getValue().getDescription());
-    GameState.getStopWatch().getPeriod().addListener((observable, oldValue, period) -> {
-      periodInfo.setText(period.getDescription());
-    });
+    periodInfo.textProperty().bind(GameState.getStopWatch().getPeriodTime().period());
 
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(doubleDigits(game.home().score()));
       scoreGuest.setText(doubleDigits(game.guest().score()));
     });
 
-    GameState.getStopWatch().getStopped().addListener((observable, oldValue, stopped) -> {
+    GameState.getStopWatch().getPeriodTime().stopped().addListener((observable, oldValue, stopped) -> {
       startStopButton.setText(stopped ? "Start" : "Pause");
       var icon = stopped ? new FontIcon("fas-play") : new FontIcon("fas-pause");
       startStopButton.setGraphic(icon);

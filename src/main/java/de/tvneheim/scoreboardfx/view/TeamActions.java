@@ -7,12 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Log
+@Slf4j
 public abstract class TeamActions extends VBox implements Initializable {
 
   @FXML
@@ -30,7 +30,7 @@ public abstract class TeamActions extends VBox implements Initializable {
     timeOutButton.setOnAction(this::onTeamTimeOut);
     penaltyButton.setOnAction(this::onPenalty);
 
-    penaltyButton.disableProperty().bind(GameState.getStopWatch().getStopped().not());
+    penaltyButton.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
   }
 
   public abstract void onScore(ActionEvent event);

@@ -1,7 +1,6 @@
 package de.tvneheim.scoreboardfx.game;
 
 import de.tvneheim.scoreboardfx.model.Penalty;
-import de.tvneheim.scoreboardfx.model.TimeStamp;
 import javafx.beans.property.*;
 import lombok.extern.java.Log;
 
@@ -10,13 +9,13 @@ import java.time.Duration;
 @Log
 public record Suspension(
     IntegerProperty number,
-    ObjectProperty<TimeStamp> start,
+    ObjectProperty<Duration> start,
     ObjectProperty<Duration> duration,
     ObjectProperty<Duration> remainingTime,
     BooleanProperty completed
 ) {
 
-  private Suspension(int number, TimeStamp start, Duration duration, Duration remainingTime, boolean suspensionCompleted) {
+  private Suspension(int number, Duration start, Duration duration, Duration remainingTime, boolean suspensionCompleted) {
     this(
         new SimpleIntegerProperty(number),
         new SimpleObjectProperty<>(start),
@@ -36,8 +35,8 @@ public record Suspension(
     );
   }
 
-  public void updateTime(TimeStamp current) {
-    var passed = TimeStamp.difference(this.start.getValue(), current);
+  public void updateTime(Duration current) {
+    var passed = current.minus(start.getValue());
     if (passed.isNegative()) {
       remainingTime.setValue(Duration.ZERO);
     } else {

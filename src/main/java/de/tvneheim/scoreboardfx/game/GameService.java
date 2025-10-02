@@ -5,6 +5,8 @@ import de.tvneheim.scoreboardfx.model.*;
 import de.tvneheim.scoreboardfx.game.events.*;
 import lombok.extern.java.Log;
 
+import java.time.Duration;
+
 @Log
 public final class GameService {
 
@@ -23,12 +25,12 @@ public final class GameService {
   public static void stopTime() {
     StopWatch stopWatch = GameState.getStopWatch();
     stopWatch.pause();
-    GameState.addEvent(new TimePaused(stopWatch.getCurrentTime()));
+    GameState.addEvent(new TimePaused(getElapsedTime()));
   }
 
   public static void startTime() {
     StopWatch stopWatch = GameState.getStopWatch();
-    stopWatch.start();
+    stopWatch.play();
     GameState.addEvent(new TimeStarted());
   }
 
@@ -40,13 +42,9 @@ public final class GameService {
     GameState.addEvent(new GuestScored());
   }
 
-  public static void stopPeriod() {
-    GameState.addEvent(new PeriodFinished(GameState.getStopWatch().getPeriod().get()));
-  }
-
   public static void twoMinutesForHome(int number) {
 
-    var penalty = Penalty.twoMinutes(new Player(number), getCurrentTimestamp());
+    var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
     GameState.addEvent(new PenaltyHomeAdded(penalty));
 
     var suspension = new Suspension(penalty);
@@ -61,7 +59,7 @@ public final class GameService {
   }
 
   public static void twoMinutesForGuest(int number) {
-    var penalty = Penalty.twoMinutes(new Player(number), getCurrentTimestamp());
+    var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
     GameState.addEvent(new PenaltyGuestAdded(penalty));
 
     var suspension = new Suspension(penalty);
@@ -79,7 +77,7 @@ public final class GameService {
     if (GameState.getCurrentGame().home().timeOuts().size() <= GameState.getSettings().maxTimeOutsPerPeriod().get()) {
 
       var timeOut = new TimeOut(
-          GameState.getStopWatch().getDuration(),
+          getElapsedTime(),
           GameState.getSettings().timePerTeamTimeOut().getValue(),
           GameState.getSettings().timeOutWarningTime().getValue()
       );
@@ -106,9 +104,8 @@ public final class GameService {
     }
   }
 
-
-  public static TimeStamp getCurrentTimestamp() {
-    return GameState.getStopWatch().getCurrentTime();
+  public static Duration getElapsedTime() {
+    return GameState.getStopWatch().getPeriodTime().getGameTime();
   }
 
 }

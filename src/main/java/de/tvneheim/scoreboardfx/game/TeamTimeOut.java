@@ -1,7 +1,6 @@
 package de.tvneheim.scoreboardfx.game;
 
 import de.tvneheim.scoreboardfx.model.TimeOut;
-import de.tvneheim.scoreboardfx.model.TimeStamp;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -32,13 +31,13 @@ public record TeamTimeOut(
   }
 
   public void updateTime(Duration current) {
-    var passed = this.start.getValue().minus() current);
+    var passed = this.start.getValue().minus(current);
     if (passed.isNegative()) {
       remainingTime.setValue(Duration.ZERO);
     } else {
       var newValue = this.duration.getValue().minus(passed);
       if (newValue.isZero() || newValue.isNegative()) {
-        log.info("Penalty completed: " + this);
+        //log.info("Penalty completed: {}", this);
         remainingTime.setValue(Duration.ZERO);
         completed.setValue(true);
       } else {

@@ -15,6 +15,9 @@ module de.tvneheim.scoreboardfx {
   requires com.fasterxml.jackson.databind;
   requires com.fasterxml.jackson.datatype.jsr310;
   requires java.sql;
+  requires org.slf4j;
+  requires ch.qos.logback.classic;
+  requires ch.qos.logback.core;
 
   opens de.tvneheim.scoreboardfx to javafx.fxml;
   opens de.tvneheim.scoreboardfx.controller to javafx.fxml;

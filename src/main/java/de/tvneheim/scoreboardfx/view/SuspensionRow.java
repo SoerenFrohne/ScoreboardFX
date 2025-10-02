@@ -26,10 +26,10 @@ public class SuspensionRow extends HBox {
       FXMLUtils.removeFromParent(this);
     } else {
       number.textProperty().bindBidirectional(suspension.number(), new NumberStringConverter());
-      number.disableProperty().bind(GameState.getStopWatch().getStopped().not());
-      minutes.disableProperty().bind(GameState.getStopWatch().getStopped().not());
-      seconds.disableProperty().bind(GameState.getStopWatch().getStopped().not());
-      deleteButton.disableProperty().bind(GameState.getStopWatch().getStopped().not());
+      number.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
+      minutes.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
+      seconds.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
+      deleteButton.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
 
       // Update text
       minutes.setText(doubleDigits(suspension.remainingTime().getValue().toMinutesPart()));

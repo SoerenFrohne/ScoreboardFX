@@ -1,144 +1,58 @@
 package de.tvneheim.scoreboardfx.game;
 
-import java.time.Duration;
 
-import de.tvneheim.scoreboardfx.model.TimeStamp;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.property.*;
+import javafx.animation.AnimationTimer;
 import lombok.Getter;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Iterator;
-import java.util.List;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
-@Log
-public class StopWatch {
+@Slf4j
+@Getter
+public class StopWatch extends AnimationTimer {
 
-  private int millis, seconds, minutes;
+  // Game loop stats
+  private long lastTick = -1L;
 
-  private final Iterator<Period> periodIterator;
+  // settings
+  private final Settings settings;
 
-  private final Timeline timeline;
+  // time stats
+  private final PeriodTime periodTime;
+  private final SuspensionSlots suspensionsHome, suspensionsGuest;
+  private final TimeOutSlots timeOutsHome, timeOutsGuest;
 
-  @Getter
-  private final ObjectProperty<Period> period;
-  @Getter
-  private final StringProperty time;
-  @Getter
-  private final BooleanProperty stopped;
-  @Getter
-  private final ObjectProperty<TimeStamp> timestamp;
-
-  @Getter
-  private final SuspensionSlots suspensionsHome;
-  @Getter
-  private final SuspensionSlots suspensionsGuest;
-  @Getter
-  private final TimeOutSlots timeOutsHome;
-  @Getter
-  private final TimeOutSlots timeOutsGuest;
-
-
-  public StopWatch(List<Period> periods, int maxNumberOfTimeouts) {
-    this.periodIterator = periods.iterator();
-    this.period = new SimpleObjectProperty<>(periodIterator.next());
-    log.info("Initialized with period: " + period);
-
-    this.time = new SimpleStringProperty("00:00");
-    this.stopped = new SimpleBooleanProperty(true);
-    this.timestamp = new SimpleObjectProperty<>(new TimeStamp(millis, seconds, minutes));
-
-    this.timeline = new Timeline(new KeyFrame(javafx.util.Duration.millis(1), event -> updateTime()));
-    this.timeline.setCycleCount(Timeline.INDEFINITE);
-    this.timeline.setAutoReverse(false);
-
+  public StopWatch(Settings settings) {
+    this.settings = settings;
+    this.periodTime = new PeriodTime(settings.lengthPerPeriod().get());
     this.suspensionsHome = new SuspensionSlots();
     this.suspensionsGuest = new SuspensionSlots();
-    this.timeOutsHome = new TimeOutSlots(maxNumberOfTimeouts);
-    this.timeOutsGuest = new TimeOutSlots(maxNumberOfTimeouts);
+    this.timeOutsHome = new TimeOutSlots(settings.maxTimeOutsPerPeriod().get(), settings.maxTimeOutsPerGame().get());
+    this.timeOutsGuest = new TimeOutSlots(settings.maxTimeOutsPerPeriod().get(), settings.maxTimeOutsPerGame().get());
+
+    // Start the animation timer loop
+    this.start();
   }
 
-  public void start() {
-    if (isPaused()) {
-      stopped.setValue(false);
-      timeline.play();
+  @Override
+  public void handle(long now) {
+    if (lastTick < 0) {
+      lastTick = now; // Initialisierung beim ersten Frame
     }
+
+    var deltaMillis = TimeUnit.NANOSECONDS.toMillis(now - lastTick);
+    lastTick = now;
+
+    periodTime.update(deltaMillis);
+  }
+
+  public void play() {
+    periodTime.start();
   }
 
   public void pause() {
-    if (isRunning()) {
-      stopped.setValue(true);
-      timeline.stop();
-    }
+    periodTime.stop();
   }
 
-  private void updateTime() {
-
-    millis++;
-
-    if (millis == 1000) {
-      seconds++;
-      millis = 0;
-    }
-
-    if (seconds == 60) {
-      minutes++;
-      seconds = 0;
-    }
-
-    if (getDuration().compareTo(period.get().getEndTime()) >= 0 && periodIterator.hasNext()) {
-      period.get().onComplete(this);
-      period.setValue(periodIterator.next());
-      setDuration(period.get().getDuration());
-      log.info("New period is: " + period);
-      period.get().onInit(this);
-      timestamp.setValue(new TimeStamp(millis, seconds, minutes));
-    }
-
-    var text = String.format("%02d:%02d", minutes, seconds);
-    time.setValue(text);
-    timestamp.setValue(new TimeStamp(millis, seconds, minutes));
-
-
-    if (getPeriod().get().isTrackPenalties()) {
-      suspensionsHome.getSuspensions().forEach(penalty -> penalty.updateTime(getCurrentTime()));
-      suspensionsGuest.getSuspensions().forEach(penalty -> penalty.updateTime(getCurrentTime()));
-    }
-
-    timeOutsHome.getSuspensions()
-        .filtered(timeOut -> !timeOut.completed().getValue())
-        .forEach(timeOut -> timeOut.updateTime(getCurrentTime()));
-  }
-
-  public boolean isRunning() {
-    return !stopped.getValue();
-  }
-
-  public boolean isPaused() {
-    return stopped.getValue();
-  }
-
-  public TimeStamp getCurrentTime() {
-    return timestamp.getValue();
-  }
-
-  public void reset() {
-    timeline.stop();
-    millis = 0;
-    seconds = 0;
-    minutes = 0;
-    time.setValue(String.format("%02d:%02d", minutes, seconds));
-    stopped.setValue(true);
-  }
-
-  public Duration getDuration() {
-    return Duration.ofMinutes(minutes).plusSeconds(seconds).plusMillis(millis);
-  }
-
-  private void setDuration(Duration duration) {
-    minutes = duration.toMinutesPart();
-    seconds = duration.toSecondsPart();
-    millis = duration.toMillisPart();
-  }
 }

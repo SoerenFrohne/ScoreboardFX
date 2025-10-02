@@ -4,8 +4,9 @@ import de.tvneheim.scoreboardfx.game.GameService;
 import de.tvneheim.scoreboardfx.model.TeamType;
 import javafx.event.ActionEvent;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
-@Log
+@Slf4j
 public class GuestTeamActions extends TeamActions {
 
   public void onScore(ActionEvent event) {

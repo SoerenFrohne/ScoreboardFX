@@ -3,7 +3,6 @@ package de.tvneheim.scoreboardfx.controller;
 import atlantafx.base.util.Animations;
 import de.tvneheim.scoreboardfx.game.GameState;
 import de.tvneheim.scoreboardfx.game.SuspensionSlots;
-import de.tvneheim.scoreboardfx.utils.FXUtils;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
 import de.tvneheim.scoreboardfx.view.SuspensionLabel;
 import javafx.animation.KeyFrame;
@@ -16,8 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
-import javafx.util.Duration;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.URL;
@@ -26,8 +24,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.tvneheim.scoreboardfx.utils.FXUtils.convertToFxDuration;
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
 
-@Log
+@Slf4j
 public class ScoreboardViewController implements Initializable {
 
   @FXML
@@ -77,10 +76,9 @@ public class ScoreboardViewController implements Initializable {
 
 
   private void bindModel() {
-    time.textProperty().bind(GameState.getStopWatch().getTime());
+    time.textProperty().bind(bindFormattedTime(GameState.getStopWatch().getPeriodTime().gameTime()));
 
-    GameState.getStopWatch().getPeriod()
-        .addListener((observable, oldValue, period) -> this.period.setText(period.getDescription()));
+    period.textProperty().bind(GameState.getStopWatch().getPeriodTime().period());
 
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(String.valueOf(game.home().score()));

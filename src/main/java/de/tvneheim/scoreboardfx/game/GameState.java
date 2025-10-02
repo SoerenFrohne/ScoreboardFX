@@ -12,12 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
-@Log
+@Slf4j
 public final class GameState {
 
   private static Game INITIAL_GAME = new Game("HEIM", "GAST");
@@ -26,10 +27,7 @@ public final class GameState {
 
   private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
 
-  private static final StopWatch STOP_WATCH = new StopWatch(
-      Periods.standardGame(Duration.ofSeconds(15), Duration.ofSeconds(10)),
-      3
-  );
+  private static final StopWatch STOP_WATCH = new StopWatch(SETTINGS);
 
   private static final ObjectProperty<Game> GAME = new SimpleObjectProperty<>(INITIAL_GAME);
 
@@ -84,17 +82,17 @@ public final class GameState {
   }
 
   public static boolean isRunning() {
-    return STOP_WATCH.isRunning();
+    return STOP_WATCH.getPeriodTime().isRunning();
   }
 
   public static boolean isPaused() {
-    return STOP_WATCH.isPaused();
+    return STOP_WATCH.getPeriodTime().isStopped();
   }
 
   public static void restart() {
     EVENTS.clear();
     INITIAL_GAME = GAME.get().reset();
-    STOP_WATCH.reset();
+    STOP_WATCH.getPeriodTime().reset(Duration.ZERO, SETTINGS.lengthPerPeriod().get());
     updateGameState();
   }
 }

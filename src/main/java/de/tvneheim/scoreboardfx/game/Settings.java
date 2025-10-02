@@ -41,8 +41,8 @@ public record Settings(
 
         // Time
         .numberOfPeriods(new SimpleIntegerProperty(2))
-        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofMinutes(30)))
-        .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofMinutes(10)))
+        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofSeconds(15))) //TODO: Reset to 30 minutes
+        .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
 
         // Time-Outs
         .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofMinutes(1)))
