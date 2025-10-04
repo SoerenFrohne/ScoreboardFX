@@ -1,12 +1,11 @@
 package de.tvneheim.scoreboardfx.view;
 
 import atlantafx.base.util.Animations;
-import de.tvneheim.scoreboardfx.game.Suspension;
+import de.tvneheim.scoreboardfx.game.SuspensionTimer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.time;
@@ -15,11 +14,11 @@ import static de.tvneheim.scoreboardfx.utils.FormatterUtils.time;
 @Slf4j
 public class SuspensionLabel extends Label {
 
-  private final Suspension suspension;
+  private final SuspensionTimer suspension;
 
-  public SuspensionLabel(Suspension suspension) {
+  public SuspensionLabel(SuspensionTimer suspensionTimer) {
     super();
-    this.suspension = suspension;
+    this.suspension = suspensionTimer;
     this.initialize();
   }
 

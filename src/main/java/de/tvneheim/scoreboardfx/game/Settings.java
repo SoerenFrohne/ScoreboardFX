@@ -45,8 +45,8 @@ public record Settings(
         .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
 
         // Time-Outs
-        .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofMinutes(1)))
-        .timeOutWarningTime(new SimpleObjectProperty<>(Duration.ofSeconds(50)))
+        .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
+        .timeOutWarningTime(new SimpleObjectProperty<>(Duration.ofSeconds(5)))
         .maxTimeOutsPerPeriod(new SimpleIntegerProperty(2))
         .maxTimeOutsPerGame(new SimpleIntegerProperty(3))
 

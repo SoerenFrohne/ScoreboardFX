@@ -30,7 +30,7 @@ public abstract class TeamActions extends VBox implements Initializable {
     timeOutButton.setOnAction(this::onTeamTimeOut);
     penaltyButton.setOnAction(this::onPenalty);
 
-    penaltyButton.disableProperty().bind(GameState.getStopWatch().getPeriodTime().stopped().not());
+    penaltyButton.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
   }
 
   public abstract void onScore(ActionEvent event);

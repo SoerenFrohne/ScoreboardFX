@@ -7,6 +7,8 @@ import lombok.extern.java.Log;
 
 import java.time.Duration;
 
+import static de.tvneheim.scoreboardfx.game.GameState.getStopWatch;
+
 @Log
 public final class GameService {
 
@@ -23,13 +25,13 @@ public final class GameService {
   }
 
   public static void stopTime() {
-    StopWatch stopWatch = GameState.getStopWatch();
+    StopWatch stopWatch = getStopWatch();
     stopWatch.pause();
     GameState.addEvent(new TimePaused(getElapsedTime()));
   }
 
   public static void startTime() {
-    StopWatch stopWatch = GameState.getStopWatch();
+    StopWatch stopWatch = getStopWatch();
     stopWatch.play();
     GameState.addEvent(new TimeStarted());
   }
@@ -47,13 +49,13 @@ public final class GameService {
     var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
     GameState.addEvent(new PenaltyHomeAdded(penalty));
 
-    var suspension = new Suspension(penalty);
-    GameState.getStopWatch().getSuspensionsHome().add(suspension);
+    var suspension = new SuspensionTimer(penalty.player().number(), penalty.duration());
+    getStopWatch().getSuspensionsHome().add(suspension);
 
     suspension.completed().addListener((observable, oldValue, completed) -> {
       if (completed) {
         GameState.addEvent(new PenaltyCompleted(penalty));
-        GameState.getStopWatch().getSuspensionsHome().remove(suspension);
+        getStopWatch().getSuspensionsHome().remove(suspension);
       }
     });
   }
@@ -62,13 +64,13 @@ public final class GameService {
     var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
     GameState.addEvent(new PenaltyGuestAdded(penalty));
 
-    var suspension = new Suspension(penalty);
-    GameState.getStopWatch().getSuspensionsGuest().add(suspension);
+    var suspension = new SuspensionTimer(penalty.player().number(), penalty.duration());
+    getStopWatch().getSuspensionsGuest().add(suspension);
 
     suspension.completed().addListener((observable, oldValue, completed) -> {
       if (completed) {
         GameState.addEvent(new PenaltyCompleted(penalty));
-        GameState.getStopWatch().getSuspensionsGuest().remove(suspension);
+        getStopWatch().getSuspensionsGuest().remove(suspension);
       }
     });
   }
@@ -82,21 +84,14 @@ public final class GameService {
           GameState.getSettings().timeOutWarningTime().getValue()
       );
 
-      GameState.getStopWatch().pause();
+      getStopWatch().pause();
       SoundBoard.honkShort();
       GameState.addEvent(new TeamTimeOutAdded(teamType, timeOut));
 
-      var teamTimeOut = new TeamTimeOut(timeOut);
-      GameState.getStopWatch().getTimeOutsHome().add(teamTimeOut);
-
-      teamTimeOut.remainingTime().addListener((observable, oldValue, newValue) -> {
-        if (newValue.compareTo(teamTimeOut.warningTime().getValue()) <= 0) {
-          SoundBoard.honkShort();
-        }
-      });
-
-      teamTimeOut.completed().addListener((observable, oldValue, completed) -> {
-        if (completed) {
+      getStopWatch().getTimeOutTimer().start();
+      getStopWatch().getTimeOutTimer().overWarningTime().addListener(observable -> SoundBoard.honkShort());
+      getStopWatch().getTimeOutTimer().running().addListener((observableValue, oldVal, newVal) -> {
+        if (oldVal == true && newVal == false) {
           SoundBoard.honkLong();
         }
       });
@@ -105,7 +100,7 @@ public final class GameService {
   }
 
   public static Duration getElapsedTime() {
-    return GameState.getStopWatch().getPeriodTime().getGameTime();
+    return getStopWatch().getPeriodTimer().getGameTime();
   }
 
 }

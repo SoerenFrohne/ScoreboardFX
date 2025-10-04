@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static de.tvneheim.scoreboardfx.game.GameState.getStopWatch;
 import static de.tvneheim.scoreboardfx.utils.FXUtils.convertToFxDuration;
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
 
@@ -36,10 +37,13 @@ public class ScoreboardViewController implements Initializable {
   private VBox centerPane, penaltiesHome, penaltiesGuest;
 
   @FXML
+  private HBox pauseContainer, ttoContainer;
+
+  @FXML
   private ImageView adDisplay, homeLogo, guestLogo;
 
   @FXML
-  private Label time, scoreHome, scoreGuest, nameHome, nameGuest, period;
+  private Label time, pauseTime, scoreHome, scoreGuest, nameHome, nameGuest, period, ttoTime;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,9 +80,14 @@ public class ScoreboardViewController implements Initializable {
 
 
   private void bindModel() {
-    time.textProperty().bind(bindFormattedTime(GameState.getStopWatch().getPeriodTime().gameTime()));
+    period.textProperty().bind(getStopWatch().getPeriodTimer().description());
+    time.textProperty().bind(bindFormattedTime(getStopWatch().getPeriodTimer().currentTime()));
 
-    period.textProperty().bind(GameState.getStopWatch().getPeriodTime().period());
+    pauseTime.textProperty().bind(bindFormattedTime(getStopWatch().getPauseTimer().current()));
+    pauseContainer.visibleProperty().bind(getStopWatch().getPauseTimer().running());
+
+    ttoTime.textProperty().bind(bindFormattedTime(getStopWatch().getTimeOutTimer().current()));
+    ttoContainer.visibleProperty().bind(getStopWatch().getTimeOutTimer().running());
 
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(String.valueOf(game.home().score()));
@@ -87,11 +96,11 @@ public class ScoreboardViewController implements Initializable {
       nameGuest.setText(game.guest().name());
     });
 
-    updateSuspensions(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
-    GameState.getStopWatch().getSuspensionsHome().addListener(change -> updateSuspensions(penaltiesHome, GameState.getStopWatch().getSuspensionsHome()));
+    updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome());
+    getStopWatch().getSuspensionsHome().addListener(change -> updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome()));
 
-    updateSuspensions(penaltiesGuest, GameState.getStopWatch().getSuspensionsGuest());
-    GameState.getStopWatch().getSuspensionsGuest().addListener(change -> updateSuspensions(penaltiesGuest, GameState.getStopWatch().getSuspensionsGuest()));
+    updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest());
+    getStopWatch().getSuspensionsGuest().addListener(change -> updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest()));
 
     rootPane.widthProperty().addListener(observable -> {
       nameHome.setPrefWidth(rootPane.getWidth() * 0.3d);
@@ -102,7 +111,7 @@ public class ScoreboardViewController implements Initializable {
   private void updateSuspensions(Pane root, SuspensionSlots suspensions) {
     root.getChildren().clear();
 
-    // fill current penalties
+    // fill currentTime penalties
     suspensions.forEach(suspension -> {
       if (suspension == null) {
         var emptyLabel = new SuspensionLabel();

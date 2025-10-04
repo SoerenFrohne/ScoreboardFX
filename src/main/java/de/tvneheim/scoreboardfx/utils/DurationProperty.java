@@ -25,7 +25,13 @@ public class DurationProperty extends ObjectPropertyBase<Duration> {
     return "duration";
   }
 
-  // --- Arithmetische Hilfsmethoden ---
+  public boolean isLongerThan(DurationProperty other) {
+    return get().toMillis() > other.get().toMillis();
+  }
+
+  public boolean isEqualOrLongerThan(DurationProperty other) {
+    return get().toMillis() >= other.get().toMillis();
+  }
 
   public void add(Duration d) {
     set(get().plus(d));

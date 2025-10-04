@@ -5,31 +5,45 @@ import javafx.animation.AnimationTimer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Getter
 public class StopWatch extends AnimationTimer {
 
-  // Game loop stats
+  private int period = 1;
   private long lastTick = -1L;
 
   // settings
   private final Settings settings;
 
   // time stats
-  private final PeriodTime periodTime;
+  private final PeriodTimer periodTimer;
+  private final PauseTimer pauseTimer;
+  private final TimeOutTimer timeOutTimer;
   private final SuspensionSlots suspensionsHome, suspensionsGuest;
-  private final TimeOutSlots timeOutsHome, timeOutsGuest;
 
   public StopWatch(Settings settings) {
     this.settings = settings;
-    this.periodTime = new PeriodTime(settings.lengthPerPeriod().get());
+    this.periodTimer = new PeriodTimer(settings.lengthPerPeriod().get());
+    this.pauseTimer = new PauseTimer(settings.pauseBetweenPeriods().get());
+    this.timeOutTimer = new TimeOutTimer(settings.timePerTeamTimeOut().get(), settings.timeOutWarningTime().get());
     this.suspensionsHome = new SuspensionSlots();
     this.suspensionsGuest = new SuspensionSlots();
-    this.timeOutsHome = new TimeOutSlots(settings.maxTimeOutsPerPeriod().get(), settings.maxTimeOutsPerGame().get());
-    this.timeOutsGuest = new TimeOutSlots(settings.maxTimeOutsPerPeriod().get(), settings.maxTimeOutsPerGame().get());
+
+    // set up period management
+    periodTimer.finished().addListener((observableValue, aBoolean, finished) -> {
+      if (finished) {
+        pauseTimer.start();
+      }
+    });
+    pauseTimer.finished().addListener((observable, oldValue, finished) -> {
+      if (finished) {
+        period++;
+        periodTimer.reset("2. Halbzeit", periodTimer.endingTime().get().multipliedBy(period), periodTimer.currentTime().get());
+        pauseTimer.reset();
+      }
+    });
 
     // Start the animation timer loop
     this.start();
@@ -44,15 +58,23 @@ public class StopWatch extends AnimationTimer {
     var deltaMillis = TimeUnit.NANOSECONDS.toMillis(now - lastTick);
     lastTick = now;
 
-    periodTime.update(deltaMillis);
+    periodTimer.update(deltaMillis);
+
+    if (periodTimer.isRunning()) {
+      suspensionsGuest.getSuspensions().forEach(suspensionTimer -> suspensionTimer.update(deltaMillis));
+      suspensionsHome.getSuspensions().forEach(suspensionTimer -> suspensionTimer.update(deltaMillis));
+    }
+
+    pauseTimer.update(deltaMillis);
+    timeOutTimer.update(deltaMillis);
   }
 
   public void play() {
-    periodTime.start();
+    periodTimer.start();
   }
 
   public void pause() {
-    periodTime.stop();
+    periodTimer.stop();
   }
 
 }

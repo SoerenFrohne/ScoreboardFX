@@ -39,6 +39,15 @@ Label {
     -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
 }
 
+.specialTimeContainer {
+}
+
+#pauseTime, #pauseDescription, #ttoTime, #ttoDescription {
+    -fx-font-family: "Compagnon Medium";
+    -fx-font-size: 48px;
+    -fx-padding: 16px;
+}
+
 #scoreHome, #scoreGuest {
     -fx-font-family: "New Amsterdam";
     -fx-font-size: 256px;

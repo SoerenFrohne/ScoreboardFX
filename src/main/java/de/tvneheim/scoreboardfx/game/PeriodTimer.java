@@ -7,15 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.Duration;
 
 @Slf4j
-public record PeriodTime(
-    StringProperty period,
+public record PeriodTimer(
+    StringProperty description,
     DurationProperty endingTime,
-    DurationProperty gameTime,
+    DurationProperty currentTime,
     BooleanProperty stopped,
     BooleanProperty finished
 ) implements Timer {
 
-  public PeriodTime(Duration periodLength) {
+  public PeriodTimer(Duration periodLength) {
     this(
         new SimpleStringProperty("1. Halbzeit"),
         new DurationProperty(periodLength),
@@ -35,14 +35,14 @@ public record PeriodTime(
 
   public void reset(Duration gameTime, Duration endingTime) {
     stop();
-    this.gameTime.setValue(gameTime);
+    this.currentTime.setValue(gameTime);
     this.endingTime.setValue(endingTime);
   }
 
   @Override
   public void update(long millis) {
     if (isRunning()) {
-      gameTime.add(Duration.ofMillis(millis));
+      currentTime.add(Duration.ofMillis(millis));
 
       if (isExpired()) {
         stop();
@@ -58,9 +58,8 @@ public record PeriodTime(
   }
 
   public Duration getGameTime() {
-    return gameTime.get();
+    return currentTime.get();
   }
-
 
   public boolean isStopped() {
     return stopped.get();
@@ -70,4 +69,9 @@ public record PeriodTime(
     return stopped.not().get();
   }
 
+  public void reset(String description, Duration length, Duration current) {
+    this.description.setValue(description);
+    this.endingTime.set(length);
+    this.currentTime.set(current);
+  }
 }

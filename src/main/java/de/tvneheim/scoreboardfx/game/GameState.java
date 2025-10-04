@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.SneakyThrows;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
@@ -82,17 +81,17 @@ public final class GameState {
   }
 
   public static boolean isRunning() {
-    return STOP_WATCH.getPeriodTime().isRunning();
+    return STOP_WATCH.getPeriodTimer().isRunning();
   }
 
   public static boolean isPaused() {
-    return STOP_WATCH.getPeriodTime().isStopped();
+    return STOP_WATCH.getPeriodTimer().isStopped();
   }
 
   public static void restart() {
     EVENTS.clear();
     INITIAL_GAME = GAME.get().reset();
-    STOP_WATCH.getPeriodTime().reset(Duration.ZERO, SETTINGS.lengthPerPeriod().get());
+    STOP_WATCH.getPeriodTimer().reset(Duration.ZERO, SETTINGS.lengthPerPeriod().get());
     updateGameState();
   }
 }
