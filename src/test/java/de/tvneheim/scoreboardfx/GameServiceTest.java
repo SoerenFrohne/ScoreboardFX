@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx;
 
-import de.tvneheim.scoreboardfx.game.GameService;
+import de.tvneheim.scoreboardfx.viewmodel.GameService;
 
 class GameServiceTest {
 

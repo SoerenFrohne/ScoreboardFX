@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import lombok.Data;
@@ -12,6 +12,8 @@ public abstract class Event {
   private UUID id = UUID.randomUUID();
   
   private LocalDateTime created = LocalDateTime.now();
+
+  public abstract EventType type();
 
   public abstract String description();
 

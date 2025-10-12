@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

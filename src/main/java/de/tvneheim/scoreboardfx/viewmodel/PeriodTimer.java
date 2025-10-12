@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.utils.DurationProperty;
 import javafx.beans.property.*;
@@ -13,7 +13,7 @@ public record PeriodTimer(
     DurationProperty currentTime,
     BooleanProperty stopped,
     BooleanProperty finished
-) implements Timer {
+) implements TickListener {
 
   public PeriodTimer(Duration periodLength) {
     this(
@@ -40,16 +40,15 @@ public record PeriodTimer(
   }
 
   @Override
-  public void update(long millis) {
+  public void onTick(Duration delta) {
     if (isRunning()) {
-      currentTime.add(Duration.ofMillis(millis));
+      currentTime.add(delta);
 
       if (isExpired()) {
         stop();
         finished.setValue(true);
       }
     }
-
   }
 
   private boolean isExpired() {

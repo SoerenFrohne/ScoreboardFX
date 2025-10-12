@@ -1,11 +1,12 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.tvneheim.scoreboardfx.infrastructure.persistence.json.JsonDatabase;
 import de.tvneheim.scoreboardfx.model.Game;
-import de.tvneheim.scoreboardfx.game.events.Event;
+import de.tvneheim.scoreboardfx.viewmodel.events.Event;
+import de.tvneheim.scoreboardfx.viewmodel.events.EventType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -93,5 +94,9 @@ public final class GameState {
     INITIAL_GAME = GAME.get().reset();
     STOP_WATCH.getPeriodTimer().reset(Duration.ZERO, SETTINGS.lengthPerPeriod().get());
     updateGameState();
+  }
+
+  public static Event findLastOfType(EventType type) {
+    return EVENTS.stream().filter(event -> event.type() == type).toList().getLast();
   }
 }

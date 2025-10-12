@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.*;
 import de.tvneheim.scoreboardfx.utils.FormatterUtils;
@@ -11,6 +11,11 @@ public abstract class PenaltyAdded extends Event {
 
   private final Penalty penalty;
   private final TeamType teamType;
+
+  @Override
+  public EventType type() {
+    return EventType.PENALTY_ADDED;
+  }
 
   @Override
   public String description() {

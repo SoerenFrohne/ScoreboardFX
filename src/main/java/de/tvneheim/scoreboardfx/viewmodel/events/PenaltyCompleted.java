@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.*;
 import lombok.Data;
@@ -9,6 +9,11 @@ import lombok.EqualsAndHashCode;
 public class PenaltyCompleted extends Event {
 
   private final Penalty penalty;
+
+  @Override
+  public EventType type() {
+    return EventType.PENALTY_COMPLETED;
+  }
 
   @Override
   public String description() {

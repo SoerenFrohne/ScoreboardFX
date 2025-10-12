@@ -1,8 +1,13 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 
 public class GuestScored extends Event {
+
+  @Override
+  public EventType type() {
+    return EventType.GUEST_SCORED;
+  }
 
   @Override
   public String description() {

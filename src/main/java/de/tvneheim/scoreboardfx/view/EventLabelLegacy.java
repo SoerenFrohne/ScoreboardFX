@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.game.events.Event;
+import de.tvneheim.scoreboardfx.viewmodel.events.Event;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

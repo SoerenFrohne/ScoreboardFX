@@ -1,13 +1,13 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
 import de.tvneheim.scoreboardfx.model.*;
-import de.tvneheim.scoreboardfx.game.events.*;
+import de.tvneheim.scoreboardfx.viewmodel.events.*;
 import lombok.extern.java.Log;
 
 import java.time.Duration;
 
-import static de.tvneheim.scoreboardfx.game.GameState.getStopWatch;
+import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
 
 @Log
 public final class GameService {
@@ -40,8 +40,16 @@ public final class GameService {
     GameState.addEvent(new HomeScored());
   }
 
+  public static void minusScoreHome() {
+    GameState.removeEvent(GameState.findLastOfType(EventType.HOME_SCORED).getId());
+  }
+
   public static void scoreGuest() {
     GameState.addEvent(new GuestScored());
+  }
+
+  public static void minusScoreGuest() {
+    GameState.removeEvent(GameState.findLastOfType(EventType.GUEST_SCORED).getId());
   }
 
   public static void twoMinutesForHome(int number) {
@@ -102,5 +110,6 @@ public final class GameService {
   public static Duration getElapsedTime() {
     return getStopWatch().getPeriodTimer().getGameTime();
   }
+
 
 }

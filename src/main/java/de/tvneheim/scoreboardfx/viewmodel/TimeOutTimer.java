@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.utils.DurationProperty;
 import javafx.beans.property.BooleanProperty;
@@ -12,7 +12,7 @@ public record TimeOutTimer(
     DurationProperty length,
     DurationProperty warningTime,
     BooleanProperty overWarningTime
-) implements Timer {
+) implements TickListener {
 
   public TimeOutTimer(Duration length, Duration warningTime) {
     this(
@@ -29,10 +29,10 @@ public record TimeOutTimer(
   }
 
   @Override
-  public void update(long millis) {
+  public void onTick(Duration delta) {
 
     if (running.get()) {
-      current.plusMillis(millis);
+      current.add(delta);
     }
 
     if (current.isEqualOrLongerThan(warningTime)) {

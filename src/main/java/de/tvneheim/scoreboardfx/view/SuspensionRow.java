@@ -1,16 +1,20 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.game.GameState;
-import de.tvneheim.scoreboardfx.game.SuspensionTimer;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.SuspensionTimer;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.NumberStringConverter;
+import lombok.extern.slf4j.Slf4j;
 
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
+import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
 
+@Slf4j
 public class SuspensionRow extends HBox {
 
   @FXML
@@ -26,18 +30,11 @@ public class SuspensionRow extends HBox {
       FXMLUtils.removeFromParent(this);
     } else {
       number.textProperty().bindBidirectional(suspensionTimer.number(), new NumberStringConverter());
-      number.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
-      minutes.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
-      seconds.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
-      deleteButton.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
+      number.disableProperty().bind(getStopWatch().getPeriodTimer().stopped().not());
 
-      // Update text
-      minutes.setText(doubleDigits(suspensionTimer.remainingTime().getValue().toMinutesPart()));
-      seconds.setText(doubleDigits(suspensionTimer.remainingTime().getValue().toSecondsPart()));
-      suspensionTimer.remainingTime().addListener((observable, oldValue, remainingTime) -> {
-        minutes.setText(doubleDigits(remainingTime.toMinutesPart()));
-        seconds.setText(doubleDigits(remainingTime.toSecondsPart()));
-      });
+      bindTime(suspensionTimer);
+
+      deleteButton.disableProperty().bind(getStopWatch().getPeriodTimer().stopped().not());
 
       // Remove when completed
       suspensionTimer.completed().addListener((observable, oldValue, completed) -> {
@@ -46,6 +43,45 @@ public class SuspensionRow extends HBox {
         }
       });
 
+    }
+  }
+
+  private void bindTime(SuspensionTimer suspension) {
+
+    // Initiale View
+    minutes.setText(String.valueOf(suspension.remainingTime().get().toMinutesPart()));
+    seconds.setText(String.valueOf(suspension.remainingTime().get().toSecondsPart()));
+
+    // View → ViewModel
+    minutes.textProperty().addListener(observable -> {
+      if (GameState.isPaused()) {
+        var min = parse(minutes.textProperty());
+        var sec = parse(seconds.textProperty());
+        suspension.setRemainingTime(min, sec);
+      }
+    });
+    seconds.textProperty().addListener(observable -> {
+      if (GameState.isPaused()) {
+        var min = parse(minutes.textProperty());
+        var sec = parse(seconds.textProperty());
+        suspension.setRemainingTime(min, sec);
+      }
+    });
+
+    // ViewModel → View
+    suspension.remainingTime().addListener((obs, oldDur, remainingTime) -> {
+      if (GameState.isRunning()) {
+        minutes.setText(doubleDigits(remainingTime.toMinutesPart()));
+        seconds.setText(doubleDigits(remainingTime.toSecondsPart()));
+      }
+    });
+  }
+
+  public int parse(StringProperty property) {
+    try {
+      return Integer.parseInt(property.get());
+    } catch (NumberFormatException e) {
+      return 0;
     }
   }
 

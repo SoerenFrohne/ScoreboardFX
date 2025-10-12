@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.game.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,24 +16,21 @@ import java.util.ResourceBundle;
 public abstract class TeamActions extends VBox implements Initializable {
 
   @FXML
-  private Button goalButton;
-
-  @FXML
-  private Button timeOutButton;
-
-  @FXML
-  private Button penaltyButton;
+  private Button penaltyButton, timeOutButton, minusGoalButton, plusGoalButton;
 
   public TeamActions() {
     FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/fxml/team-actions.fxml");
-    goalButton.setOnAction(this::onScore);
+    plusGoalButton.setOnAction(this::onPlusScore);
+    minusGoalButton.setOnAction(this::onMinusScore);
     timeOutButton.setOnAction(this::onTeamTimeOut);
     penaltyButton.setOnAction(this::onPenalty);
 
     penaltyButton.disableProperty().bind(GameState.getStopWatch().getPeriodTimer().stopped().not());
   }
 
-  public abstract void onScore(ActionEvent event);
+  public abstract void onMinusScore(ActionEvent event);
+
+  public abstract void onPlusScore(ActionEvent event);
 
   public abstract void onTeamTimeOut(ActionEvent event);
 

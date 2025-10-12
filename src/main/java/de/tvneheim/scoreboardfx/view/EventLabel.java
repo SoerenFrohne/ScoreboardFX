@@ -2,7 +2,7 @@ package de.tvneheim.scoreboardfx.view;
 
 import atlantafx.base.controls.Tile;
 import atlantafx.base.theme.Styles;
-import de.tvneheim.scoreboardfx.game.events.Event;
+import de.tvneheim.scoreboardfx.viewmodel.events.Event;
 import javafx.scene.control.Button;
 import lombok.extern.java.Log;
 import org.kordamp.ikonli.javafx.FontIcon;

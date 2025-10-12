@@ -1,18 +1,21 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 
 import javafx.animation.AnimationTimer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Getter
 public class StopWatch extends AnimationTimer {
 
+  private static final Duration TICK_DELTA = Duration.ofSeconds(1);
   private int period = 1;
-  private long lastTick = -1L;
+  private long lastTickSecond = -1;
+  private long startNanos = -1L;
 
   // settings
   private final Settings settings;
@@ -51,23 +54,28 @@ public class StopWatch extends AnimationTimer {
 
   @Override
   public void handle(long now) {
-    if (lastTick < 0) {
-      lastTick = now; // Initialisierung beim ersten Frame
+    if (startNanos < 0) {
+      startNanos = now; // Initialisierung beim ersten Frame
     }
 
-    var deltaMillis = TimeUnit.NANOSECONDS.toMillis(now - lastTick);
-    lastTick = now;
+    var elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(now - startNanos);
 
-    periodTimer.update(deltaMillis);
+    // Prüfen, ob wir in eine neue Sekunde übergegangen sind
+    if (elapsedSeconds != lastTickSecond) {
+      lastTickSecond = elapsedSeconds;
 
-    if (periodTimer.isRunning()) {
-      suspensionsGuest.getSuspensions().forEach(suspensionTimer -> suspensionTimer.update(deltaMillis));
-      suspensionsHome.getSuspensions().forEach(suspensionTimer -> suspensionTimer.update(deltaMillis));
+      periodTimer.onTick(TICK_DELTA);
+
+      if (periodTimer.isRunning()) {
+        suspensionsGuest.getSuspensions().forEach(suspensionTimer -> suspensionTimer.onTick(TICK_DELTA));
+        suspensionsHome.getSuspensions().forEach(suspensionTimer -> suspensionTimer.onTick(TICK_DELTA));
+      }
+
+      pauseTimer.onTick(TICK_DELTA);
+      timeOutTimer.onTick(TICK_DELTA);
     }
-
-    pauseTimer.update(deltaMillis);
-    timeOutTimer.update(deltaMillis);
   }
+
 
   public void play() {
     periodTimer.start();

@@ -1,11 +1,10 @@
 package de.tvneheim.scoreboardfx.view;
 
-import de.tvneheim.scoreboardfx.game.GameService;
+import de.tvneheim.scoreboardfx.viewmodel.GameService;
 import de.tvneheim.scoreboardfx.model.TeamType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,7 +18,12 @@ public class HomeTeamActions extends TeamActions {
     teamName.textProperty().addListener((observable, oldValue, newValue) -> GameService.changeName(TeamType.HOME, newValue));
   }
 
-  public void onScore(ActionEvent event) {
+  @Override
+  public void onMinusScore(ActionEvent event) {
+    GameService.minusScoreHome();
+  }
+
+  public void onPlusScore(ActionEvent event) {
     GameService.scoreHome();
   }
 

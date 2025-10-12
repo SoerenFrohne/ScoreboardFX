@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.model.TeamType;
@@ -12,6 +12,11 @@ public class TeamTimeOutAdded extends Event {
 
   private final TeamType teamType;
   private final TimeOut timeOut;
+
+  @Override
+  public EventType type() {
+    return EventType.TIME_OUT_ADDED;
+  }
 
   @Override
   public String description() {

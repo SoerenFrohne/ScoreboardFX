@@ -35,7 +35,7 @@ Label {
 
 #time {
     -fx-font-family: "Compagnon Medium";
-    -fx-font-size: 164px;
+    -fx-font-size: 128px;
     -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
 }
 
@@ -44,7 +44,7 @@ Label {
 
 #pauseTime, #pauseDescription, #ttoTime, #ttoDescription {
     -fx-font-family: "Compagnon Medium";
-    -fx-font-size: 48px;
+    -fx-font-size: 32px;
     -fx-padding: 16px;
 }
 
@@ -55,13 +55,12 @@ Label {
 }
 
 #homeLogo, #guestLogo {
-    -fx-opacity: 0.25;
-    -fx-blend-mode: multiply
+    -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
 }
 
 .penalty {
     -fx-font-family: "monoMMM_5";
-    -fx-font-size: 64px;
+    -fx-font-size: 32px;
     -fx-text-fill: #FFF;
 }
 

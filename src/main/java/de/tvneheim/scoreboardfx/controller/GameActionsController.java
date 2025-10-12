@@ -1,9 +1,9 @@
 package de.tvneheim.scoreboardfx.controller;
 
-import de.tvneheim.scoreboardfx.game.GameService;
-import de.tvneheim.scoreboardfx.game.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.GameService;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
-import de.tvneheim.scoreboardfx.game.StopWatch;
+import de.tvneheim.scoreboardfx.viewmodel.StopWatch;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

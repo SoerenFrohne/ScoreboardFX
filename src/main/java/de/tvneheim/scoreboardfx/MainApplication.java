@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +40,8 @@ public class MainApplication extends Application {
         var viewStage = new Stage();
         viewStage.setTitle("Scoreboard View");
         viewStage.setScene(viewScene);
+        viewStage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        viewStage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
         viewStage.show();
     }
 

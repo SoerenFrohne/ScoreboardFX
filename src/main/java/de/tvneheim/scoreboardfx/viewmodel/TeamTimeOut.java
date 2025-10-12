@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.model.TimeOut;
 import javafx.beans.property.BooleanProperty;

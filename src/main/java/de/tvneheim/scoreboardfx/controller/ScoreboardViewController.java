@@ -1,8 +1,9 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.util.Animations;
-import de.tvneheim.scoreboardfx.game.GameState;
-import de.tvneheim.scoreboardfx.game.SuspensionSlots;
+import de.tvneheim.scoreboardfx.view.ImageViewPane;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.SuspensionSlots;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
 import de.tvneheim.scoreboardfx.view.SuspensionLabel;
 import javafx.animation.KeyFrame;
@@ -14,16 +15,18 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static de.tvneheim.scoreboardfx.game.GameState.getStopWatch;
+import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
 import static de.tvneheim.scoreboardfx.utils.FXUtils.convertToFxDuration;
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
 
@@ -31,10 +34,16 @@ import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
 public class ScoreboardViewController implements Initializable {
 
   @FXML
-  private AnchorPane rootPane, scoreHomeContainer, scoreGuestContainer;
+  private GridPane grid;
 
   @FXML
-  private VBox centerPane, penaltiesHome, penaltiesGuest;
+  private AnchorPane rootPane;
+
+  @FXML
+  private StackPane adDisplayContainer, homeLogoContainer, guestLogoContainer;
+
+  @FXML
+  private VBox penaltiesHome, penaltiesGuest;
 
   @FXML
   private HBox pauseContainer, ttoContainer;
@@ -49,21 +58,37 @@ public class ScoreboardViewController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     bindModel();
     initBackground();
-    initAdLoop();
-    initLogos();
     initAnimations();
+
+    Platform.runLater(() -> {
+      initAdLoop();
+      initLogos();
+    });
   }
 
   private void initAdLoop() {
-    //TODO: Ensure same size
-    centerPane.widthProperty().addListener(observable -> adDisplay.setFitWidth(.66 * centerPane.getWidth()));
 
     var directory = new File(GameState.getSettings().pathToAdImages().get());
     var files = Arrays.stream(directory.listFiles()).toList();
-    log.info("Found following ads: " + files);
+    log.info("Found following ads: {}", files);
     var file = files.getFirst();
     var img = new Image(file.toURI().toString());
+
+    LayoutUtils.bindExactSize(
+        adDisplayContainer,
+        grid.widthProperty().divide(grid.getColumnConstraints().size()).multiply(GridPane.getColumnSpan(adDisplayContainer)),
+        grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(adDisplayContainer))
+    );
+
     adDisplay.setImage(img);
+    adDisplay.setSmooth(true);
+    adDisplay.setPreserveRatio(true);
+    adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
+
+    Rectangle clip = new Rectangle();
+    clip.widthProperty().bind(adDisplayContainer.widthProperty());
+    clip.heightProperty().bind(adDisplayContainer.heightProperty());
+    adDisplayContainer.setClip(clip);
 
     AtomicInteger index = new AtomicInteger();
     var timeline = new Timeline(new KeyFrame(convertToFxDuration(GameState.getSettings().showTimeOfAds().get()), event -> {
@@ -73,11 +98,11 @@ public class ScoreboardViewController implements Initializable {
       adDisplay.setImage(currentImg);
     }));
 
+
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.setAutoReverse(false);
     timeline.playFromStart();
   }
-
 
   private void bindModel() {
     period.textProperty().bind(getStopWatch().getPeriodTimer().description());
@@ -139,31 +164,28 @@ public class ScoreboardViewController implements Initializable {
   private void initLogos() {
     var directory = new File(GameState.getSettings().pathToLogos().get());
     var files = Arrays.stream(directory.listFiles()).toList();
-    log.info("Found following logos: " + files);
+    log.info("Found following logos: {}", files);
 
     // home
-    scoreHomeContainer.widthProperty().addListener(observable -> {
-      homeLogo.setFitWidth(scoreHomeContainer.getWidth());
-      Platform.runLater(() -> LayoutUtils.centerImage(homeLogo));
-    });
-    scoreHomeContainer.heightProperty().addListener(observable -> {
-      homeLogo.setFitHeight(scoreHomeContainer.getHeight());
-      Platform.runLater(() -> LayoutUtils.centerImage(homeLogo));
-    });
-    var homeTeamLogo = new Image(files.get(1).toURI().toString());
+    LayoutUtils.bindExactSize(
+        homeLogoContainer,
+        grid.widthProperty().divide(grid.getColumnConstraints().size()).multiply(GridPane.getColumnSpan(homeLogoContainer)),
+        grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(homeLogoContainer))
+    );
+    homeLogo.fitHeightProperty().bind(homeLogoContainer.heightProperty());
+
+    var homeTeamLogo = new Image(files.get(2).toURI().toString());
     homeLogo.setImage(homeTeamLogo);
 
     // guest
-    scoreGuestContainer.widthProperty().addListener(observable -> {
-      guestLogo.setFitWidth(scoreGuestContainer.getWidth());
-      Platform.runLater(() -> LayoutUtils.centerImage(guestLogo));
-    });
-    scoreGuestContainer.heightProperty().addListener(observable -> {
-      guestLogo.setFitHeight(scoreGuestContainer.getHeight());
-      Platform.runLater(() -> LayoutUtils.centerImage(guestLogo));
-    });
+    LayoutUtils.bindExactSize(
+        guestLogoContainer,
+        grid.widthProperty().divide(grid.getColumnConstraints().size()).multiply(GridPane.getColumnSpan(guestLogoContainer)),
+        grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(guestLogoContainer))
+    );
+    guestLogo.fitHeightProperty().bind(guestLogoContainer.heightProperty());
 
-    var guestTeamLogo = new Image(files.getFirst().toURI().toString());
+    var guestTeamLogo = new Image(files.get(1).toURI().toString());
     guestLogo.setImage(guestTeamLogo);
   }
 

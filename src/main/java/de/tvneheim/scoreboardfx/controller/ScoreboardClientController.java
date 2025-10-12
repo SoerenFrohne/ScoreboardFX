@@ -1,10 +1,9 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.controls.ModalPane;
-import de.tvneheim.scoreboardfx.game.GameService;
-import de.tvneheim.scoreboardfx.game.SuspensionSlots;
-import de.tvneheim.scoreboardfx.game.events.Event;
-import de.tvneheim.scoreboardfx.game.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.SuspensionSlots;
+import de.tvneheim.scoreboardfx.viewmodel.events.Event;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.view.EventLabel;
 import de.tvneheim.scoreboardfx.view.SuspensionRow;
 import de.tvneheim.scoreboardfx.view.TeamActions;
@@ -61,8 +60,8 @@ public class ScoreboardClientController implements Initializable {
     GameState.getStopWatch().getSuspensionsHome().addListener(change -> {
       updatePenaltyRows(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
     });
-    GameState.getStopWatch().getSuspensionsHome().addListener(change -> {
-      updatePenaltyRows(penaltiesHome, GameState.getStopWatch().getSuspensionsHome());
+    GameState.getStopWatch().getSuspensionsGuest().addListener(change -> {
+      updatePenaltyRows(penaltiesGuest, GameState.getStopWatch().getSuspensionsGuest());
     });
 
     GameState.getEventsProperty().addListener((ListChangeListener<? super Event>) this::updateHistory);

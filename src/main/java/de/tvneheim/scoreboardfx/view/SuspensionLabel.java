@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.view;
 
 import atlantafx.base.util.Animations;
-import de.tvneheim.scoreboardfx.game.SuspensionTimer;
+import de.tvneheim.scoreboardfx.viewmodel.SuspensionTimer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
@@ -40,9 +40,10 @@ public class SuspensionLabel extends Label {
     } else {
 
       // update text
-      this.setText("Nr. " + suspension.number().get() + " " + time(suspension.remainingTime().getValue()));
+      this.setText(suspension.number().get() + " " + time(suspension.remainingTime().getValue()));
       suspension.remainingTime().addListener((observable, oldValue, remainingTime) -> {
-        this.setText("Nr. " + suspension.number().get() + " " + time(remainingTime));
+        log.info("Changed remaining time to {}", remainingTime.toMillis());
+        this.setText(suspension.number().get() + " " + time(remainingTime));
       });
 
       // hide when finished
@@ -59,7 +60,7 @@ public class SuspensionLabel extends Label {
   }
 
   private void hide() {
-    this.setText("Nr. 0 00:00");
+    this.setText("0 00:00");
     this.getStyleClass().add("hiddenPenalty");
   }
 

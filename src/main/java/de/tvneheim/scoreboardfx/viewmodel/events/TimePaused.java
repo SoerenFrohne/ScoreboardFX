@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.utils.FormatterUtils;
@@ -12,6 +12,11 @@ import java.time.Duration;
 public class TimePaused extends Event {
 
   private final Duration timeStamp;
+
+  @Override
+  public EventType type() {
+    return EventType.TIME_PAUSED;
+  }
 
   @Override
   public String description() {

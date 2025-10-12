@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game;
+package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.utils.DurationProperty;
 import javafx.beans.property.BooleanProperty;
@@ -11,7 +11,7 @@ public record PauseTimer(
     DurationProperty length,
     BooleanProperty running,
     BooleanProperty finished
-) implements Timer {
+) implements TickListener {
 
   public PauseTimer(Duration length) {
     this(
@@ -27,12 +27,12 @@ public record PauseTimer(
   }
 
   @Override
-  public void update(long millis) {
+  public void onTick(Duration delta) {
     if (current.isEqualOrLongerThan(length)) {
       finished.setValue(true);
       running.setValue(false);
     } else if (running.get()) {
-      current.plusMillis(millis);
+      current.add(delta);
     }
   }
 

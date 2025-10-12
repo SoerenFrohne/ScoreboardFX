@@ -1,4 +1,4 @@
-package de.tvneheim.scoreboardfx.game.events;
+package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
 import de.tvneheim.scoreboardfx.model.TeamType;
@@ -11,6 +11,11 @@ public class ChangedTeamName extends Event {
 
   private final TeamType teamType;
   private final String newName;
+
+  @Override
+  public EventType type() {
+    return EventType.CHANGED_TEAM_NAME;
+  }
 
   @Override
   public String description() {

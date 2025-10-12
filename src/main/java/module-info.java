@@ -18,6 +18,7 @@ module de.tvneheim.scoreboardfx {
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
+  requires java.desktop;
 
   opens de.tvneheim.scoreboardfx to javafx.fxml;
   opens de.tvneheim.scoreboardfx.controller to javafx.fxml;
@@ -31,8 +32,8 @@ module de.tvneheim.scoreboardfx {
   exports de.tvneheim.scoreboardfx.infrastructure.sound;
 
   opens de.tvneheim.scoreboardfx.model to javafx.fxml;
-  exports de.tvneheim.scoreboardfx.game;
-  opens de.tvneheim.scoreboardfx.game to javafx.fxml;
-  exports de.tvneheim.scoreboardfx.game.events;
-  opens de.tvneheim.scoreboardfx.game.events to javafx.fxml;
+  exports de.tvneheim.scoreboardfx.viewmodel;
+  opens de.tvneheim.scoreboardfx.viewmodel to javafx.fxml;
+  exports de.tvneheim.scoreboardfx.viewmodel.events;
+  opens de.tvneheim.scoreboardfx.viewmodel.events to javafx.fxml;
 }
