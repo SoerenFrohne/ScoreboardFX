@@ -1,12 +1,15 @@
 package de.tvneheim.scoreboardfx.view;
 
 import atlantafx.base.util.Animations;
+import de.tvneheim.scoreboardfx.model.Side;
 import de.tvneheim.scoreboardfx.viewmodel.SuspensionTimer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.Duration;
 
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.time;
 
@@ -16,14 +19,18 @@ public class SuspensionLabel extends Label {
 
   private final SuspensionTimer suspension;
 
-  public SuspensionLabel(SuspensionTimer suspensionTimer) {
+  private final Side side;
+
+  public SuspensionLabel(SuspensionTimer suspensionTimer, Side side) {
     super();
     this.suspension = suspensionTimer;
+    this.side = side;
     this.initialize();
   }
 
-  public SuspensionLabel() {
+  public SuspensionLabel(Side side) {
     super();
+    this.side = side;
     this.suspension = null;
     this.initialize();
   }
@@ -40,10 +47,10 @@ public class SuspensionLabel extends Label {
     } else {
 
       // update text
-      this.setText(suspension.number().get() + " " + time(suspension.remainingTime().getValue()));
+      this.setText(formatSuspension(side, suspension.number().get(), suspension.remainingTime().get()));
       suspension.remainingTime().addListener((observable, oldValue, remainingTime) -> {
         log.info("Changed remaining time to {}", remainingTime.toMillis());
-        this.setText(suspension.number().get() + " " + time(remainingTime));
+        this.setText(formatSuspension(side, suspension.number().get(), remainingTime));
       });
 
       // hide when finished
@@ -60,8 +67,12 @@ public class SuspensionLabel extends Label {
   }
 
   private void hide() {
-    this.setText("0 00:00");
+    this.setText(formatSuspension(side, 0, Duration.ZERO));
     this.getStyleClass().add("hiddenPenalty");
+  }
+
+  private static String formatSuspension(Side side, int number, Duration duration) {
+    return side == Side.HOME ? number + " " + time(duration) : time(duration) + " " + number;
   }
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 @With
 public record Team(
-    TeamType type,
+    Side type,
     String name,
     String logo,
     int score,
@@ -15,7 +15,7 @@ public record Team(
     List<Penalty> penalties,
     List<TimeOut> timeOuts
 ) {
-  public Team(TeamType type, String name) {
+  public Team(Side type, String name) {
     this(type, name, null, 0, List.of(), List.of(), List.of());
   }
 

@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.util.Animations;
-import de.tvneheim.scoreboardfx.view.ImageViewPane;
+import de.tvneheim.scoreboardfx.model.Side;
 import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.viewmodel.SuspensionSlots;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
@@ -19,13 +19,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static de.tvneheim.scoreboardfx.viewmodel.GameState.getSettings;
 import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
 import static de.tvneheim.scoreboardfx.utils.FXUtils.convertToFxDuration;
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
@@ -52,7 +52,7 @@ public class ScoreboardViewController implements Initializable {
   private ImageView adDisplay, homeLogo, guestLogo;
 
   @FXML
-  private Label time, pauseTime, scoreHome, scoreGuest, nameHome, nameGuest, period, ttoTime;
+  private Label time, pauseTime, scoreHome, scoreGuest, nameHome, nameGuest, period, ttoTime, presentedLabel;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,7 +83,8 @@ public class ScoreboardViewController implements Initializable {
     adDisplay.setImage(img);
     adDisplay.setSmooth(true);
     adDisplay.setPreserveRatio(true);
-    adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
+    //adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
+    adDisplay.fitWidthProperty().bind(adDisplayContainer.widthProperty());
 
     Rectangle clip = new Rectangle();
     clip.widthProperty().bind(adDisplayContainer.widthProperty());
@@ -114,18 +115,23 @@ public class ScoreboardViewController implements Initializable {
     ttoTime.textProperty().bind(bindFormattedTime(getStopWatch().getTimeOutTimer().current()));
     ttoContainer.visibleProperty().bind(getStopWatch().getTimeOutTimer().running());
 
+    presentedLabel.visibleProperty().bind(
+        getStopWatch().getPauseTimer().running().or(getStopWatch().getTimeOutTimer().running()).not()
+    );
+
+    nameHome.textProperty().bind(getSettings().homeTeamName());
+    nameGuest.textProperty().bind(getSettings().guestTeamName());
+
     GameState.getGame().addListener((observable, oldValue, game) -> {
       scoreHome.setText(String.valueOf(game.home().score()));
       scoreGuest.setText(String.valueOf(game.guest().score()));
-      nameHome.setText(game.home().name());
-      nameGuest.setText(game.guest().name());
     });
 
-    updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome());
-    getStopWatch().getSuspensionsHome().addListener(change -> updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome()));
+    updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome(), Side.HOME);
+    getStopWatch().getSuspensionsHome().addListener(change -> updateSuspensions(penaltiesHome, getStopWatch().getSuspensionsHome(), Side.HOME));
 
-    updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest());
-    getStopWatch().getSuspensionsGuest().addListener(change -> updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest()));
+    updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest(), Side.GUEST);
+    getStopWatch().getSuspensionsGuest().addListener(change -> updateSuspensions(penaltiesGuest, getStopWatch().getSuspensionsGuest(), Side.GUEST));
 
     rootPane.widthProperty().addListener(observable -> {
       nameHome.setPrefWidth(rootPane.getWidth() * 0.3d);
@@ -133,16 +139,16 @@ public class ScoreboardViewController implements Initializable {
     });
   }
 
-  private void updateSuspensions(Pane root, SuspensionSlots suspensions) {
+  private void updateSuspensions(Pane root, SuspensionSlots suspensions, Side side) {
     root.getChildren().clear();
 
     // fill currentTime penalties
     suspensions.forEach(suspension -> {
       if (suspension == null) {
-        var emptyLabel = new SuspensionLabel();
+        var emptyLabel = new SuspensionLabel(side);
         root.getChildren().add(emptyLabel);
       } else {
-        var penaltyLabel = new SuspensionLabel(suspension);
+        var penaltyLabel = new SuspensionLabel(suspension, side);
         root.getChildren().add(penaltyLabel);
       }
     });
@@ -162,9 +168,6 @@ public class ScoreboardViewController implements Initializable {
   }
 
   private void initLogos() {
-    var directory = new File(GameState.getSettings().pathToLogos().get());
-    var files = Arrays.stream(directory.listFiles()).toList();
-    log.info("Found following logos: {}", files);
 
     // home
     LayoutUtils.bindExactSize(
@@ -174,8 +177,9 @@ public class ScoreboardViewController implements Initializable {
     );
     homeLogo.fitHeightProperty().bind(homeLogoContainer.heightProperty());
 
-    var homeTeamLogo = new Image(files.get(2).toURI().toString());
-    homeLogo.setImage(homeTeamLogo);
+    //var homeTeamLogo = new Image(files.get(2).toURI().toString(), homeLogo.getFitWidth() * 1.25, homeLogo.getFitHeight() * 1.25, true, true);
+    homeLogo.imageProperty().bind(GameState.getSettings().homeTeamLogo());
+    homeLogo.setSmooth(true);
 
     // guest
     LayoutUtils.bindExactSize(
@@ -185,8 +189,8 @@ public class ScoreboardViewController implements Initializable {
     );
     guestLogo.fitHeightProperty().bind(guestLogoContainer.heightProperty());
 
-    var guestTeamLogo = new Image(files.get(1).toURI().toString());
-    guestLogo.setImage(guestTeamLogo);
+    guestLogo.imageProperty().bind(GameState.getSettings().guestTeamLogo());
+    guestLogo.setSmooth(true);
   }
 
   private void initAnimations() {

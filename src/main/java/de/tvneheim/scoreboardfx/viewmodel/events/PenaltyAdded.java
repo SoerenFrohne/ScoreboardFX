@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 public abstract class PenaltyAdded extends Event {
 
   private final Penalty penalty;
-  private final TeamType teamType;
+  private final Side side;
 
   @Override
   public EventType type() {
@@ -31,7 +31,7 @@ public abstract class PenaltyAdded extends Event {
 
   @Override
   public Game apply(Game current) {
-    if (teamType == TeamType.HOME) {
+    if (side == Side.HOME) {
       var home = current.home().addPenalty(penalty);
       return current.withHome(home);
     } else {

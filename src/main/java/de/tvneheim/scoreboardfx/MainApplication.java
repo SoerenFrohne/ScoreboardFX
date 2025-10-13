@@ -1,6 +1,7 @@
 package de.tvneheim.scoreboardfx;
 
 import atlantafx.base.theme.CupertinoDark;
+import atlantafx.base.theme.Styles;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -19,42 +20,48 @@ import java.io.IOException;
 @Slf4j
 public class MainApplication extends Application {
 
-    @Override
-    public void start(Stage clientStage) throws IOException {
+  @Override
+  public void start(Stage primaryStage) throws IOException {
 
-        log.info("Path: " + new File(".").getAbsolutePath());
-        Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
+    log.info("Path: {}", new File(".").getAbsolutePath());
+    Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
 
-        var primaryScreen = Screen.getPrimary();
+    var primaryScreen = Screen.getPrimary();
 
-        var clientLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml"));
-        var clientScene = new Scene(clientLoader.load());
-        clientScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/client.css").toExternalForm());
-        clientStage.setTitle("Scoreboard Client");
-        clientStage.setScene(clientScene);
-        clientStage.show();
+    var settingsLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/settings.fxml"));
+    var settingsScene = new Scene(settingsLoader.load());
+    primaryStage.setTitle("Einstellungen");
+    primaryStage.setScene(settingsScene);
+    primaryStage.show();
 
-        var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
-        var viewScene = new Scene(viewLoader.load());
-        viewScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/view.css").toExternalForm());
-        var viewStage = new Stage();
-        viewStage.setTitle("Scoreboard View");
-        viewStage.setScene(viewScene);
-        viewStage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        viewStage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
-        viewStage.show();
-    }
+    var clientLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml"));
+    var clientScene = new Scene(clientLoader.load());
+    clientScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/client.css").toExternalForm());
+    primaryStage.setTitle("Scoreboard Client");
+    //clientStage.setScene(clientScene);
+    //clientStage.show();
 
-    public static void main(String[] args) throws JoranException {
+    var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
+    var viewScene = new Scene(viewLoader.load());
+    viewScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/view.css").toExternalForm());
+    var viewStage = new Stage();
+    viewStage.setTitle("Scoreboard View");
+    viewStage.setScene(viewScene);
+    viewStage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
+    viewStage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
+    viewStage.show();
+  }
 
-        String logDir = LoggingHelper.getLogDir("ScoreboardFx").toString();
-        System.setProperty("app.logdir", logDir);
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        JoranConfigurator configurator = new JoranConfigurator();
-        configurator.setContext(context);
-        context.reset();
-        configurator.doConfigure(MainApplication.class.getResource("/logback.xml"));
+  public static void main(String[] args) throws JoranException {
 
-        launch();
-    }
+    String logDir = LoggingHelper.getLogDir("ScoreboardFx").toString();
+    System.setProperty("app.logdir", logDir);
+    LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+    JoranConfigurator configurator = new JoranConfigurator();
+    configurator.setContext(context);
+    context.reset();
+    configurator.doConfigure(MainApplication.class.getResource("/logback.xml"));
+
+    launch();
+  }
 }

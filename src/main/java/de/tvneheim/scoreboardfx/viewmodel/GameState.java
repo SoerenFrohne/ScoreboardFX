@@ -21,9 +21,9 @@ import java.util.UUID;
 @Slf4j
 public final class GameState {
 
-  private static Game INITIAL_GAME = new Game("HEIM", "GAST");
-
   private static final Settings SETTINGS = Settings.defaultSettings().build();
+
+  private static Game INITIAL_GAME = new Game(SETTINGS.homeTeamName().get(), SETTINGS.guestTeamName().get());
 
   private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
 
@@ -43,7 +43,7 @@ public final class GameState {
 
   @SneakyThrows
   public static <E extends Event> void addEvent(E event) {
-    log.info("Event added: " + event.description());
+    log.info("Event added: {}", event.description());
     EVENTS.add(event);
     updateGameState();
 

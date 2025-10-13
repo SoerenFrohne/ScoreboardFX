@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.view;
 
 import de.tvneheim.scoreboardfx.viewmodel.GameService;
-import de.tvneheim.scoreboardfx.model.TeamType;
+import de.tvneheim.scoreboardfx.model.Side;
 import javafx.event.ActionEvent;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ public class GuestTeamActions extends TeamActions {
 
   @Override
   public void onTeamTimeOut(ActionEvent event) {
-    GameService.requestTimeOut(TeamType.GUEST);
+    GameService.requestTimeOut(Side.GUEST);
   }
 
   @Override

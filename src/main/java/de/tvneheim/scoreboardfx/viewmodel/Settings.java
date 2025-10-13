@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.viewmodel;
 
-import de.tvneheim.scoreboardfx.infrastructure.settings.PredefinedTeam;
 import javafx.beans.property.*;
+import javafx.scene.image.Image;
 import lombok.Builder;
 
 import java.time.Duration;
@@ -10,8 +10,10 @@ import java.time.Duration;
 public record Settings(
 
     // Teams
-    ObjectProperty<PredefinedTeam> homeTeam,
-    ObjectProperty<PredefinedTeam> guestTeam,
+    StringProperty homeTeamName,
+    ObjectProperty<Image> homeTeamLogo,
+    StringProperty guestTeamName,
+    ObjectProperty<Image> guestTeamLogo,
 
     // Time Management
     IntegerProperty numberOfPeriods,
@@ -36,8 +38,10 @@ public record Settings(
   public static SettingsBuilder defaultSettings() {
     return Settings.builder()
         // Teams
-        .homeTeam(new SimpleObjectProperty<>(new PredefinedTeam("HEIM", null, "HEIM")))
-        .guestTeam(new SimpleObjectProperty<>(new PredefinedTeam("GAST", null, "GAST")))
+        .homeTeamName(new SimpleStringProperty("Heim"))
+        .homeTeamLogo(new SimpleObjectProperty<>())
+        .guestTeamName(new SimpleStringProperty("Gast"))
+        .guestTeamLogo(new SimpleObjectProperty<>())
 
         // Time
         .numberOfPeriods(new SimpleIntegerProperty(2))

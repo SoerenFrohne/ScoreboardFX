@@ -5,6 +5,6 @@ import de.tvneheim.scoreboardfx.model.*;
 public class PenaltyHomeAdded extends PenaltyAdded {
 
   public PenaltyHomeAdded(Penalty penalty) {
-    super(penalty, TeamType.HOME);
+    super(penalty, Side.HOME);
   }
 }

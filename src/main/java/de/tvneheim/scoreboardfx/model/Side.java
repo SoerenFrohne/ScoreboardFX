@@ -1,6 +1,6 @@
 package de.tvneheim.scoreboardfx.model;
 
-public enum TeamType {
+public enum Side {
     HOME,
     GUEST
 }

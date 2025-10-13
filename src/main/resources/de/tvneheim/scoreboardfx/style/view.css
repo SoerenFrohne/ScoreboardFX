@@ -30,19 +30,19 @@ Label {
 }
 
 #period {
-    -fx-font-size: 64px;
+    -fx-font-size: 48px;
 }
 
 #time {
     -fx-font-family: "Compagnon Medium";
-    -fx-font-size: 128px;
+    -fx-font-size: 144px;
     -fx-effect: dropshadow(gaussian,#000, 10, 0.5, 0, 5);
 }
 
 .specialTimeContainer {
 }
 
-#pauseTime, #pauseDescription, #ttoTime, #ttoDescription {
+#pauseTime, #pauseDescription, #ttoTime, #ttoDescription, #presentedLabel {
     -fx-font-family: "Compagnon Medium";
     -fx-font-size: 32px;
     -fx-padding: 16px;

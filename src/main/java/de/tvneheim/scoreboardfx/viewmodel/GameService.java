@@ -20,8 +20,8 @@ public final class GameService {
     GameState.addEvent(new GameStarted());
   }
 
-  public static void changeName(TeamType teamType, String newName) {
-    GameState.addEvent(new ChangedTeamName(teamType, newName));
+  public static void changeName(Side side, String newName) {
+    GameState.addEvent(new ChangedTeamName(side, newName));
   }
 
   public static void stopTime() {
@@ -83,7 +83,7 @@ public final class GameService {
     });
   }
 
-  public static void requestTimeOut(TeamType teamType) {
+  public static void requestTimeOut(Side side) {
     if (GameState.getCurrentGame().home().timeOuts().size() <= GameState.getSettings().maxTimeOutsPerPeriod().get()) {
 
       var timeOut = new TimeOut(
@@ -94,7 +94,7 @@ public final class GameService {
 
       getStopWatch().pause();
       SoundBoard.honkShort();
-      GameState.addEvent(new TeamTimeOutAdded(teamType, timeOut));
+      GameState.addEvent(new TeamTimeOutAdded(side, timeOut));
 
       getStopWatch().getTimeOutTimer().start();
       getStopWatch().getTimeOutTimer().overWarningTime().addListener(observable -> SoundBoard.honkShort());

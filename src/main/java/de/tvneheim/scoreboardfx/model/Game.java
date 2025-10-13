@@ -13,8 +13,8 @@ public record Game(
   public Game(String homeTeamName, String guestTeamName) {
     this(
         Status.INITIAL,
-        new Team(TeamType.HOME, homeTeamName),
-        new Team(TeamType.GUEST, guestTeamName),
+        new Team(Side.HOME, homeTeamName),
+        new Team(Side.GUEST, guestTeamName),
         new Time()
     );
   }

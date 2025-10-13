@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.viewmodel.events;
 
 import de.tvneheim.scoreboardfx.model.Game;
-import de.tvneheim.scoreboardfx.model.TeamType;
+import de.tvneheim.scoreboardfx.model.Side;
 import de.tvneheim.scoreboardfx.model.TimeOut;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TeamTimeOutAdded extends Event {
 
-  private final TeamType teamType;
+  private final Side side;
   private final TimeOut timeOut;
 
   @Override
@@ -20,12 +20,12 @@ public class TeamTimeOutAdded extends Event {
 
   @Override
   public String description() {
-    return "Team-Time-Out für " + (teamType == TeamType.HOME ? "das Heimteam" : "das Gastteam");
+    return "Team-Time-Out für " + (side == Side.HOME ? "das Heimteam" : "das Gastteam");
   }
 
   @Override
   public Game apply(Game current) {
-    if (teamType == TeamType.HOME) {
+    if (side == Side.HOME) {
       var home = current.home().addTimeOut(timeOut);
       return current.withHome(home);
     } else {

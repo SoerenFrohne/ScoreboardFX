@@ -1,7 +1,7 @@
 package de.tvneheim.scoreboardfx.view;
 
 import de.tvneheim.scoreboardfx.viewmodel.GameService;
-import de.tvneheim.scoreboardfx.model.TeamType;
+import de.tvneheim.scoreboardfx.model.Side;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -15,7 +15,7 @@ public class HomeTeamActions extends TeamActions {
 
   public HomeTeamActions() {
     super();
-    teamName.textProperty().addListener((observable, oldValue, newValue) -> GameService.changeName(TeamType.HOME, newValue));
+    teamName.textProperty().addListener((observable, oldValue, newValue) -> GameService.changeName(Side.HOME, newValue));
   }
 
   @Override
@@ -29,7 +29,7 @@ public class HomeTeamActions extends TeamActions {
 
   @Override
   public void onTeamTimeOut(ActionEvent event) {
-    GameService.requestTimeOut(TeamType.HOME);
+    GameService.requestTimeOut(Side.HOME);
   }
 
   @Override
