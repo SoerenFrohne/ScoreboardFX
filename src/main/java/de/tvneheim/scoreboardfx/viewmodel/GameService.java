@@ -12,14 +12,6 @@ import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
 @Log
 public final class GameService {
 
-  public static void initializeGame() {
-    GameState.restart();
-  }
-
-  public static void startGame() {
-    GameState.addEvent(new GameStarted());
-  }
-
   public static void changeName(Side side, String newName) {
     GameState.addEvent(new ChangedTeamName(side, newName));
   }

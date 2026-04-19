@@ -4,7 +4,9 @@ import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.viewmodel.SuspensionTimer;
 import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -35,6 +37,7 @@ public class SuspensionRow extends HBox {
       bindTime(suspensionTimer);
 
       deleteButton.disableProperty().bind(getStopWatch().getPeriodTimer().stopped().not());
+      deleteButton.setOnAction(event -> suspensionTimer.completed().setValue(true));
 
       // Remove when completed
       suspensionTimer.completed().addListener((observable, oldValue, completed) -> {
@@ -49,7 +52,7 @@ public class SuspensionRow extends HBox {
   private void bindTime(SuspensionTimer suspension) {
 
     // Initiale View
-    minutes.setText(String.valueOf(suspension.remainingTime().get().toMinutesPart()));
+    minutes.setText(String.valueOf(suspension.remainingTime().get().toMinutes()));
     seconds.setText(String.valueOf(suspension.remainingTime().get().toSecondsPart()));
 
     // View → ViewModel

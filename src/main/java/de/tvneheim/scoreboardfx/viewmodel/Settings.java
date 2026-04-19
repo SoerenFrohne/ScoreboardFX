@@ -19,6 +19,7 @@ public record Settings(
     IntegerProperty numberOfPeriods,
     ObjectProperty<Duration> lengthPerPeriod,
     ObjectProperty<Duration> pauseBetweenPeriods,
+    ObjectProperty<Duration> penaltyLength,
 
     // Time-Outs
     ObjectProperty<Duration> timePerTeamTimeOut,
@@ -30,7 +31,6 @@ public record Settings(
     ObjectProperty<Duration> showTimeOfAds,
 
     // Data
-    StringProperty pathToLogos,
     StringProperty pathToAdImages,
     StringProperty pathToAdVideos
 ) {
@@ -45,12 +45,13 @@ public record Settings(
 
         // Time
         .numberOfPeriods(new SimpleIntegerProperty(2))
-        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofSeconds(15))) //TODO: Reset to 30 minutes
-        .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
+        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofMinutes(30)))
+        .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofMinutes(10)))
+        .penaltyLength(new SimpleObjectProperty<>(Duration.ofMinutes(2)))
 
         // Time-Outs
-        .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
-        .timeOutWarningTime(new SimpleObjectProperty<>(Duration.ofSeconds(5)))
+        .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofSeconds(60)))
+        .timeOutWarningTime(new SimpleObjectProperty<>(Duration.ofSeconds(50)))
         .maxTimeOutsPerPeriod(new SimpleIntegerProperty(2))
         .maxTimeOutsPerGame(new SimpleIntegerProperty(3))
 
@@ -58,9 +59,8 @@ public record Settings(
         .showTimeOfAds(new SimpleObjectProperty<>(Duration.ofSeconds(30)))
 
         // Data
-        .pathToLogos(new SimpleStringProperty("D:\\TV Neheim 1884\\Scoreboard\\Logos"))
-        .pathToAdImages(new SimpleStringProperty("D:\\TV Neheim 1884\\Scoreboard\\Werbung\\Bilder"))
-        .pathToAdVideos(new SimpleStringProperty("D:\\TV Neheim 1884\\Scoreboard\\Werbung\\Videos"))
+        .pathToAdImages(new SimpleStringProperty())
+        .pathToAdVideos(new SimpleStringProperty())
         ;
   }
 

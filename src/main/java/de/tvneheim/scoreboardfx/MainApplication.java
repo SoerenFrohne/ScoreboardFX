@@ -34,12 +34,7 @@ public class MainApplication extends Application {
     primaryStage.setScene(settingsScene);
     primaryStage.show();
 
-    var clientLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml"));
-    var clientScene = new Scene(clientLoader.load());
-    clientScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/client.css").toExternalForm());
-    primaryStage.setTitle("Scoreboard Client");
-    //clientStage.setScene(clientScene);
-    //clientStage.show();
+
 
     var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
     var viewScene = new Scene(viewLoader.load());

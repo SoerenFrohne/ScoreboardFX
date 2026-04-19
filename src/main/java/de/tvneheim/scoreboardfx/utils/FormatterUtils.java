@@ -13,8 +13,22 @@ public final class FormatterUtils {
     return String.format("%02d:%02d", minutes, seconds);
   }
 
+  public static Duration durationFromString(String input) {
+
+    String[] parts = input.split(":");
+
+    int minutes = Integer.parseInt(parts[0]);
+    int seconds = Integer.parseInt(parts[1]);
+
+    if (seconds < 0 || seconds > 59) {
+      throw new NumberFormatException("Seconds must be between 0 and 60!");
+    }
+
+    return Duration.ofMinutes(minutes).plusSeconds(seconds);
+  }
+
   public static String time(Duration duration) {
-    return String.format("%02d:%02d", duration.toMinutesPart(), duration.toSecondsPart());
+    return String.format("%02d:%02d", duration.toMinutes(), duration.toSecondsPart());
   }
 
   public static StringBinding bindFormattedTime(ObjectProperty<Duration> duration) {

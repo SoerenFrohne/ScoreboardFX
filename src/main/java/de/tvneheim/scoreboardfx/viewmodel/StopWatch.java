@@ -1,7 +1,12 @@
 package de.tvneheim.scoreboardfx.viewmodel;
 
 
+import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class StopWatch extends AnimationTimer {
 
   private static final Duration TICK_DELTA = Duration.ofSeconds(1);
-  private int period = 1;
   private long lastTickSecond = -1;
   private long startNanos = -1L;
 
@@ -21,7 +25,9 @@ public class StopWatch extends AnimationTimer {
   private final Settings settings;
 
   // time stats
+  private IntegerProperty period = new SimpleIntegerProperty(1);
   private final PeriodTimer periodTimer;
+  private final ObjectProperty<GameTimeStatus> gameTimeStatus = new SimpleObjectProperty<>(GameTimeStatus.PRE_GAME);
   private final PauseTimer pauseTimer;
   private final TimeOutTimer timeOutTimer;
   private final SuspensionSlots suspensionsHome, suspensionsGuest;
@@ -36,20 +42,35 @@ public class StopWatch extends AnimationTimer {
 
     // set up period management
     periodTimer.finished().addListener((observableValue, aBoolean, finished) -> {
+      log.info("Halbzeitende : {}", periodTimer.currentTime().get());
+
       if (finished) {
-        pauseTimer.start();
+        if (period.get() + 1 > settings.numberOfPeriods().get()) {
+          gameTimeStatus.setValue(GameTimeStatus.FINISHED);
+          log.info("Spielende : {}", periodTimer.currentTime().get());
+        } else {
+          SoundBoard.honkLong();
+          pauseTimer.start();
+        }
       }
     });
+
     pauseTimer.finished().addListener((observable, oldValue, finished) -> {
       if (finished) {
-        period++;
-        periodTimer.reset("2. Halbzeit", periodTimer.endingTime().get().multipliedBy(period), periodTimer.currentTime().get());
-        pauseTimer.reset();
+        skipToNextPeriod();
       }
     });
 
     // Start the animation timer loop
     this.start();
+  }
+
+  public void skipToNextPeriod() {
+    period.setValue(period.get() + 1);
+    periodTimer.reset(period.get() + ". Halbzeit", periodTimer.endingTime().get().multipliedBy(period.get()), periodTimer.currentTime().get());
+    pauseTimer.reset();
+    log.info("Halbzeit {} konfiguriert. Aktuelle Zeit ist {}", period.get(), periodTimer.currentTime().get());
+
   }
 
   @Override
@@ -78,10 +99,12 @@ public class StopWatch extends AnimationTimer {
 
 
   public void play() {
+    gameTimeStatus.setValue(GameTimeStatus.RUNNING);
     periodTimer.start();
   }
 
   public void pause() {
+    gameTimeStatus.setValue(GameTimeStatus.PAUSED);
     periodTimer.stop();
   }
 

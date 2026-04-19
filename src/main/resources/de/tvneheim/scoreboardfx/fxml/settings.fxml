@@ -66,7 +66,7 @@
                           <content>
                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
                            <children>
-                              <HBox spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox maxHeight="1.7976931348623157E308" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0" HBox.hgrow="ALWAYS">
                                        <children>
@@ -116,7 +116,25 @@
                                           <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                        </padding>
                                     </VBox>
+                                    <Separator layoutX="291.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="title-1" text="Strafen" />
+                                          <HBox spacing="8.0">
+                                             <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Länge" HBox.hgrow="ALWAYS" />
+                                                <Spinner fx:id="penaltyLength" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </VBox>
                                  </children>
+                                 <padding>
+                                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </AnchorPane>
@@ -124,7 +142,29 @@
                       </Tab>
                       <Tab text="Werbung">
                           <content>
-                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" />
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox spacing="8.0">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="128.0" text="Ordner mit Werbung:" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="pathToAds" maxWidth="256.0" HBox.hgrow="ALWAYS" />
+                                          <Button mnemonicParsing="false" onAction="#pickAdFolder" text="Ordner wählen" />
+                                       </children>
+                                    </HBox>
+                                    <HBox maxWidth="1.7976931348623157E308" spacing="8.0">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="128.0" text="Anzeigedauer:" HBox.hgrow="ALWAYS" />
+                                          <Spinner fx:id="adDuration" maxWidth="256.0" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                 </padding>
+                              </VBox>
+                           </children></AnchorPane>
                           </content>
                       </Tab>
                   </tabs>

@@ -33,18 +33,13 @@ public record PeriodTimer(
     stopped.setValue(true);
   }
 
-  public void reset(Duration gameTime, Duration endingTime) {
-    stop();
-    this.currentTime.setValue(gameTime);
-    this.endingTime.setValue(endingTime);
-  }
-
   @Override
   public void onTick(Duration delta) {
     if (isRunning()) {
       currentTime.add(delta);
 
       if (isExpired()) {
+        log.info("Expired: {}", currentTime);
         stop();
         finished.setValue(true);
       }
@@ -72,5 +67,6 @@ public record PeriodTimer(
     this.description.setValue(description);
     this.endingTime.set(length);
     this.currentTime.set(current);
+    this.finished.setValue(false);
   }
 }

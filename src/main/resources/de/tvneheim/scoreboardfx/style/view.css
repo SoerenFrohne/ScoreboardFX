@@ -42,7 +42,7 @@ Label {
 .specialTimeContainer {
 }
 
-#pauseTime, #pauseDescription, #ttoTime, #ttoDescription, #presentedLabel {
+#pauseTime, #pauseDescription, #ttoTime, #ttoDescription, #presentedLabel, #endLabel {
     -fx-font-family: "Compagnon Medium";
     -fx-font-size: 32px;
     -fx-padding: 16px;

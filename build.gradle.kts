@@ -48,6 +48,7 @@ dependencies {
     implementation("io.github.mkpaz:atlantafx-base:2.0.1")
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("ch.qos.logback:logback-classic:1.5.18")
+    implementation("com.h2database:h2:2.4.240")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testImplementation("org.assertj:assertj-core:3.27.3")

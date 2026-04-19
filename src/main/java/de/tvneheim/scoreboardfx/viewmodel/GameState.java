@@ -23,7 +23,7 @@ public final class GameState {
 
   private static final Settings SETTINGS = Settings.defaultSettings().build();
 
-  private static Game INITIAL_GAME = new Game(SETTINGS.homeTeamName().get(), SETTINGS.guestTeamName().get());
+  private static final Game INITIAL_GAME = new Game(SETTINGS.homeTeamName().get(), SETTINGS.guestTeamName().get());
 
   private static final ObservableList<Event> EVENTS = FXCollections.observableArrayList();
 
@@ -87,13 +87,6 @@ public final class GameState {
 
   public static boolean isPaused() {
     return STOP_WATCH.getPeriodTimer().isStopped();
-  }
-
-  public static void restart() {
-    EVENTS.clear();
-    INITIAL_GAME = GAME.get().reset();
-    STOP_WATCH.getPeriodTimer().reset(Duration.ZERO, SETTINGS.lengthPerPeriod().get());
-    updateGameState();
   }
 
   public static Event findLastOfType(EventType type) {

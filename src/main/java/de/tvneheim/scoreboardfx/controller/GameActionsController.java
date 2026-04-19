@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -15,17 +16,18 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static de.tvneheim.scoreboardfx.utils.FormatterUtils.bindFormattedTime;
-import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.*;
+import static de.tvneheim.scoreboardfx.viewmodel.GameState.getStopWatch;
+import static javafx.beans.binding.Bindings.not;
 
 @Log
 public class GameActionsController implements Initializable {
 
   @FXML
-  private Label clientTime;
+  private TextField clientTime, clientTimeOverwriter;
 
   @FXML
-  private Button startStopButton;
+  private Button startStopButton, skipHalftime;
 
   @FXML
   private Label scoreHome, scoreGuest, periodInfo;
@@ -47,9 +49,32 @@ public class GameActionsController implements Initializable {
     SoundBoard.honkShort();
   }
 
+  @FXML
+  protected void skipToNextPeriod() {
+    getStopWatch().skipToNextPeriod();
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    clientTime.managedProperty().bind(clientTime.visibleProperty());
     clientTime.textProperty().bind(bindFormattedTime(GameState.getStopWatch().getPeriodTimer().currentTime()));
+    clientTime.setVisible(false);
+
+    clientTimeOverwriter.managedProperty().bind(clientTimeOverwriter.visibleProperty());
+    clientTimeOverwriter.focusedProperty().addListener((observableValue, old, focused) -> {
+      log.info("Focused: " + focused);
+      log.info("Text: " + clientTimeOverwriter);
+      if (!focused) {
+        try {
+          var adjustedTime = durationFromString(clientTimeOverwriter.getText());
+          GameState.getStopWatch().getPeriodTimer().currentTime().setValue(adjustedTime);
+        } catch (Exception e) {
+          var fallback = GameState.getStopWatch().getPeriodTimer().currentTime().get();
+          clientTimeOverwriter.textProperty().setValue(time(fallback));
+        }
+      }
+    });
 
     periodInfo.textProperty().bind(GameState.getStopWatch().getPeriodTimer().description());
 
@@ -62,6 +87,21 @@ public class GameActionsController implements Initializable {
       startStopButton.setText(stopped ? "Start" : "Pause");
       var icon = stopped ? new FontIcon("fas-play") : new FontIcon("fas-pause");
       startStopButton.setGraphic(icon);
+
+      toggleClientTimeFields(stopped);
     });
+
+    skipHalftime.disableProperty().bind(not(getStopWatch().getPauseTimer().running()));
+  }
+
+  private void toggleClientTimeFields(Boolean stopped) {
+    if (stopped) {
+      clientTime.setVisible(false);
+      clientTimeOverwriter.setVisible(true);
+      clientTimeOverwriter.textProperty().setValue(clientTime.textProperty().getValue());
+    } else {
+      clientTime.setVisible(true);
+      clientTimeOverwriter.setVisible(false);
+    }
   }
 }

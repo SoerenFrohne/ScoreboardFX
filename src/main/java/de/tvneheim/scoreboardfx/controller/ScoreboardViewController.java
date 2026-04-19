@@ -2,7 +2,9 @@ package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.util.Animations;
 import de.tvneheim.scoreboardfx.model.Side;
+import de.tvneheim.scoreboardfx.utils.FileUtils;
 import de.tvneheim.scoreboardfx.viewmodel.GameState;
+import de.tvneheim.scoreboardfx.viewmodel.GameTimeStatus;
 import de.tvneheim.scoreboardfx.viewmodel.SuspensionSlots;
 import de.tvneheim.scoreboardfx.utils.LayoutUtils;
 import de.tvneheim.scoreboardfx.view.SuspensionLabel;
@@ -19,9 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -46,7 +46,7 @@ public class ScoreboardViewController implements Initializable {
   private VBox penaltiesHome, penaltiesGuest;
 
   @FXML
-  private HBox pauseContainer, ttoContainer;
+  private HBox pauseContainer, ttoContainer, endContainer;
 
   @FXML
   private ImageView adDisplay, homeLogo, guestLogo;
@@ -60,49 +60,49 @@ public class ScoreboardViewController implements Initializable {
     initBackground();
     initAnimations();
 
-    Platform.runLater(() -> {
-      initAdLoop();
-      initLogos();
-    });
+    //TODO: reinit on change in adsettings
+    initAdLoop();
+
+    Platform.runLater(this::initLogos);
   }
 
   private void initAdLoop() {
-
-    var directory = new File(GameState.getSettings().pathToAdImages().get());
-    var files = Arrays.stream(directory.listFiles()).toList();
-    log.info("Found following ads: {}", files);
-    var file = files.getFirst();
-    var img = new Image(file.toURI().toString());
-
     LayoutUtils.bindExactSize(
         adDisplayContainer,
         grid.widthProperty().divide(grid.getColumnConstraints().size()).multiply(GridPane.getColumnSpan(adDisplayContainer)),
         grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(adDisplayContainer))
     );
 
-    adDisplay.setImage(img);
     adDisplay.setSmooth(true);
     adDisplay.setPreserveRatio(true);
     //adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
     adDisplay.fitWidthProperty().bind(adDisplayContainer.widthProperty());
 
-    Rectangle clip = new Rectangle();
-    clip.widthProperty().bind(adDisplayContainer.widthProperty());
-    clip.heightProperty().bind(adDisplayContainer.heightProperty());
-    adDisplayContainer.setClip(clip);
+    var files = FileUtils.listFiles(GameState.getSettings().pathToAdImages().get());
+    log.info("Found following ads from '{}': {}", files);
 
-    AtomicInteger index = new AtomicInteger();
-    var timeline = new Timeline(new KeyFrame(convertToFxDuration(GameState.getSettings().showTimeOfAds().get()), event -> {
-      index.getAndIncrement();
-      var currentFile = files.get(index.get() % files.size());
-      var currentImg = new Image(currentFile.toURI().toString());
-      adDisplay.setImage(currentImg);
-    }));
+    if (!files.isEmpty()) {
+      var file = files.getFirst();
+      var img = new Image(file.toURI().toString());
+      adDisplay.setImage(img);
 
+      Rectangle clip = new Rectangle();
+      clip.widthProperty().bind(adDisplayContainer.widthProperty());
+      clip.heightProperty().bind(adDisplayContainer.heightProperty());
+      adDisplayContainer.setClip(clip);
 
-    timeline.setCycleCount(Timeline.INDEFINITE);
-    timeline.setAutoReverse(false);
-    timeline.playFromStart();
+      AtomicInteger index = new AtomicInteger();
+      var timeline = new Timeline(new KeyFrame(convertToFxDuration(GameState.getSettings().showTimeOfAds().get()), event -> {
+        index.getAndIncrement();
+        var currentFile = files.get(index.get() % files.size());
+        var currentImg = new Image(currentFile.toURI().toString());
+        adDisplay.setImage(currentImg);
+      }));
+
+      timeline.setCycleCount(Timeline.INDEFINITE);
+      timeline.setAutoReverse(false);
+      timeline.playFromStart();
+    }
   }
 
   private void bindModel() {
@@ -110,14 +110,29 @@ public class ScoreboardViewController implements Initializable {
     time.textProperty().bind(bindFormattedTime(getStopWatch().getPeriodTimer().currentTime()));
 
     pauseTime.textProperty().bind(bindFormattedTime(getStopWatch().getPauseTimer().current()));
+    pauseContainer.managedProperty().bind(pauseContainer.visibleProperty());
     pauseContainer.visibleProperty().bind(getStopWatch().getPauseTimer().running());
+
+    endContainer.setVisible(false);
+    endContainer.managedProperty().bind(endContainer.visibleProperty());
+    getStopWatch().getGameTimeStatus().addListener((observableValue, oldStatus, newStatus) -> {
+      if (newStatus == GameTimeStatus.FINISHED) {
+        endContainer.setVisible(true);
+        pauseContainer.setVisible(false);
+      }
+    });
 
     ttoTime.textProperty().bind(bindFormattedTime(getStopWatch().getTimeOutTimer().current()));
     ttoContainer.visibleProperty().bind(getStopWatch().getTimeOutTimer().running());
 
     presentedLabel.visibleProperty().bind(
-        getStopWatch().getPauseTimer().running().or(getStopWatch().getTimeOutTimer().running()).not()
+        getStopWatch().getPauseTimer().running()
+            .or(getStopWatch().getTimeOutTimer().running())
+            .or(getSettings().pathToAdImages().isEmpty())
+            .not()
     );
+
+    getSettings().pathToAdImages().addListener((observable, oldValue, newValue) -> log.info("newVal: {}", newValue));
 
     nameHome.textProperty().bind(getSettings().homeTeamName());
     nameGuest.textProperty().bind(getSettings().guestTeamName());

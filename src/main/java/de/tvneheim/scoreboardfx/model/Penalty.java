@@ -27,7 +27,7 @@ public record Penalty(
   }
 
   public static Penalty twoMinutes(Player player, Duration start) {
-    return new Penalty(PenaltyType.TWO_MINUTES, player, start, Duration.ofSeconds(5)); //TODO: revert
+    return new Penalty(PenaltyType.TWO_MINUTES, player, start, Duration.ofMinutes(2));
   }
 
   public static Penalty red(Player player, Duration start) {

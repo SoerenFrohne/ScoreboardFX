@@ -83,6 +83,15 @@
                               </Label>
                            </children>
                         </HBox>
+                        <HBox fx:id="endContainer" alignment="TOP_CENTER" disable="true" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="specialTimeContainer">
+                           <children>
+                              <Label fx:id="endLabel" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" text="Endergebnis" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                   </StackPane>
                     </children>
@@ -93,7 +102,7 @@
 <!--                        </ImageView>-->
 <!--                    </imageView>-->
 <!--                </ImageViewPane>-->
-            <StackPane fx:id="adDisplayContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: red;" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
+            <StackPane fx:id="adDisplayContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
                <children>
                   <ImageView fx:id="adDisplay" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
                </children>

@@ -6,48 +6,41 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-      spacing="8.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.tvneheim.scoreboardfx.controller.GameActionsController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="8.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.tvneheim.scoreboardfx.controller.GameActionsController">
     <children>
         <VBox VBox.vgrow="ALWAYS">
             <children>
-                <Label fx:id="periodInfo" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                       maxWidth="1.7976931348623157E308" text="Halbzeit" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                <Label fx:id="periodInfo" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Halbzeit" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                     <padding>
-                        <Insets left="16.0" right="16.0" top="16.0"/>
+                        <Insets left="16.0" right="16.0" top="16.0" />
                     </padding>
                 </Label>
                 <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <children>
-                        <Label fx:id="scoreHome" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0"
-                               layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                               style="-fx-background-color: #000;" text="00" textAlignment="CENTER" textFill="RED"
-                               HBox.hgrow="ALWAYS">
+                        <Label fx:id="scoreHome" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000;" text="00" textAlignment="CENTER" textFill="RED" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font name="Consolas Bold" size="50.0"/>
+                                <Font name="Consolas Bold" size="50.0" />
                             </font>
                             <padding>
-                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                             </padding>
                         </Label>
-                        <Label fx:id="clientTime" alignment="CENTER" contentDisplay="CENTER"
-                               maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                               style="-fx-background-color: #000;" text="00:00" textAlignment="CENTER"
-                               textFill="#d1ff54" HBox.hgrow="ALWAYS">
+                  <TextField fx:id="clientTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000;" text="00:00" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Consolas" size="50.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="clientTimeOverwriter" alignment="CENTER" layoutX="97.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000;" text="00:00">
+                     <font>
+                        <Font name="Consolas" size="50.0" />
+                     </font>
+                  </TextField>
+                        <Label fx:id="scoreGuest" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000;" text="00" textAlignment="CENTER" textFill="RED" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font name="Consolas Bold" size="50.0"/>
-                            </font>
-                        </Label>
-                        <Label fx:id="scoreGuest" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0"
-                               layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                               style="-fx-background-color: #000;" text="00" textAlignment="CENTER" textFill="RED"
-                               HBox.hgrow="ALWAYS">
-                            <font>
-                                <Font name="Consolas Bold" size="50.0"/>
+                                <Font name="Consolas Bold" size="50.0" />
                             </font>
                             <padding>
-                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                             </padding>
                         </Label>
                     </children>
@@ -56,23 +49,25 @@
         </VBox>
         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="startStopButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" onAction="#toggleStartStop" text="Start" HBox.hgrow="ALWAYS">
+                <Button fx:id="startStopButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleStartStop" text="Start" HBox.hgrow="ALWAYS">
                     <graphic>
-                        <FontIcon iconLiteral="fas-play"/>
+                        <FontIcon iconLiteral="fas-play" />
                     </graphic>
                 </Button>
-                <Button fx:id="buzzer" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#honk" text="Hupe"
-                        HBox.hgrow="ALWAYS">
+                <Button fx:id="buzzer" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#honk" text="Hupe" HBox.hgrow="ALWAYS">
                     <graphic>
-                        <FontIcon iconLiteral="fas-bullhorn"/>
+                        <FontIcon iconLiteral="fas-bullhorn" />
                     </graphic>
                 </Button>
+            <Button fx:id="skipHalftime" disable="true" layoutX="481.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#skipToNextPeriod" text="Nächste Halbzeit" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <FontIcon iconLiteral="fas-step-forward" />
+               </graphic>
+            </Button>
             </children>
         </HBox>
     </children>
     <padding>
-        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
     </padding>
 </VBox>

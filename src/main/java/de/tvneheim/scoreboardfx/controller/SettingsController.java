@@ -15,8 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class SettingsController implements Initializable {
   private StackPane root;
 
   @FXML
-  private TextField homeTeamName, guestTeamName;
+  private TextField homeTeamName, guestTeamName, pathToAds;
 
   @FXML
   private ImageView homeLogo, guestLogo;
@@ -41,7 +41,7 @@ public class SettingsController implements Initializable {
   private Spinner<Integer> numberOfPeriods;
 
   @FXML
-  private Spinner<Duration> periodLength, pauseLength, ttoLength, ttoWarningTime;
+  private Spinner<Duration> periodLength, pauseLength, ttoLength, ttoWarningTime, penaltyLength;
 
   private final Settings settings = GameState.getSettings();
 
@@ -62,11 +62,16 @@ public class SettingsController implements Initializable {
     pauseLength.setValueFactory(new DurationSpinnerValueFactory());
     pauseLength.getValueFactory().valueProperty().bindBidirectional(settings.pauseBetweenPeriods());
 
-    ttoLength.setValueFactory(new DurationSpinnerValueFactory());
+    penaltyLength.setValueFactory(new DurationSpinnerValueFactory());
+    penaltyLength.getValueFactory().valueProperty().bindBidirectional(settings.penaltyLength());
+
+    ttoLength.setValueFactory(new DurationSpinnerValueFactory(Duration.ZERO, Duration.ofSeconds(180), Duration.ofSeconds(1)));
     ttoLength.getValueFactory().valueProperty().bindBidirectional(settings.timePerTeamTimeOut());
 
-    ttoWarningTime.setValueFactory(new DurationSpinnerValueFactory());
+    ttoWarningTime.setValueFactory(new DurationSpinnerValueFactory(Duration.ZERO, Duration.ofSeconds(180), Duration.ofSeconds(1)));
     ttoWarningTime.getValueFactory().valueProperty().bindBidirectional(settings.timeOutWarningTime());
+
+    pathToAds.textProperty().bindBidirectional(settings.pathToAdImages());
   }
 
   @FXML
@@ -81,8 +86,22 @@ public class SettingsController implements Initializable {
 
   @FXML
   public void startGame(ActionEvent event) throws IOException {
+    var stage = (Stage) root.getScene().getWindow();
+    var clientLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml"));
+    var clientScene = new Scene(clientLoader.load());
+    clientScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/client.css").toExternalForm());
+    stage.setTitle("Scoreboard Client");
+    stage.setScene(clientScene);
+    stage.show();
+  }
 
+  @FXML
+  public void pickAdFolder(ActionEvent event) {
+    var dirChooser = new DirectoryChooser();
+    dirChooser.setTitle("Ordner auswählen");
 
+    var dir = dirChooser.showDialog(root.getScene().getWindow());
+    pathToAds.textProperty().setValue(dir.getAbsolutePath());
   }
 
   private Optional<Image> pickImage() {
