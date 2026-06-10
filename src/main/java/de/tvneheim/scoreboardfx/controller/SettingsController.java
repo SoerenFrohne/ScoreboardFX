@@ -41,7 +41,7 @@ public class SettingsController implements Initializable {
   private Spinner<Integer> numberOfPeriods;
 
   @FXML
-  private Spinner<Duration> periodLength, pauseLength, ttoLength, ttoWarningTime, penaltyLength;
+  private Spinner<Duration> periodLength, pauseLength, ttoLength, ttoWarningTime, penaltyLength, adDuration;
 
   private final Settings settings = GameState.getSettings();
 
@@ -72,6 +72,8 @@ public class SettingsController implements Initializable {
     ttoWarningTime.getValueFactory().valueProperty().bindBidirectional(settings.timeOutWarningTime());
 
     pathToAds.textProperty().bindBidirectional(settings.pathToAdImages());
+    adDuration.setValueFactory(new DurationSpinnerValueFactory(Duration.ofSeconds(1), Duration.ofMinutes(30), Duration.ofSeconds(1)));
+    adDuration.getValueFactory().valueProperty().bindBidirectional(settings.showTimeOfAds());
   }
 
   @FXML

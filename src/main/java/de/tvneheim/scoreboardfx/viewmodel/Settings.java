@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import lombok.Builder;
 
+import java.nio.file.Paths;
 import java.time.Duration;
 
 @Builder
@@ -56,10 +57,10 @@ public record Settings(
         .maxTimeOutsPerGame(new SimpleIntegerProperty(3))
 
         // Advertisement
-        .showTimeOfAds(new SimpleObjectProperty<>(Duration.ofSeconds(30)))
+        .showTimeOfAds(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
 
         // Data
-        .pathToAdImages(new SimpleStringProperty())
+        .pathToAdImages(new SimpleStringProperty(Paths.get("predefinitions/ads").toAbsolutePath().normalize().toString()))
         .pathToAdVideos(new SimpleStringProperty())
         ;
   }

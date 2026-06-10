@@ -59,8 +59,6 @@ public class ScoreboardViewController implements Initializable {
     bindModel();
     initBackground();
     initAnimations();
-
-    //TODO: reinit on change in adsettings
     initAdLoop();
 
     Platform.runLater(this::initLogos);
@@ -78,8 +76,9 @@ public class ScoreboardViewController implements Initializable {
     //adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
     adDisplay.fitWidthProperty().bind(adDisplayContainer.widthProperty());
 
-    var files = FileUtils.listFiles(GameState.getSettings().pathToAdImages().get());
-    log.info("Found following ads from '{}': {}", files);
+    var path = GameState.getSettings().pathToAdImages().get();
+    var files = FileUtils.listFiles(path);
+    log.info("Found following ads from '{}': {}", path, files);
 
     if (!files.isEmpty()) {
       var file = files.getFirst();
@@ -152,6 +151,8 @@ public class ScoreboardViewController implements Initializable {
       nameHome.setPrefWidth(rootPane.getWidth() * 0.3d);
       nameGuest.setPrefWidth(rootPane.getWidth() * 0.3d);
     });
+
+    GameState.getSettings().pathToAdImages().addListener((observable, oldValue, newValue) -> initAdLoop());
   }
 
   private void updateSuspensions(Pane root, SuspensionSlots suspensions, Side side) {
