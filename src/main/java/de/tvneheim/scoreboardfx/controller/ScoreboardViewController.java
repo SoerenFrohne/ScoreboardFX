@@ -73,7 +73,7 @@ public class ScoreboardViewController implements Initializable {
 
     adDisplay.setSmooth(true);
     adDisplay.setPreserveRatio(true);
-    //adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
+    adDisplay.fitHeightProperty().bind(adDisplayContainer.heightProperty());
     adDisplay.fitWidthProperty().bind(adDisplayContainer.widthProperty());
 
     var path = GameState.getSettings().pathToAdImages().get();
@@ -85,10 +85,7 @@ public class ScoreboardViewController implements Initializable {
       var img = new Image(file.toURI().toString());
       adDisplay.setImage(img);
 
-      Rectangle clip = new Rectangle();
-      clip.widthProperty().bind(adDisplayContainer.widthProperty());
-      clip.heightProperty().bind(adDisplayContainer.heightProperty());
-      adDisplayContainer.setClip(clip);
+
 
       AtomicInteger index = new AtomicInteger();
       var timeline = new Timeline(new KeyFrame(convertToFxDuration(GameState.getSettings().showTimeOfAds().get()), event -> {
