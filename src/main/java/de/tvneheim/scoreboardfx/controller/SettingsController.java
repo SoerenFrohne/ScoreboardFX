@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -108,6 +109,8 @@ public class SettingsController implements Initializable {
 
   private Optional<Image> pickImage() {
     var fileChooser = new FileChooser();
+    var initialDir = Paths.get("predefinitions/logos").toFile();
+    fileChooser.setInitialDirectory(initialDir);
     fileChooser.setTitle("Bild auswählen");
 
     // Standardverzeichnis
