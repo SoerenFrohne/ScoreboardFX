@@ -109,12 +109,10 @@ public class SettingsController implements Initializable {
 
   private Optional<Image> pickImage() {
     var fileChooser = new FileChooser();
-    var initialDir = Paths.get("predefinitions/logos").toFile();
-    fileChooser.setInitialDirectory(initialDir);
     fileChooser.setTitle("Bild auswählen");
 
     // Standardverzeichnis
-    var defaultDir = new File("D:\\TV Neheim 1884\\Scoreboard\\Logos");
+    var defaultDir = Paths.get("predefinitions/logos").toAbsolutePath().toFile();
     if (defaultDir.exists()) {
       fileChooser.setInitialDirectory(defaultDir);
     }

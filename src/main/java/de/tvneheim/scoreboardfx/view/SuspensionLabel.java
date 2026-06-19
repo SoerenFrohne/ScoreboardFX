@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 
+import static de.tvneheim.scoreboardfx.utils.FormatterUtils.doubleDigits;
 import static de.tvneheim.scoreboardfx.utils.FormatterUtils.time;
 
 @SuppressWarnings("CodeBlock2Expr")
@@ -53,6 +54,10 @@ public class SuspensionLabel extends Label {
         this.setText(formatSuspension(side, suspension.number().get(), remainingTime));
       });
 
+      suspension.number().addListener((observable, oldVal, newVal) -> {
+        this.setText(formatSuspension(side, newVal.intValue(), suspension.remainingTime().get()));
+      });
+
       // hide when finished
       suspension.completed().addListener((observable, oldValue, completed) -> {
         if (completed) {
@@ -72,7 +77,7 @@ public class SuspensionLabel extends Label {
   }
 
   private static String formatSuspension(Side side, int number, Duration duration) {
-    return side == Side.HOME ? number + " " + time(duration) : time(duration) + " " + number;
+    return side == Side.HOME ? doubleDigits(number) + " " + time(duration) : time(duration) + " " + number;
   }
 
 }

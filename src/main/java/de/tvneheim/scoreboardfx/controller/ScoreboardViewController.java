@@ -188,10 +188,10 @@ public class ScoreboardViewController implements Initializable {
         grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(homeLogoContainer))
     );
     homeLogo.fitHeightProperty().bind(homeLogoContainer.heightProperty());
-
-    //var homeTeamLogo = new Image(files.get(2).toURI().toString(), homeLogo.getFitWidth() * 1.25, homeLogo.getFitHeight() * 1.25, true, true);
+    homeLogo.fitWidthProperty().bind(homeLogoContainer.widthProperty());
     homeLogo.imageProperty().bind(GameState.getSettings().homeTeamLogo());
     homeLogo.setSmooth(true);
+    homeLogo.setPreserveRatio(true);
 
     // guest
     LayoutUtils.bindExactSize(
@@ -200,9 +200,10 @@ public class ScoreboardViewController implements Initializable {
         grid.heightProperty().divide(grid.getRowConstraints().size()).multiply(GridPane.getRowSpan(guestLogoContainer))
     );
     guestLogo.fitHeightProperty().bind(guestLogoContainer.heightProperty());
-
+    guestLogo.fitWidthProperty().bind(guestLogoContainer.widthProperty());
     guestLogo.imageProperty().bind(GameState.getSettings().guestTeamLogo());
     guestLogo.setSmooth(true);
+    guestLogo.setPreserveRatio(true);
   }
 
   private void initAnimations() {
