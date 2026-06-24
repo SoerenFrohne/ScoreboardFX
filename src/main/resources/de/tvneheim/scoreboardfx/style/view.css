@@ -44,7 +44,7 @@ Label {
 
 #pauseTime, #pauseDescription, #ttoTime, #ttoDescription, #presentedLabel, #endLabel {
     -fx-font-family: "Compagnon Medium";
-    -fx-font-size: 32px;
+    -fx-font-size: 42px;
     -fx-padding: 16px;
 }
 
@@ -60,7 +60,7 @@ Label {
 
 .penalty {
     -fx-font-family: "monoMMM_5";
-    -fx-font-size: 32px;
+    -fx-font-size: 42px;
     -fx-text-fill: #FFF;
 }
 

@@ -25,7 +25,7 @@ public class StopWatch extends AnimationTimer {
   private final Settings settings;
 
   // time stats
-  private IntegerProperty period = new SimpleIntegerProperty(1);
+  private final IntegerProperty period = new SimpleIntegerProperty(1);
   private final PeriodTimer periodTimer;
   private final ObjectProperty<GameTimeStatus> gameTimeStatus = new SimpleObjectProperty<>(GameTimeStatus.PRE_GAME);
   private final PauseTimer pauseTimer;

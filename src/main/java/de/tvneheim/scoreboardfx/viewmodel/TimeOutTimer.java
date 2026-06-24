@@ -25,7 +25,12 @@ public record TimeOutTimer(
   }
 
   public void start() {
+    current.setValue(Duration.ZERO);
     running.setValue(true);
+  }
+
+  public void skip() {
+    running.setValue(false);
   }
 
   @Override

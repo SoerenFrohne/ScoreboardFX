@@ -77,7 +77,7 @@ public class SuspensionLabel extends Label {
   }
 
   private static String formatSuspension(Side side, int number, Duration duration) {
-    return side == Side.HOME ? doubleDigits(number) + " " + time(duration) : time(duration) + " " + number;
+    return side == Side.HOME ? doubleDigits(number) + " " + time(duration) : time(duration) + " " + doubleDigits(number);
   }
 
 }

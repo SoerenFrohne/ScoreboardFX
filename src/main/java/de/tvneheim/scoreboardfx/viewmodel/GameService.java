@@ -75,6 +75,12 @@ public final class GameService {
     });
   }
 
+  public static void skipTimeOut() {
+    if (getStopWatch().getTimeOutTimer().running().get()) {
+      getStopWatch().getTimeOutTimer().skip();
+    }
+  }
+
   public static void requestTimeOut(Side side) {
     if (GameState.getCurrentGame().home().timeOuts().size() <= GameState.getSettings().maxTimeOutsPerPeriod().get()) {
 
