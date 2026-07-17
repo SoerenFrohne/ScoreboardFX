@@ -26,14 +26,12 @@ public class MainApplication extends Application {
     log.info("Path: {}", new File(".").getAbsolutePath());
     Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
 
-    var primaryScreen = Screen.getPrimary();
 
     var settingsLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/settings.fxml"));
     var settingsScene = new Scene(settingsLoader.load());
     primaryStage.setTitle("Einstellungen");
     primaryStage.setScene(settingsScene);
     primaryStage.show();
-
 
 
     var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
@@ -45,6 +43,7 @@ public class MainApplication extends Application {
     viewStage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
     viewStage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
     viewStage.show();
+    viewStage.toFront();
   }
 
   public static void main(String[] args) throws JoranException {

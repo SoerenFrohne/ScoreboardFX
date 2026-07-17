@@ -44,12 +44,12 @@ public class StopWatch extends AnimationTimer {
     periodTimer.finished().addListener((observableValue, aBoolean, finished) -> {
       log.info("Halbzeitende : {}", periodTimer.currentTime().get());
 
+      SoundBoard.honkLong();
       if (finished) {
         if (period.get() + 1 > settings.numberOfPeriods().get()) {
           gameTimeStatus.setValue(GameTimeStatus.FINISHED);
           log.info("Spielende : {}", periodTimer.currentTime().get());
         } else {
-          SoundBoard.honkLong();
           pauseTimer.start();
         }
       }

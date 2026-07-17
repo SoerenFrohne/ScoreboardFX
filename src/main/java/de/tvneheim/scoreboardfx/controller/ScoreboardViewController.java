@@ -112,8 +112,11 @@ public class ScoreboardViewController implements Initializable {
     endContainer.managedProperty().bind(endContainer.visibleProperty());
     getStopWatch().getGameTimeStatus().addListener((observableValue, oldStatus, newStatus) -> {
       if (newStatus == GameTimeStatus.FINISHED) {
-        endContainer.setVisible(true);
+        log.info("FINISHED");
+        pauseContainer.visibleProperty().unbind();
         pauseContainer.setVisible(false);
+        endContainer.setVisible(true);
+        presentedLabel.setVisible(false);
       }
     });
 
@@ -124,6 +127,7 @@ public class ScoreboardViewController implements Initializable {
         getStopWatch().getPauseTimer().running()
             .or(getStopWatch().getTimeOutTimer().running())
             .or(getSettings().pathToAdImages().isEmpty())
+            .or(getStopWatch().getGameTimeStatus().isEqualTo(GameTimeStatus.FINISHED))
             .not()
     );
 
