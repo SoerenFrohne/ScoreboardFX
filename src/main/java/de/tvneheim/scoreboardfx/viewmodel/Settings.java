@@ -45,10 +45,10 @@ public record Settings(
         .guestTeamLogo(new SimpleObjectProperty<>())
 
         // Time
-        .numberOfPeriods(new SimpleIntegerProperty(2))
-        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofMinutes(30)))
+        .numberOfPeriods(new SimpleIntegerProperty(1))
+        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofMinutes(12)))
         .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofMinutes(10)))
-        .penaltyLength(new SimpleObjectProperty<>(Duration.ofMinutes(2)))
+        .penaltyLength(new SimpleObjectProperty<>(Duration.ofMinutes(1)))
 
         // Time-Outs
         .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofSeconds(60)))
