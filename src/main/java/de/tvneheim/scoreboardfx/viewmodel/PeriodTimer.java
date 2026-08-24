@@ -17,7 +17,7 @@ public record PeriodTimer(
 
   public PeriodTimer(DurationProperty periodLength) {
     this(
-        new SimpleStringProperty("Georg Meyer Cup"), //TODO: wartbar machen
+        new SimpleStringProperty("1. Halbzeit"),
         periodLength,
         new DurationProperty(Duration.ZERO),
         new SimpleBooleanProperty(true),

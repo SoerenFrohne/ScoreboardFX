@@ -2,7 +2,13 @@ package de.tvneheim.scoreboardfx.viewmodel;
 
 import de.tvneheim.scoreboardfx.infrastructure.sound.SoundBoard;
 import de.tvneheim.scoreboardfx.model.*;
+import de.tvneheim.scoreboardfx.view.NumberPad;
 import de.tvneheim.scoreboardfx.viewmodel.events.*;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.stage.Popup;
 import lombok.extern.java.Log;
 
 import java.time.Duration;
@@ -44,35 +50,59 @@ public final class GameService {
     GameState.removeEvent(GameState.findLastOfType(EventType.GUEST_SCORED).getId());
   }
 
-  public static void twoMinutesForHome(int number) {
+  private static void requestTwoMinutes(Side side, ActionEvent actionEvent) {
+    var source = (Node) actionEvent.getSource();
+
+    var popup = new Popup();
+    var numberPad = new NumberPad();
+    popup.setAutoHide(true);
+    popup.getContent().add(numberPad);
+
+    numberPad.setOnConfirm(number -> {
+      popup.hide();
+      twoMinutes(side, number);
+    });
+
+    var bounds = source.localToScreen(source.getBoundsInLocal());
+
+    popup.show(source, bounds.getMinX(), bounds.getMaxY() + 5);
+
+    // Dialog anzeigen und Nummer abfragen:
+//    var dialog = new Dialog<Integer>();
+//    dialog.setTitle("Spielernummer wählen:");
+//    dialog.getDialogPane().setContent(numberPad);
+//
+//    numberPad.setOnConfirm(number -> {
+//      dialog.setResult(number);
+//      dialog.close();
+//    });
+//    dialog.showAndWait();
+  }
+
+  private static void twoMinutes(Side side, int number) {
 
     var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
-    GameState.addEvent(new PenaltyHomeAdded(penalty));
+    var event = side == Side.HOME ? new PenaltyHomeAdded(penalty) : new PenaltyGuestAdded(penalty);
+    GameState.addEvent(event);
 
+    var suspensionList = side == Side.HOME ? getStopWatch().getSuspensionsHome() : getStopWatch().getSuspensionsGuest();
     var suspension = new SuspensionTimer(penalty.player().number(), penalty.duration());
-    getStopWatch().getSuspensionsHome().add(suspension);
+    suspensionList.add(suspension);
 
     suspension.completed().addListener((observable, oldValue, completed) -> {
       if (completed) {
         GameState.addEvent(new PenaltyCompleted(penalty));
-        getStopWatch().getSuspensionsHome().remove(suspension);
+        suspensionList.remove(suspension);
       }
     });
   }
 
-  public static void twoMinutesForGuest(int number) {
-    var penalty = Penalty.twoMinutes(new Player(number), getElapsedTime());
-    GameState.addEvent(new PenaltyGuestAdded(penalty));
+  public static void twoMinutesForHome(ActionEvent actionEvent) {
+    requestTwoMinutes(Side.HOME, actionEvent);
+  }
 
-    var suspension = new SuspensionTimer(penalty.player().number(), penalty.duration());
-    getStopWatch().getSuspensionsGuest().add(suspension);
-
-    suspension.completed().addListener((observable, oldValue, completed) -> {
-      if (completed) {
-        GameState.addEvent(new PenaltyCompleted(penalty));
-        getStopWatch().getSuspensionsGuest().remove(suspension);
-      }
-    });
+  public static void twoMinutesForGuest(ActionEvent actionEvent) {
+    requestTwoMinutes(Side.GUEST, actionEvent);
   }
 
   public static void skipTimeOut() {
@@ -82,27 +112,23 @@ public final class GameService {
   }
 
   public static void requestTimeOut(Side side) {
-    if (GameState.getCurrentGame().home().timeOuts().size() <= GameState.getSettings().maxTimeOutsPerPeriod().get()) {
+    var timeOut = new TimeOut(
+        getElapsedTime(),
+        GameState.getSettings().timePerTeamTimeOut().getValue(),
+        GameState.getSettings().timeOutWarningTime().getValue()
+    );
 
-      var timeOut = new TimeOut(
-          getElapsedTime(),
-          GameState.getSettings().timePerTeamTimeOut().getValue(),
-          GameState.getSettings().timeOutWarningTime().getValue()
-      );
+    getStopWatch().pause();
+    SoundBoard.honkShort();
+    GameState.addEvent(new TeamTimeOutAdded(side, timeOut));
 
-      getStopWatch().pause();
-      SoundBoard.honkShort();
-      GameState.addEvent(new TeamTimeOutAdded(side, timeOut));
-
-      getStopWatch().getTimeOutTimer().start();
-      getStopWatch().getTimeOutTimer().overWarningTime().addListener(observable -> SoundBoard.honkShort());
-      getStopWatch().getTimeOutTimer().running().addListener((observableValue, oldVal, newVal) -> {
-        if (oldVal == true && newVal == false) {
-          SoundBoard.honkLong();
-        }
-      });
-
-    }
+    getStopWatch().getTimeOutTimer().start();
+    getStopWatch().getTimeOutTimer().overWarningTime().addListener(observable -> SoundBoard.honkShort());
+    getStopWatch().getTimeOutTimer().running().addListener((observableValue, oldVal, newVal) -> {
+      if (oldVal == true && newVal == false) {
+        SoundBoard.honkLong();
+      }
+    });
   }
 
   public static Duration getElapsedTime() {

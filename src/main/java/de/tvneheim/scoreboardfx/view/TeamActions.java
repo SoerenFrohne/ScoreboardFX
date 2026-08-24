@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +19,9 @@ public abstract class TeamActions extends VBox implements Initializable {
 
   @FXML
   protected Button penaltyButton, timeOutButton, minusGoalButton, plusGoalButton;
+
+  @FXML
+  protected TextField teamName;
 
   public TeamActions() {
     FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/fxml/team-actions.fxml");

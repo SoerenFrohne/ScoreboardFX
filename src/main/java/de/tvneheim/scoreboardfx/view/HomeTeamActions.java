@@ -2,8 +2,10 @@ package de.tvneheim.scoreboardfx.view;
 
 import de.tvneheim.scoreboardfx.viewmodel.GameService;
 import de.tvneheim.scoreboardfx.model.Side;
+import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,12 +36,12 @@ public class HomeTeamActions extends TeamActions {
 
   @Override
   public void onPenalty(ActionEvent event) {
-    GameService.twoMinutesForHome(4);
+    GameService.twoMinutesForHome(event);
   }
 
   @Override
   public void onInit() {
-
+    teamName.textProperty().bindBidirectional(GameState.getSettings().homeTeamName());
   }
 
 }
