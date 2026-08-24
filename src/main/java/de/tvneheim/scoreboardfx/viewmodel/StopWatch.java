@@ -34,7 +34,7 @@ public class StopWatch extends AnimationTimer {
 
   public StopWatch(Settings settings) {
     this.settings = settings;
-    this.periodTimer = new PeriodTimer(settings.lengthPerPeriod().get());
+    this.periodTimer = new PeriodTimer(settings.lengthPerPeriod());
     this.pauseTimer = new PauseTimer(settings.pauseBetweenPeriods().get());
     this.timeOutTimer = new TimeOutTimer(settings.timePerTeamTimeOut().get(), settings.timeOutWarningTime().get());
     this.suspensionsHome = new SuspensionSlots();

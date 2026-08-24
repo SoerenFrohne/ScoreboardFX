@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public abstract class TeamActions extends VBox implements Initializable {
 
   @FXML
-  private Button penaltyButton, timeOutButton, minusGoalButton, plusGoalButton;
+  protected Button penaltyButton, timeOutButton, minusGoalButton, plusGoalButton;
 
   public TeamActions() {
     FXMLUtils.loadXml(this, "/de/tvneheim/scoreboardfx/fxml/team-actions.fxml");
@@ -45,6 +45,8 @@ public abstract class TeamActions extends VBox implements Initializable {
 
   public abstract void onPenalty(ActionEvent event);
 
+  public abstract void onInit();
+
   private void toggleTimeOut(ActionEvent event) {
     if(GameState.getStopWatch().getTimeOutTimer().running().get()) {
       GameService.skipTimeOut();
@@ -55,7 +57,7 @@ public abstract class TeamActions extends VBox implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    onInit();
     log.info("Initialized");
-
   }
 }

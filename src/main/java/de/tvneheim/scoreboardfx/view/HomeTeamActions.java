@@ -37,4 +37,9 @@ public class HomeTeamActions extends TeamActions {
     GameService.twoMinutesForHome(4);
   }
 
+  @Override
+  public void onInit() {
+
+  }
+
 }

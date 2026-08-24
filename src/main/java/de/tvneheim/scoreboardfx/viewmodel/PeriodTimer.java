@@ -15,14 +15,15 @@ public record PeriodTimer(
     BooleanProperty finished
 ) implements TickListener {
 
-  public PeriodTimer(Duration periodLength) {
+  public PeriodTimer(DurationProperty periodLength) {
     this(
         new SimpleStringProperty("Georg Meyer Cup"), //TODO: wartbar machen
-        new DurationProperty(periodLength),
+        periodLength,
         new DurationProperty(Duration.ZERO),
         new SimpleBooleanProperty(true),
         new SimpleBooleanProperty(false)
     );
+    log.info("PeriodTimer initialised with {}", periodLength);
   }
 
   public void start() {

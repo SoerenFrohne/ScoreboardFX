@@ -1,5 +1,6 @@
 package de.tvneheim.scoreboardfx.viewmodel;
 
+import de.tvneheim.scoreboardfx.utils.DurationProperty;
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import lombok.Builder;
@@ -18,18 +19,18 @@ public record Settings(
 
     // Time Management
     IntegerProperty numberOfPeriods,
-    ObjectProperty<Duration> lengthPerPeriod,
-    ObjectProperty<Duration> pauseBetweenPeriods,
-    ObjectProperty<Duration> penaltyLength,
+    DurationProperty lengthPerPeriod,
+    DurationProperty pauseBetweenPeriods,
+    DurationProperty penaltyLength,
 
     // Time-Outs
-    ObjectProperty<Duration> timePerTeamTimeOut,
-    ObjectProperty<Duration> timeOutWarningTime,
+    DurationProperty timePerTeamTimeOut,
+    DurationProperty timeOutWarningTime,
     IntegerProperty maxTimeOutsPerPeriod,
     IntegerProperty maxTimeOutsPerGame,
 
     // Advertisement
-    ObjectProperty<Duration> showTimeOfAds,
+    DurationProperty showTimeOfAds,
 
     // Data
     StringProperty pathToAdImages,
@@ -46,18 +47,18 @@ public record Settings(
 
         // Time
         .numberOfPeriods(new SimpleIntegerProperty(1))
-        .lengthPerPeriod(new SimpleObjectProperty<>(Duration.ofMinutes(12)))
-        .pauseBetweenPeriods(new SimpleObjectProperty<>(Duration.ofMinutes(10)))
-        .penaltyLength(new SimpleObjectProperty<>(Duration.ofMinutes(1)))
+        .lengthPerPeriod(new DurationProperty(Duration.ofMinutes(12)))
+        .pauseBetweenPeriods(new DurationProperty(Duration.ofMinutes(10)))
+        .penaltyLength(new DurationProperty(Duration.ofMinutes(1)))
 
         // Time-Outs
-        .timePerTeamTimeOut(new SimpleObjectProperty<>(Duration.ofSeconds(60)))
-        .timeOutWarningTime(new SimpleObjectProperty<>(Duration.ofSeconds(50)))
+        .timePerTeamTimeOut(new DurationProperty(Duration.ofSeconds(60)))
+        .timeOutWarningTime(new DurationProperty(Duration.ofSeconds(50)))
         .maxTimeOutsPerPeriod(new SimpleIntegerProperty(2))
         .maxTimeOutsPerGame(new SimpleIntegerProperty(3))
 
         // Advertisement
-        .showTimeOfAds(new SimpleObjectProperty<>(Duration.ofSeconds(10)))
+        .showTimeOfAds(new DurationProperty(Duration.ofSeconds(10)))
 
         // Data
         .pathToAdImages(new SimpleStringProperty(Paths.get("predefinitions/ads").toAbsolutePath().normalize().toString()))

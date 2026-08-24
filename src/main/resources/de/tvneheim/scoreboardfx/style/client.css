@@ -15,3 +15,13 @@
 .formTextField {
     -fx-font-color: "white"
 }
+
+#plusGoalButton {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-background-image: url("../static/handball.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: contain;
+}
