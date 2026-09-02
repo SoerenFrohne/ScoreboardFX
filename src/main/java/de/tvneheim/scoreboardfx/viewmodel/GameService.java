@@ -6,8 +6,6 @@ import de.tvneheim.scoreboardfx.view.NumberPad;
 import de.tvneheim.scoreboardfx.viewmodel.events.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.stage.Popup;
 import lombok.extern.java.Log;
 

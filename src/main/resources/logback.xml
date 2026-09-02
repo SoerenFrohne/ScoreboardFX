@@ -1,8 +1,8 @@
 <configuration>
-    <property name="APP_LOGDIR" value="${app.logdir}"/>
+    <property name="LOG_DIR" value="${app.logdir:-${user.home}/.scoreboardfx/logs}"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${APP_LOGDIR:-logs}/app.log</file>
+        <file>${LOG_DIR}/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${APP_LOGDIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
