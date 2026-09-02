@@ -46,10 +46,10 @@ public record Settings(
         .guestTeamLogo(new SimpleObjectProperty<>())
 
         // Time
-        .numberOfPeriods(new SimpleIntegerProperty(1))
-        .lengthPerPeriod(new DurationProperty(Duration.ofMinutes(12)))
+        .numberOfPeriods(new SimpleIntegerProperty(2))
+        .lengthPerPeriod(new DurationProperty(Duration.ofMinutes(30)))
         .pauseBetweenPeriods(new DurationProperty(Duration.ofMinutes(10)))
-        .penaltyLength(new DurationProperty(Duration.ofMinutes(1)))
+        .penaltyLength(new DurationProperty(Duration.ofMinutes(2)))
 
         // Time-Outs
         .timePerTeamTimeOut(new DurationProperty(Duration.ofSeconds(60)))

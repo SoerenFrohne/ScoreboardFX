@@ -116,7 +116,6 @@ public class ScoreboardViewController implements Initializable {
         pauseContainer.visibleProperty().unbind();
         pauseContainer.setVisible(false);
         endContainer.setVisible(true);
-        presentedLabel.setVisible(false);
       }
     });
 

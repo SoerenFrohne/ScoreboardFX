@@ -50,7 +50,6 @@ public class SuspensionLabel extends Label {
       // update text
       this.setText(formatSuspension(side, suspension.number().get(), suspension.remainingTime().get()));
       suspension.remainingTime().addListener((observable, oldValue, remainingTime) -> {
-        log.info("Changed remaining time to {}", remainingTime.toMillis());
         this.setText(formatSuspension(side, suspension.number().get(), remainingTime));
       });
 

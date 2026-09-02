@@ -67,16 +67,6 @@ public final class GameService {
 
     popup.show(source, bounds.getMinX(), bounds.getMaxY() + 5);
 
-    // Dialog anzeigen und Nummer abfragen:
-//    var dialog = new Dialog<Integer>();
-//    dialog.setTitle("Spielernummer wählen:");
-//    dialog.getDialogPane().setContent(numberPad);
-//
-//    numberPad.setOnConfirm(number -> {
-//      dialog.setResult(number);
-//      dialog.close();
-//    });
-//    dialog.showAndWait();
   }
 
   private static void twoMinutes(Side side, int number) {
