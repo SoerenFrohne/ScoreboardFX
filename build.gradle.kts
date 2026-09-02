@@ -3,12 +3,12 @@ plugins {
     application
     id("org.javamodularity.moduleplugin") version "1.8.12"
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
-    id("io.freefair.lombok") version "8.13.1"
+    id("org.beryx.jlink") version "4.1.1"
+    id("io.freefair.lombok") version "9.5.0"
 }
 
 group = "de.tvneheim"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -61,9 +61,26 @@ tasks.withType<Test> {
 }
 
 jlink {
-    imageZip.set(layout.buildDirectory.file("/distributions/app-${javafx.platform.classifier}.zip"))
     options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
+
+    addExtraDependencies("slf4j")
+
     launcher {
-        name = "app"
+        name = "ScoreboardFX"
+    }
+
+    jpackage {
+        imageName = "ScoreboardFX"
+        installerName = "ScoreboardFX"
+        appVersion = "1.0.0"
+
+        installerType = "exe"
+
+        installerOptions = listOf(
+            "--win-dir-chooser",
+            "--win-menu",
+            "--win-shortcut"
+        )
+
     }
 }
