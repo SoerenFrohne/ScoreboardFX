@@ -1,15 +1,14 @@
 package de.tvneheim.scoreboardfx;
 
 import atlantafx.base.theme.CupertinoDark;
-import atlantafx.base.theme.Styles;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import de.tvneheim.scoreboardfx.controller.ScoreboardViewController;
 import de.tvneheim.scoreboardfx.infrastructure.logging.LoggingHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
@@ -36,13 +35,7 @@ public class MainApplication extends Application {
     primaryStage.setY(primaryScreen.getVisualBounds().getMinY() + 128);
     primaryStage.show();
 
-    var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
-    var viewScene = new Scene(viewLoader.load());
-    viewScene.getStylesheets().add(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/style/view.css").toExternalForm());
-    var viewStage = new Stage();
-    viewStage.setTitle("Scoreboard View");
-    viewStage.setScene(viewScene);
-
+    var viewStage = ScoreboardViewController.show();
     if(Screen.getScreens().size() == 2) {
       var secondScreen = Screen.getScreens().get(1);
       var bounds = secondScreen.getBounds();
@@ -53,8 +46,6 @@ public class MainApplication extends Application {
       viewStage.setY(bounds.getMinY());
       viewStage.setFullScreen(true);
     }
-    viewStage.show();
-    viewStage.toFront();
   }
 
   public static void main(String[] args) throws JoranException {

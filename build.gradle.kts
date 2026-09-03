@@ -1,7 +1,6 @@
 plugins {
     java
     application
-    id("org.javamodularity.moduleplugin") version "1.8.12"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "4.1.1"
     id("io.freefair.lombok") version "9.5.0"
@@ -51,7 +50,10 @@ dependencies {
     implementation("com.h2database:h2:2.4.240")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testImplementation("org.hamcrest:hamcrest:3.0")
     testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("org.testfx:testfx-junit5:4.0.18")
+    testImplementation("org.testfx:testfx-core:4.0.18")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

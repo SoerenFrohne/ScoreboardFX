@@ -2,6 +2,7 @@ package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.util.Animations;
 import de.tvneheim.scoreboardfx.model.Side;
+import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import de.tvneheim.scoreboardfx.utils.FileUtils;
 import de.tvneheim.scoreboardfx.viewmodel.GameState;
 import de.tvneheim.scoreboardfx.viewmodel.GameTimeStatus;
@@ -18,8 +19,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,6 +57,20 @@ public class ScoreboardViewController implements Initializable {
   @FXML
   private Label time, pauseTime, scoreHome, scoreGuest, nameHome, nameGuest, period, ttoTime, presentedLabel;
 
+  public static Stage show() throws IOException {
+    var stage = FXMLUtils.initStage(
+        "/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml",
+        "/de/tvneheim/scoreboardfx/style/view.css",
+        "Scoreboard View"
+    );
+    stage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
+    stage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
+    stage.show();
+    stage.toFront();
+
+    return stage;
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     bindModel();
@@ -83,7 +101,6 @@ public class ScoreboardViewController implements Initializable {
       var file = files.getFirst();
       var img = new Image(file.toURI().toString());
       adDisplay.setImage(img);
-
 
 
       AtomicInteger index = new AtomicInteger();

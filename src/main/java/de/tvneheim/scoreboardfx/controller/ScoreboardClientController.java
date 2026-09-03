@@ -1,6 +1,8 @@
 package de.tvneheim.scoreboardfx.controller;
 
 import atlantafx.base.controls.ModalPane;
+import de.tvneheim.scoreboardfx.MainApplication;
+import de.tvneheim.scoreboardfx.utils.FXMLUtils;
 import de.tvneheim.scoreboardfx.viewmodel.SuspensionSlots;
 import de.tvneheim.scoreboardfx.viewmodel.events.Event;
 import de.tvneheim.scoreboardfx.viewmodel.GameState;
@@ -10,13 +12,17 @@ import de.tvneheim.scoreboardfx.view.TeamActions;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.extern.java.Log;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
@@ -44,6 +50,16 @@ public class ScoreboardClientController implements Initializable {
   private ScrollPane events;
 
   private final ModalPane modal = new ModalPane();
+
+  public static Stage show() throws IOException {
+    var stage = FXMLUtils.initStage(
+        "/de/tvneheim/scoreboardfx/fxml/scoreboard-client.fxml",
+        "/de/tvneheim/scoreboardfx/style/client.css",
+        "Scoreboard Client");
+    stage.show();
+
+    return stage;
+  }
 
   @FXML
   public void openGameSettings() {
