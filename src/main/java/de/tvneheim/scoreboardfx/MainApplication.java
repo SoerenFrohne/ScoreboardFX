@@ -9,6 +9,7 @@ import de.tvneheim.scoreboardfx.infrastructure.logging.LoggingHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;

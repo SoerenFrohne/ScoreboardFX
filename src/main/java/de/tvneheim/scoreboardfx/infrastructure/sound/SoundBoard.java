@@ -7,25 +7,27 @@ import java.util.Objects;
 public final class SoundBoard {
 
   private static final String HORN_LONG_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-long.wav";
+  private static final String HORN_MID_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-mid.wav";
   private static final String HORN_SHORT_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-short.wav";
 
   private static final AudioClip HORN_LONG = loadAudioClip(HORN_LONG_PATH);
+  private static final AudioClip HORN_MID = loadAudioClip(HORN_MID_PATH);
   private static final AudioClip HORN_SHORT = loadAudioClip(HORN_SHORT_PATH);
 
 
-  private SoundBoard() {
+  static {
     // Vorwärmen, damit beim ersten Laden keine Verzögerungen entstehen
-    HORN_SHORT.setVolume(0);
-    HORN_SHORT.play();
-    HORN_SHORT.setVolume(100);
-
-    HORN_LONG.setVolume(0);
-    HORN_LONG.play();
-    HORN_LONG.setVolume(100);
+    HORN_SHORT.play(0);
+    HORN_MID.play(0);
+    HORN_LONG.play(0);
   }
 
   public static void honkShort() {
     HORN_SHORT.play();
+  }
+
+  public static void honkMid() {
+    HORN_MID.play();
   }
 
   public static void honkLong() {

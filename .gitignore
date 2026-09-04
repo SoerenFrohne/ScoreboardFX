@@ -40,3 +40,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+/APP_LOGDIR_IS_UNDEFINED/

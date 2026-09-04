@@ -100,6 +100,8 @@ public final class GameService {
   }
 
   public static void requestTimeOut(Side side) {
+    var timer = getStopWatch().getTimeOutTimer();
+
     var timeOut = new TimeOut(
         getElapsedTime(),
         GameState.getSettings().timePerTeamTimeOut().getValue(),
@@ -107,13 +109,14 @@ public final class GameService {
     );
 
     getStopWatch().pause();
-    SoundBoard.honkShort();
+    SoundBoard.honkMid();
     GameState.addEvent(new TeamTimeOutAdded(side, timeOut));
 
-    getStopWatch().getTimeOutTimer().start();
-    getStopWatch().getTimeOutTimer().overWarningTime().addListener(observable -> SoundBoard.honkShort());
-    getStopWatch().getTimeOutTimer().running().addListener((observableValue, oldVal, newVal) -> {
-      if (oldVal == true && newVal == false) {
+    timer.start();
+    timer.overWarningTime().addListener(observable -> SoundBoard.honkShort());
+    timer.running().addListener((observableValue, oldVal, newVal) -> {
+
+      if (oldVal == true && newVal == false && !timer.skipped().get()) {
         SoundBoard.honkLong();
       }
     });

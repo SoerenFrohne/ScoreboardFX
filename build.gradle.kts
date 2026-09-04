@@ -1,7 +1,7 @@
 plugins {
     java
     application
-    id("org.openjfx.javafxplugin") version "0.0.13"
+    id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.beryx.jlink") version "4.1.1"
     id("io.freefair.lombok") version "9.5.0"
 }
@@ -19,6 +19,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+
+    modularity.inferModulePath.set(false)
 }
 
 tasks.withType<JavaCompile> {
@@ -26,13 +28,12 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainModule.set("de.tvneheim.scoreboardfx")
     mainClass.set("de.tvneheim.scoreboardfx.MainApplication")
 }
 
 javafx {
     version = "21"
-    modules = listOf("javafx.controls", "javafx.fxml", "javafx.web")
+    modules = listOf("javafx.base", "javafx.graphics", "javafx.controls", "javafx.fxml", "javafx.web")
 }
 
 dependencies {

@@ -8,6 +8,7 @@ import java.time.Duration;
 
 public record TimeOutTimer(
     BooleanProperty running,
+    BooleanProperty skipped,
     DurationProperty current,
     DurationProperty length,
     DurationProperty warningTime,
@@ -16,6 +17,7 @@ public record TimeOutTimer(
 
   public TimeOutTimer(Duration length, Duration warningTime) {
     this(
+        new SimpleBooleanProperty(false),
         new SimpleBooleanProperty(false),
         new DurationProperty(),
         new DurationProperty(length),
@@ -27,9 +29,11 @@ public record TimeOutTimer(
   public void start() {
     current.setValue(Duration.ZERO);
     running.setValue(true);
+    skipped.setValue(false);
   }
 
   public void skip() {
+    skipped.setValue(true);
     running.setValue(false);
   }
 

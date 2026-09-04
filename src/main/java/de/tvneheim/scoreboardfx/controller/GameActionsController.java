@@ -46,7 +46,7 @@ public class GameActionsController implements Initializable {
   @FXML
   @SneakyThrows
   protected void honk() {
-    SoundBoard.honkShort();
+    SoundBoard.honkMid();
   }
 
   @FXML
