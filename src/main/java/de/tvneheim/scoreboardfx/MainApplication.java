@@ -26,13 +26,15 @@ public class MainApplication extends Application {
     log.info("Path: {}", new File(".").getAbsolutePath());
     Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
 
+    var primaryScreen = Screen.getPrimary();
 
     var settingsLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/settings.fxml"));
     var settingsScene = new Scene(settingsLoader.load());
     primaryStage.setTitle("Einstellungen");
     primaryStage.setScene(settingsScene);
+    primaryStage.setX(primaryScreen.getVisualBounds().getMinX() + 128);
+    primaryStage.setY(primaryScreen.getVisualBounds().getMinY() + 128);
     primaryStage.show();
-
 
     var viewLoader = new FXMLLoader(MainApplication.class.getResource("/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml"));
     var viewScene = new Scene(viewLoader.load());
@@ -40,8 +42,17 @@ public class MainApplication extends Application {
     var viewStage = new Stage();
     viewStage.setTitle("Scoreboard View");
     viewStage.setScene(viewScene);
-    viewStage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
-    viewStage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
+
+    if(Screen.getScreens().size() == 2) {
+      var secondScreen = Screen.getScreens().get(1);
+      var bounds = secondScreen.getBounds();
+
+      viewStage.setWidth(bounds.getWidth());
+      viewStage.setHeight(bounds.getHeight());
+      viewStage.setX(bounds.getMinX());
+      viewStage.setY(bounds.getMinY());
+      viewStage.setFullScreen(true);
+    }
     viewStage.show();
     viewStage.toFront();
   }
