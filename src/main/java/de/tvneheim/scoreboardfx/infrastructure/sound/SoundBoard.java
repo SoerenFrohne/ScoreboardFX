@@ -1,18 +1,15 @@
 package de.tvneheim.scoreboardfx.infrastructure.sound;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public final class SoundBoard {
 
-  private static final String HORN_LONG_PATH =
-      "/de/tvneheim/scoreboardfx/sfx/horn-long.wav";
-  private static final String HORN_MID_PATH =
-      "/de/tvneheim/scoreboardfx/sfx/horn-mid.wav";
-  private static final String HORN_SHORT_PATH =
-      "/de/tvneheim/scoreboardfx/sfx/horn-short.wav";
+  private static final String HORN_LONG_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-long.wav";
+  private static final String HORN_MID_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-mid.wav";
+  private static final String HORN_SHORT_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-short.wav";
 
   /*
    * Einheitliches Ausgabeformat:
@@ -79,11 +76,10 @@ public final class SoundBoard {
   }
 
   private static void startAudioThread() {
-    Thread thread = new Thread(() -> {
+    var thread = new Thread(() -> {
 
       try {
-        SourceDataLine line =
-            AudioSystem.getSourceDataLine(OUTPUT_FORMAT);
+        var line = AudioSystem.getSourceDataLine(OUTPUT_FORMAT);
 
         /*
          * Relativ kleiner interner Buffer.
@@ -95,7 +91,7 @@ public final class SoundBoard {
         line.open(OUTPUT_FORMAT, lineBufferSize);
         line.start();
 
-        byte[] outputBuffer = new byte[BUFFER_SIZE];
+        var outputBuffer = new byte[BUFFER_SIZE];
 
         while (!Thread.currentThread().isInterrupted()) {
 
@@ -108,23 +104,9 @@ public final class SoundBoard {
 
             if (currentSound != null) {
 
-              int remaining =
-                  currentSound.length - currentPosition;
-
-              int bytesToCopy =
-                  Math.min(
-                      remaining,
-                      outputBuffer.length
-                  );
-
-              System.arraycopy(
-                  currentSound,
-                  currentPosition,
-                  outputBuffer,
-                  0,
-                  bytesToCopy
-              );
-
+              int remaining = currentSound.length - currentPosition;
+              int bytesToCopy = Math.min(remaining, outputBuffer.length);
+              System.arraycopy(currentSound, currentPosition, outputBuffer, 0, bytesToCopy);
               currentPosition += bytesToCopy;
 
               if (currentPosition >= currentSound.length) {
@@ -139,11 +121,7 @@ public final class SoundBoard {
            *
            * Dadurch bleibt der Windows-Audio-Endpunkt aktiv.
            */
-          line.write(
-              outputBuffer,
-              0,
-              outputBuffer.length
-          );
+          line.write(outputBuffer, 0, outputBuffer.length);
         }
 
         line.drain();
@@ -151,10 +129,7 @@ public final class SoundBoard {
         line.close();
 
       } catch (LineUnavailableException e) {
-        throw new IllegalStateException(
-            "Could not initialize audio output",
-            e
-        );
+        throw new IllegalStateException("Could not initialize audio output", e);
       }
     });
 
@@ -166,29 +141,17 @@ public final class SoundBoard {
 
   private static byte[] loadSound(String path) {
 
-    try (
-        InputStream resourceStream =
-            SoundBoard.class.getResourceAsStream(path)
-    ) {
+    try (var resourceStream = SoundBoard.class.getResourceAsStream(path)) {
 
       if (resourceStream == null) {
-        throw new IllegalArgumentException(
-            "Sound resource not found: " + path
-        );
+        throw new IllegalArgumentException("Sound resource not found: " + path);
       }
 
       try (
-          AudioInputStream originalStream =
-              AudioSystem.getAudioInputStream(resourceStream);
-
-          AudioInputStream convertedStream =
-              AudioSystem.getAudioInputStream(
-                  OUTPUT_FORMAT,
-                  originalStream
-              );
-
-          ByteArrayOutputStream output =
-              new ByteArrayOutputStream()
+          var bufferedInputStream = new BufferedInputStream(resourceStream);
+          var originalStream = AudioSystem.getAudioInputStream(bufferedInputStream);
+          var convertedStream = AudioSystem.getAudioInputStream(OUTPUT_FORMAT, originalStream);
+          var output = new ByteArrayOutputStream()
       ) {
 
         byte[] buffer = new byte[8192];
@@ -202,14 +165,8 @@ public final class SoundBoard {
         return output.toByteArray();
       }
 
-    } catch (
-        UnsupportedAudioFileException |
-        IOException e
-    ) {
-      throw new IllegalStateException(
-          "Could not load sound: " + path,
-          e
-      );
+    } catch (UnsupportedAudioFileException | IOException e) {
+      throw new IllegalStateException("Could not load sound: " + path, e);
     }
   }
 }
