@@ -1,42 +1,64 @@
 package de.tvneheim.scoreboardfx.infrastructure.sound;
 
-import javafx.scene.media.AudioClip;
-
-import java.util.Objects;
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 
 public final class SoundBoard {
 
-  private static final String HORN_LONG_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-long.wav";
-  private static final String HORN_MID_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-mid.wav";
-  private static final String HORN_SHORT_PATH = "/de/tvneheim/scoreboardfx/sfx/horn-short.wav";
+  private static final String HORN_LONG_PATH =
+      "/de/tvneheim/scoreboardfx/sfx/horn-long.wav";
+  private static final String HORN_MID_PATH =
+      "/de/tvneheim/scoreboardfx/sfx/horn-mid.wav";
+  private static final String HORN_SHORT_PATH =
+      "/de/tvneheim/scoreboardfx/sfx/horn-short.wav";
 
-  private static final AudioClip HORN_LONG = loadAudioClip(HORN_LONG_PATH);
-  private static final AudioClip HORN_MID = loadAudioClip(HORN_MID_PATH);
-  private static final AudioClip HORN_SHORT = loadAudioClip(HORN_SHORT_PATH);
+  private static final Clip HORN_LONG = loadClip(HORN_LONG_PATH);
+  private static final Clip HORN_MID = loadClip(HORN_MID_PATH);
+  private static final Clip HORN_SHORT = loadClip(HORN_SHORT_PATH);
 
-
-  static {
-    // Vorwärmen, damit beim ersten Laden keine Verzögerungen entstehen
-    HORN_SHORT.play(0);
-    HORN_MID.play(0);
-    HORN_LONG.play(0);
+  private SoundBoard() {
   }
 
   public static void honkShort() {
-    HORN_SHORT.play();
+    play(HORN_SHORT);
   }
 
   public static void honkMid() {
-    HORN_MID.play();
+    play(HORN_MID);
   }
 
   public static void honkLong() {
-    HORN_LONG.play();
+    play(HORN_LONG);
   }
 
-  private static AudioClip loadAudioClip(String path) {
-    return new AudioClip(Objects.requireNonNull(SoundBoard.class.getResource(path)).toExternalForm()
-    );
+  private static void play(Clip clip) {
+    if (clip.isRunning()) {
+      clip.stop();
+    }
+
+    clip.setFramePosition(0);
+    clip.start();
   }
 
+  private static Clip loadClip(String path) {
+    try {
+      var inputStream = SoundBoard.class.getResourceAsStream(path);
+
+      if (inputStream == null) {
+        throw new IllegalArgumentException("Sound resource not found: " + path);
+      }
+
+      try (
+          var bufferedInputStream = new BufferedInputStream(inputStream);
+          var audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream)
+      ) {
+        var clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        return clip;
+      }
+
+    } catch (Exception e) {
+      throw new IllegalStateException("Could not load sound: " + path, e);
+    }
+  }
 }
