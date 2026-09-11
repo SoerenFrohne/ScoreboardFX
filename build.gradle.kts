@@ -2,7 +2,6 @@ plugins {
     java
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.beryx.jlink") version "4.1.1"
     id("io.freefair.lombok") version "9.5.0"
 }
 
@@ -25,6 +24,15 @@ java {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+}
+
+tasks.register<Copy>("prepareJpackage") {
+    dependsOn("build")
+
+    from(tasks.jar)
+    from(configurations.runtimeClasspath)
+
+    into(layout.buildDirectory.dir("jpackage-input"))
 }
 
 application {
@@ -63,27 +71,3 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-jlink {
-    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
-
-    addExtraDependencies("slf4j")
-
-    launcher {
-        name = "ScoreboardFX"
-    }
-
-    jpackage {
-        imageName = "ScoreboardFX"
-        installerName = "ScoreboardFX"
-        appVersion = "1.0.0"
-
-        installerType = "exe"
-
-        installerOptions = listOf(
-            "--win-dir-chooser",
-            "--win-menu",
-            "--win-shortcut"
-        )
-
-    }
-}
