@@ -115,3 +115,13 @@ Ein Löschen und Anpassen von Zeitstrafen ist jederzeit möglich.
 Mit einem Klick auf "Auszeit" stoppt die Zeit, ein Hupsignal ertönt, und ein Auszeit-Timer beginnt zu laufen.
 Es wird automatisch nach 50 Sekunden ein Warnsignal über die Hupe ausgegeben.
 Auszeiten können jederzeit wieder abgebrochen werden.
+
+***
+
+## Entwicklerleitfaden
+
+Zum Erstellen der Exe folgende Befehle ausführen:
+
+`gradlew clean prepareJpackage`
+
+`jpackage --type app-image --input build\jpackage-input --dest build\package --name ScoreboardFX --main-jar ScoreboardFx-1.0.0.jar --main-class de.tvneheim.scoreboardfx.Launcher --app-version 1.0.0 --win-console`
