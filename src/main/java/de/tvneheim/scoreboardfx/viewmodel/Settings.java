@@ -18,7 +18,7 @@ public record Settings(
     ObjectProperty<Image> guestTeamLogo,
 
     // Time Management
-    IntegerProperty numberOfPeriods,
+    ObjectProperty<Integer> numberOfPeriods,
     DurationProperty lengthPerPeriod,
     DurationProperty pauseBetweenPeriods,
     DurationProperty penaltyLength,
@@ -46,7 +46,7 @@ public record Settings(
         .guestTeamLogo(new SimpleObjectProperty<>())
 
         // Time
-        .numberOfPeriods(new SimpleIntegerProperty(2))
+        .numberOfPeriods(new SimpleObjectProperty<>(2))
         .lengthPerPeriod(new DurationProperty(Duration.ofMinutes(30)))
         .pauseBetweenPeriods(new DurationProperty(Duration.ofMinutes(10)))
         .penaltyLength(new DurationProperty(Duration.ofMinutes(2)))

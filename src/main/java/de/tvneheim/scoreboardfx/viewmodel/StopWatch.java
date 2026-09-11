@@ -35,8 +35,8 @@ public class StopWatch extends AnimationTimer {
   public StopWatch(Settings settings) {
     this.settings = settings;
     this.periodTimer = new PeriodTimer(settings.lengthPerPeriod());
-    this.pauseTimer = new PauseTimer(settings.pauseBetweenPeriods().get());
-    this.timeOutTimer = new TimeOutTimer(settings.timePerTeamTimeOut().get(), settings.timeOutWarningTime().get());
+    this.pauseTimer = new PauseTimer(settings.pauseBetweenPeriods());
+    this.timeOutTimer = new TimeOutTimer(settings.timePerTeamTimeOut(), settings.timeOutWarningTime());
     this.suspensionsHome = new SuspensionSlots();
     this.suspensionsGuest = new SuspensionSlots();
 
@@ -44,8 +44,8 @@ public class StopWatch extends AnimationTimer {
     periodTimer.finished().addListener((observableValue, aBoolean, finished) -> {
       log.info("Halbzeitende : {}", periodTimer.currentTime().get());
 
-      SoundBoard.honkLong();
       if (finished) {
+        SoundBoard.honkLong();
         if (period.get() + 1 > settings.numberOfPeriods().get()) {
           gameTimeStatus.setValue(GameTimeStatus.FINISHED);
           log.info("Spielende : {}", periodTimer.currentTime().get());

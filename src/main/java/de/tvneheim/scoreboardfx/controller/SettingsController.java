@@ -18,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+@Slf4j
 public class SettingsController implements Initializable {
 
   @FXML
@@ -55,7 +57,7 @@ public class SettingsController implements Initializable {
     guestLogo.imageProperty().bind(settings.guestTeamLogo());
 
     numberOfPeriods.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4));
-    numberOfPeriods.getValueFactory().valueProperty().bindBidirectional(settings.numberOfPeriods().asObject());
+    numberOfPeriods.getValueFactory().valueProperty().bindBidirectional(settings.numberOfPeriods());
 
     periodLength.setValueFactory(new DurationSpinnerValueFactory());
     periodLength.getValueFactory().valueProperty().bindBidirectional(settings.lengthPerPeriod());

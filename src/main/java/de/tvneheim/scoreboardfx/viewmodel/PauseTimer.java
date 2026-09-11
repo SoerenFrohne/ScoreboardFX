@@ -13,10 +13,10 @@ public record PauseTimer(
     BooleanProperty finished
 ) implements TickListener {
 
-  public PauseTimer(Duration length) {
+  public PauseTimer(DurationProperty length) {
     this(
         new DurationProperty(),
-        new DurationProperty(length),
+        length,
         new SimpleBooleanProperty(false),
         new SimpleBooleanProperty(false)
     );

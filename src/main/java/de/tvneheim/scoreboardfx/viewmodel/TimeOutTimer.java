@@ -15,13 +15,13 @@ public record TimeOutTimer(
     BooleanProperty overWarningTime
 ) implements TickListener {
 
-  public TimeOutTimer(Duration length, Duration warningTime) {
+  public TimeOutTimer(DurationProperty length, DurationProperty warningTime) {
     this(
         new SimpleBooleanProperty(false),
         new SimpleBooleanProperty(false),
         new DurationProperty(),
-        new DurationProperty(length),
-        new DurationProperty(warningTime),
+        length,
+        warningTime,
         new SimpleBooleanProperty(false)
     );
   }
