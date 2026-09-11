@@ -37,8 +37,12 @@ public class MainApplication extends Application {
     primaryStage.show();
 
     var viewStage = ScoreboardViewController.buildStage();
-    if(Screen.getScreens().size() == 2) {
-      var secondScreen = Screen.getScreens().get(1);
+
+    var screens = Screen.getScreens();
+    log.info("Found {} screens", screens.size());
+
+    if (screens.size() == 2) {
+      var secondScreen = screens.get(1);
       var bounds = secondScreen.getBounds();
 
       viewStage.setWidth(bounds.getWidth());
