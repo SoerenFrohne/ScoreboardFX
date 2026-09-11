@@ -57,7 +57,7 @@ public class ScoreboardViewController implements Initializable {
   @FXML
   private Label time, pauseTime, scoreHome, scoreGuest, nameHome, nameGuest, period, ttoTime, presentedLabel;
 
-  public static Stage show() throws IOException {
+  public static Stage buildStage() throws IOException {
     var stage = FXMLUtils.initStage(
         "/de/tvneheim/scoreboardfx/fxml/scoreboard-view.fxml",
         "/de/tvneheim/scoreboardfx/style/view.css",
@@ -65,8 +65,6 @@ public class ScoreboardViewController implements Initializable {
     );
     stage.setMaxWidth(Screen.getPrimary().getVisualBounds().getWidth());
     stage.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight());
-    stage.show();
-    stage.toFront();
 
     return stage;
   }

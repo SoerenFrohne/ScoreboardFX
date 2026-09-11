@@ -25,8 +25,10 @@ public class GoalsIntegrationTest {
   @Start
   @SneakyThrows
   void start(Stage primary) {
-    view = ScoreboardViewController.show();
-    client = ScoreboardClientController.show();
+    view = ScoreboardViewController.buildStage();
+    client = ScoreboardClientController.buildStage();
+    view.show();
+    client.show();
   }
 
   @Test

@@ -36,7 +36,7 @@ public class MainApplication extends Application {
     primaryStage.setY(primaryScreen.getVisualBounds().getMinY() + 128);
     primaryStage.show();
 
-    var viewStage = ScoreboardViewController.show();
+    var viewStage = ScoreboardViewController.buildStage();
     if(Screen.getScreens().size() == 2) {
       var secondScreen = Screen.getScreens().get(1);
       var bounds = secondScreen.getBounds();
@@ -47,6 +47,9 @@ public class MainApplication extends Application {
       viewStage.setY(bounds.getMinY());
       viewStage.setFullScreen(true);
     }
+
+    viewStage.show();
+    viewStage.toFront();
   }
 
   public static void main(String[] args) throws JoranException {
